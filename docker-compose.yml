@@ -1,0 +1,22 @@
+postgres:
+  image: postgres
+  environment:
+    - "POSTGRES_USER=education"
+    - "POSTGRES_PASSWORD=education"
+  ports:
+    - "5432:5432"
+
+education:
+  dockerfile: Dockerfile
+  build: ./
+  volumes:
+    - ./:/app
+  ports:
+    - "3000:3000"
+  environment:
+    - "RAILS_ENV=development"
+    - "POSTGRES_HOSTNAME=pg"
+    - "POSTGRES_USERNAME=education"
+    - "POSTGRES_PASSWORD=education"
+  links:
+    - postgres:pg

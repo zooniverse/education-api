@@ -4,6 +4,10 @@ default: &default
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
+  host:     <%= ENV["POSTGRES_HOSTNAME"] %>
+  database: <%= ENV["POSTGRES_DATABASE"] %>
+  username: <%= ENV["POSTGRES_USERNAME"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
 
 development:
   <<: *default
@@ -62,8 +66,8 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+staging:
+  <<: *default
+
 production:
   <<: *default
-  database: education_production
-  username: education
-  password: <%= ENV['EDUCATION-API_DATABASE_PASSWORD'] %>
