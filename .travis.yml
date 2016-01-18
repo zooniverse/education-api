@@ -1,0 +1,31 @@
+language: ruby
+cache: bundler
+sudo: false
+
+env:
+  - RACK_ENV=test
+  - POSTGRES_HOSTNAME=localhost
+  - POSTGRES_DATABASE=travis_ci_test
+  - POSTGRES_USERNAME=postgres
+  - POSTGRES_PASSWORD=
+  - REDIS_HOSTNAME=localhost
+
+matrix:
+  fast_finish: true
+  allow_failures:
+  include:
+    - rvm: 2.2.1
+
+services:
+  - postgresql
+  - redis
+
+addons:
+  postgresql: "9.4"
+
+before_script: &before_script
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - mkdir -p tmp
+  - bundle exec rake db:setup
+
+script: bundle exec rspec
