@@ -6,6 +6,10 @@ postgres:
   ports:
     - "5432:5432"
 
+redis:
+  image: redis
+  command: redis-server --appendonly yes
+
 education:
   dockerfile: Dockerfile
   build: ./
@@ -15,8 +19,10 @@ education:
     - "3000:3000"
   environment:
     - "RAILS_ENV=development"
+    - "REDIS_HOSTNAME=redis"
     - "POSTGRES_HOSTNAME=pg"
     - "POSTGRES_USERNAME=education"
     - "POSTGRES_PASSWORD=education"
   links:
     - postgres:pg
+    - redis:redis

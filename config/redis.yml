@@ -1,0 +1,7 @@
+development:
+  sidekiq:
+    host: <%= ENV["REDIS_HOSTNAME"] %>
+
+test:
+  sidekiq:
+    host: <%= ENV["REDIS_HOSTNAME"] %>
