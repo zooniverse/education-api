@@ -3,12 +3,13 @@ cache: bundler
 sudo: false
 
 env:
-  - RACK_ENV=test
-  - POSTGRES_HOSTNAME=localhost
-  - POSTGRES_DATABASE=travis_ci_test
-  - POSTGRES_USERNAME=postgres
-  - POSTGRES_PASSWORD=
-  - REDIS_HOSTNAME=localhost
+  global:
+    - RACK_ENV=test
+    - POSTGRES_HOSTNAME=localhost
+    - POSTGRES_DATABASE=travis_ci_test
+    - POSTGRES_USERNAME=postgres
+    - POSTGRES_PASSWORD=
+    - REDIS_HOSTNAME=localhost
 
 matrix:
   fast_finish: true
