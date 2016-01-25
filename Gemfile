@@ -18,6 +18,7 @@ gem 'active_model_serializers'
 gem 'puma'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'newrelic_rpm', '~> 3.0', require: false
+gem 'trailblazer'
 
 group :development, :test do
   gem 'byebug'
