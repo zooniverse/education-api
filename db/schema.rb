@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160118144145) do
   create_table "groups", force: :cascade do |t|
     t.string   "name"
     t.integer  "zooniverse_group_id"
+    t.integer  "classroom_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end

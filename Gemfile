@@ -14,15 +14,16 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'sidekiq', '~> 3.0'
 gem 'sidetiq', '~> 0.6.3'
-gem 'active_model_serializers'
+gem 'active_model_serializers', '0.10.0.rc2' # Kafka
 gem 'puma'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'newrelic_rpm', '~> 3.0', require: false
-gem 'trailblazer'
+gem 'active_interaction'
 
 group :development, :test do
   gem 'byebug'
   gem 'rspec-rails', '~> 3.0'
+  gem 'pry-rails'
 end
 
 group :development do
