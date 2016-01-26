@@ -2,7 +2,7 @@ class ClassroomsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with Classrooms::Index.run!(params)
+    run Classrooms::Index
   end
 
   def show
@@ -10,12 +10,18 @@ class ClassroomsController < ApplicationController
   end
 
   def create
-    outcome = Classrooms::Create.run(params.fetch(:data).fetch(:attributes))
+    run Classrooms::Create, params.fetch(:data).fetch(:attributes)
+  end
 
-    if outcome.valid?
-      respond_with outcome.result
+  private
+
+  def run(operation_class, data=params)
+    operation = operation_class.run(data.merge(context: context))
+
+    if operation.valid?
+      respond_with operation.result
     else
-      render json: ErrorSerializer.serialize(outcome), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(operation), status: :unprocessable_entity
     end
   end
 end

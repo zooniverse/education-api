@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.5'
+gem 'rails', '4.2.5.1'
 gem 'pg', '~> 0.15'
 gem 'postgres_ext', '~> 2.4.0'
-gem 'omniauth', '~> 1.0'
+gem 'responders', '~> 2.0'
 gem 'logstasher', '~> 0.6'
 gem 'honeybadger', '~> 2.0'
 gem 'therubyracer'

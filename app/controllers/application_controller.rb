@@ -1,10 +1,8 @@
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  # protect_from_forgery with: :exception
-  #
   before_action :require_login
 
+  attr_reader :panoptes
+  attr_reader :current_user
 
   private
 
@@ -18,4 +16,7 @@ class ApplicationController < ActionController::Base
     @current_user = User.from_panoptes(panoptes_user)
   end
 
+  def context
+    {panoptes: panoptes, user: current_user}
+  end
 end
