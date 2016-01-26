@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.5'
 gem 'pg', '~> 0.15'
 gem 'postgres_ext', '~> 2.4.0'
-gem 'devise', '~> 3.0'
 gem 'omniauth', '~> 1.0'
 gem 'logstasher', '~> 0.6'
 gem 'honeybadger', '~> 2.0'
@@ -19,11 +18,14 @@ gem 'puma'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'newrelic_rpm', '~> 3.0', require: false
 gem 'active_interaction'
+gem 'faraday-panoptes', '~> 0.2.0'
+gem 'dotenv-rails'
 
 group :development, :test do
   gem 'byebug'
   gem 'rspec-rails', '~> 3.0'
   gem 'pry-rails'
+  gem 'faraday-detailed_logger'
 end
 
 group :development do

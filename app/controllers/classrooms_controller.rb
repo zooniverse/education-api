@@ -1,6 +1,10 @@
 class ClassroomsController < ApplicationController
   respond_to :json
 
+  def index
+    respond_with Classrooms::Index.run!(params)
+  end
+
   def show
     respond_with Classrooms::Show.run!(params)
   end
