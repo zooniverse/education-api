@@ -6,7 +6,7 @@ class ClassroomsController < ApplicationController
   end
 
   def show
-    respond_with Classrooms::Show.run!(params)
+    run Classrooms::Show
   end
 
   def create
