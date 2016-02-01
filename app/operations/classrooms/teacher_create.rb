@@ -1,5 +1,5 @@
 module Classrooms
-  class Create < Operation
+  class TeacherCreate < Operation
     string :name
 
     validates :name, presence: true

@@ -1,5 +1,5 @@
 module Classrooms
-  class Index < Operation
+  class TeacherIndex < Operation
     def execute
       panoptes_groups = panoptes.paginate("/user_groups")
       panoptes_ids = panoptes_groups.fetch("user_groups").map {|group| group["id"] }

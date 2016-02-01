@@ -1,5 +1,5 @@
 module Classrooms
-  class Show < Operation
+  class TeacherShow < Operation
     integer :id
 
     def execute
