@@ -22,5 +22,18 @@ module EducationApi
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    config.middleware.insert_before 0, Rack::Cors do
+      Array.wrap(EducationApi.cors_config.allows).each do |allow_config|
+        allow do
+          origins allow_config["origins"]
+          resource allow_config["resource"],
+            headers: EducationApi.cors_config.headers,
+            methods: EducationApi.cors_config.request_methods,
+            expose: EducationApi.cors_config.expose,
+            max_age: EducationApi.cors_config.max_age
+        end
+      end
+    end
   end
 end

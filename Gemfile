@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.2.5.1'
+gem 'rack-cors', '~> 0.4.0'
 gem 'pg', '~> 0.15'
 gem 'postgres_ext', '~> 2.4.0'
 gem 'responders', '~> 2.0'
