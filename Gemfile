@@ -18,8 +18,9 @@ gem 'active_model_serializers', '0.10.0.rc2' # Kafka
 gem 'puma'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'newrelic_rpm', '~> 3.0', require: false
-gem 'active_interaction'
+gem 'active_interaction', '~> 3.0.1'
 gem 'faraday-panoptes', '~> 0.2.0'
+gem 'panoptes-client'
 gem 'dotenv-rails'
 
 group :development, :test do

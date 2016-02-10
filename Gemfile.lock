@@ -20,8 +20,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    active_interaction (2.1.4)
-      activemodel (>= 3.2, < 5)
+    active_interaction (3.0.1)
+      activemodel (>= 4, < 6)
     active_model_serializers (0.10.0.rc2)
       activemodel (>= 4.0)
     activejob (4.2.5.1)
@@ -127,6 +127,9 @@ GEM
     newrelic_rpm (3.14.1.311)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    panoptes-client (0.2.1)
+      faraday
+      faraday-panoptes (~> 0.2.0)
     pg (0.18.4)
     pg_array_parser (0.0.9)
     postgres_ext (2.4.1)
@@ -249,7 +252,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_interaction
+  active_interaction (~> 3.0.1)
   active_model_serializers (= 0.10.0.rc2)
   byebug
   coffee-rails (~> 4.1.0)
@@ -263,6 +266,7 @@ DEPENDENCIES
   jquery-rails
   logstasher (~> 0.6)
   newrelic_rpm (~> 3.0)
+  panoptes-client
   pg (~> 0.15)
   postgres_ext (~> 2.4.0)
   pry-rails

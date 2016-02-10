@@ -7,21 +7,23 @@ class ApplicationController < ActionController::Base
   private
 
   def require_login
-    authorization_header = request.headers["Authorization"]
-    authorization_token  = authorization_header.match(/\ABearer (.*)\Z/)[1]
-
-    @panoptes = PanoptesApi.new(authorization_token)
-    panoptes_user = @panoptes.me
-
+    panoptes_user = panoptes.me
     @current_user = User.from_panoptes(panoptes_user)
   end
 
-  def context
-    {panoptes: panoptes, user: current_user}
+  def panoptes
+    return @panoptes if @panoptes
+
+    authorization_header = request.headers["Authorization"]
+    authorization_token  = authorization_header.match(/\ABearer (.*)\Z/)[1]
+
+    @panoptes = Panoptes::Client.new \
+      url: Rails.application.secrets["zooniverse_oauth_url"],
+      auth: {token: authorization_token}
   end
 
   def run(operation_class, data=params)
-    operation = operation_class.run(data.merge(context: context))
+    operation = operation_class.run(data.merge(panoptes: panoptes, current_user: current_user))
 
     if operation.valid?
       respond_with operation.result
