@@ -1,5 +1,5 @@
 module Students
-  class ClassroomsController < ApplicationController
+  class ClassroomsController < StudentAreaController
     respond_to :json
 
     def index

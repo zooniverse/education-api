@@ -1,5 +1,5 @@
 module Teachers
-  class ClassroomsController < ApplicationController
+  class ClassroomsController < TeacherAreaController
     respond_to :json
 
     def index

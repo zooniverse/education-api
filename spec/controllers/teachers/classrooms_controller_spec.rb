@@ -24,4 +24,21 @@ RSpec.describe Teachers::ClassroomsController do
       expect(parsed_response).to eq("data" => [])
     end
   end
+
+  describe "POST create" do
+    it "creates a new classroom" do
+      request.headers["Authorization"] = "Bearer xyz"
+      created_user_group = {'id' => 1}
+      allow(client).to receive(:post).with("/user_groups", user_groups: {name: an_instance_of(String)}).and_return("user_groups" => [created_user_group])
+      post :create, data: {attributes: {name: "Foo"}}, format: :json
+
+      classroom = Classroom.first
+      expect(parsed_response).to match("data" => {
+                                         "id" => classroom.id.to_s,
+                                         "type" => "classrooms",
+                                         "attributes" => {"name" => "Foo", "join_token" => classroom.join_token},
+                                         "relationships" => anything
+                                       })
+    end
+  end
 end
