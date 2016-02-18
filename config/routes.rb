@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   end
 
   namespace :students do
-    resources :classrooms
+    resources :classrooms do
+      member do
+        post :join
+      end
+    end
   end
 end

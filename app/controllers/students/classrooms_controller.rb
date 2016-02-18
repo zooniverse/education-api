@@ -9,5 +9,9 @@ module Students
     def show
       run Classrooms::StudentShow
     end
+
+    def join
+      run Classrooms::Join
+    end
   end
 end
