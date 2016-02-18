@@ -28,7 +28,7 @@ RSpec.describe Teachers::ClassroomsController do
   describe "POST create" do
     it "creates a new classroom" do
       request.headers["Authorization"] = "Bearer xyz"
-      created_user_group = {'id' => 1}
+      created_user_group = {'id' => 1, 'join_token' => 'asdf'}
       allow(client).to receive(:post).with("/user_groups", user_groups: {name: an_instance_of(String)}).and_return("user_groups" => [created_user_group])
       post :create, data: {attributes: {name: "Foo"}}, format: :json
 
