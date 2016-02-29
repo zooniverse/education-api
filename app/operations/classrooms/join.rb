@@ -3,7 +3,8 @@ module Classrooms
     integer :id
     string  :join_token
 
-    validates :name, presence: true
+    validates :id, presence: true
+    validates :join_token, presence: true
 
     def execute
       classroom = Classroom.find_by!(id: id, join_token: join_token)
