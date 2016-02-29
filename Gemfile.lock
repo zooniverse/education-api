@@ -127,7 +127,7 @@ GEM
     newrelic_rpm (3.14.1.311)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    panoptes-client (0.2.1)
+    panoptes-client (0.2.2)
       faraday
       faraday-panoptes (~> 0.2.0)
     pg (0.18.4)
