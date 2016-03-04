@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125133030) do
+ActiveRecord::Schema.define(version: 20160304113431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,9 @@ ActiveRecord::Schema.define(version: 20160125133030) do
     t.string   "join_token"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.string   "school"
+    t.string   "subject"
+    t.text     "description"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -32,18 +35,25 @@ ActiveRecord::Schema.define(version: 20160125133030) do
     t.datetime "updated_at",          null: false
   end
 
+  create_table "student_users", force: :cascade do |t|
+    t.integer "classroom_id"
+    t.integer "user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "zooniverse_id"
     t.string   "access_token"
     t.string   "refresh_token"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",       default: 0, null: false
+    t.integer  "sign_in_count",           default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.string   "zooniverse_login"
+    t.string   "zooniverse_display_name"
   end
 
 end

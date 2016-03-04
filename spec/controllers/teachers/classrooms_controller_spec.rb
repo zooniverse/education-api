@@ -23,6 +23,30 @@ RSpec.describe Teachers::ClassroomsController do
       get :index, format: :json
       expect(parsed_response).to eq("data" => [])
     end
+
+    it 'returns the classrooms with students' do
+      classroom = Classroom.create! name: 'Foo', zooniverse_group_id: 'asdf', join_token: 'abc'
+      student   = classroom.students.create! zooniverse_id: 'zoo1'
+
+      request.headers["Authorization"] = "Bearer xyz"
+      allow(client).to receive(:paginate).with("/user_groups", {}).and_return("user_groups" => [{"id" => classroom.zooniverse_group_id}])
+      get :index, format: :json
+      expect(parsed_response).to eq({
+        "data" => [{
+          "id" => classroom.id.to_s,
+          "type" => "classrooms",
+          "attributes" => {"name" => "Foo", "join_token" => "abc"},
+          "relationships" => {
+            "groups" => {"data" => []},
+            "students" => {"data" => [{"type" => "users", "id" => student.id.to_s}]}
+          }
+        }],
+        "included" => [
+          {"id" => student.id.to_s, "type" => "users", "attributes" => {"zooniverse_id" => student.zooniverse_id, "zooniverse_login" => nil, "zooniverse_display_name" => nil}}
+        ]
+      })
+
+    end
   end
 
   describe "POST create" do
@@ -37,7 +61,7 @@ RSpec.describe Teachers::ClassroomsController do
                                          "id" => classroom.id.to_s,
                                          "type" => "classrooms",
                                          "attributes" => {"name" => "Foo", "join_token" => classroom.join_token},
-                                         "relationships" => anything
+                                         "relationships" => {"groups" => {"data" => []}, "students" => {"data" => []}}
                                        })
     end
   end

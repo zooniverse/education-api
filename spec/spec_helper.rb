@@ -6,6 +6,15 @@ require "sidekiq/testing"
 
 ActiveRecord::Migration.maintain_test_schema!
 
+module VerifiedDoubleExtensions
+  def instance_double(klass, *args)
+    super.tap do |dbl|
+      allow(klass).to receive(:===).and_call_original # do the normal thing by default
+      allow(klass).to receive(:===).with(dbl).and_return true
+    end
+  end
+end
+
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
@@ -21,6 +30,7 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.example_status_persistence_file_path = "spec/examples.txt"
   config.disable_monkey_patching!
+  config.include VerifiedDoubleExtensions
 
   config.order = :random
   Kernel.srand config.seed
