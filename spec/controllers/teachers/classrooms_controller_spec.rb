@@ -42,7 +42,7 @@ RSpec.describe Teachers::ClassroomsController do
           }
         }],
         "included" => [
-          {"id" => student.id.to_s, "type" => "users", "attributes" => {"zooniverse_id" => student.zooniverse_id}}
+          {"id" => student.id.to_s, "type" => "users", "attributes" => {"zooniverse_id" => student.zooniverse_id, "zooniverse_login" => nil, "zooniverse_display_name" => nil}}
         ]
       })
 
