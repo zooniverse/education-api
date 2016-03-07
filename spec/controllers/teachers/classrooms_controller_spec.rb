@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Teachers::ClassroomsController do
   let(:client) do
-    double(Panoptes::Client, me: {"id" => "1"}).tap do |client|
+    double(Panoptes::Client, me: {"id" => "1", "login" => "login", "display_name" => "display_name"}).tap do |client|
       allow(client).to receive(:is_a?).and_return(false)
       allow(client).to receive(:is_a?).with(Panoptes::Client).and_return(true)
     end
