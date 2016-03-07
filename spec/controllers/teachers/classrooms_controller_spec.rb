@@ -31,21 +31,7 @@ RSpec.describe Teachers::ClassroomsController do
       request.headers["Authorization"] = "Bearer xyz"
       allow(client).to receive(:paginate).with("/user_groups", {}).and_return("user_groups" => [{"id" => classroom.zooniverse_group_id}])
       get :index, format: :json
-      expect(parsed_response).to eq({
-        "data" => [{
-          "id" => classroom.id.to_s,
-          "type" => "classrooms",
-          "attributes" => {"name" => "Foo", "join_token" => "abc"},
-          "relationships" => {
-            "groups" => {"data" => []},
-            "students" => {"data" => [{"type" => "users", "id" => student.id.to_s}]}
-          }
-        }],
-        "included" => [
-          {"id" => student.id.to_s, "type" => "users", "attributes" => {"zooniverse_id" => student.zooniverse_id, "zooniverse_login" => nil, "zooniverse_display_name" => nil}}
-        ]
-      })
-
+      expect(response.body).to eq(ActiveModel::SerializableResource.new([classroom], include: [:students]).to_json)
     end
   end
 
@@ -57,12 +43,7 @@ RSpec.describe Teachers::ClassroomsController do
       post :create, data: {attributes: {name: "Foo"}}, format: :json
 
       classroom = Classroom.first
-      expect(parsed_response).to match("data" => {
-                                         "id" => classroom.id.to_s,
-                                         "type" => "classrooms",
-                                         "attributes" => {"name" => "Foo", "join_token" => classroom.join_token},
-                                         "relationships" => {"groups" => {"data" => []}, "students" => {"data" => []}}
-                                       })
+      expect(response.body).to eq(ActiveModel::SerializableResource.new(classroom, include: [:students]).to_json)
     end
   end
 end

@@ -13,6 +13,7 @@ module Classrooms
                                              join_token: classroom.join_token)
         classroom.students << current_user
       end
+      classroom
     end
   end
 end
