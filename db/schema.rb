@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307151806) do
+ActiveRecord::Schema.define(version: 20160309153138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,11 +20,12 @@ ActiveRecord::Schema.define(version: 20160307151806) do
     t.string   "name"
     t.integer  "zooniverse_group_id"
     t.string   "join_token"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "school"
     t.string   "subject"
     t.text     "description"
+    t.integer  "classifications_count", default: 0
   end
 
   create_table "groups", force: :cascade do |t|
@@ -38,6 +39,7 @@ ActiveRecord::Schema.define(version: 20160307151806) do
   create_table "student_users", force: :cascade do |t|
     t.integer "classroom_id"
     t.integer "user_id"
+    t.integer "classifications_count", default: 0
   end
 
   add_index "student_users", ["classroom_id", "user_id"], name: "index_student_users_on_classroom_id_and_user_id", unique: true, using: :btree
