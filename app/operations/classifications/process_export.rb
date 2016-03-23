@@ -2,6 +2,7 @@ require 'csv'
 
 module Classifications
   class ProcessExport < Operation
+    filters[:panoptes].options[:default] = nil
     filters[:current_user].options[:default] = nil
     string :export_path
 

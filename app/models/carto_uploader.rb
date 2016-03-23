@@ -21,7 +21,6 @@ class CartoUploader
     data.each do |classification|
       keys = []  #Will be overwritten with the same data over and over again, but whatcha gonna do?
       vals = []
-
       #Take every key-val 
       #--------------------------------
       classification.each do |key, val|
@@ -29,7 +28,7 @@ class CartoUploader
         if (val.is_a?(NilClass))
           vals.push("''")
         else
-          vals.push("'" + val.gsub(/'/, "''") + "'")
+          vals.push("'" + val.to_s.gsub(/'/, "''") + "'")
         end
       end
       keys = keys.join(",")
