@@ -1,4 +1,9 @@
 class ApplicationController < ActionController::Base
+  class Unauthorized < StandardError; end
+
+  respond_to :json
+  rescue_from Unauthorized, with: :not_authorized
+
   before_action :require_login
 
   attr_reader :panoptes
@@ -30,5 +35,9 @@ class ApplicationController < ActionController::Base
     else
       render json: ErrorSerializer.serialize(operation), status: :unprocessable_entity
     end
+  end
+
+  def not_authorized
+    render json: {"error" => "not authorized to acess this resource"}, status: :forbidden
   end
 end

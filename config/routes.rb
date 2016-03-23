@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :users
+
   namespace :teachers do
     resources :classrooms
   end
