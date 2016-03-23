@@ -1,7 +1,5 @@
 module Teachers
   class ClassroomsController < TeacherAreaController
-    respond_to :json
-
     def index
       run Classrooms::TeacherIndex
     end
