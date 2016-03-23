@@ -3,44 +3,19 @@ require 'csv'
 module Classifications
   class ProcessExport < Operation
     filters[:current_user].options[:default] = nil
-    integer :project_id
+    string :export_path
 
     def execute
-      export = panoptes.get("/projects/#{project_id}/classifications_export")
-      src    = export.fetch("media")[0].fetch("src")
+      classifications_counter = ClassificationsCounter.new
 
-      #`wget -O #{Rails.root.join("tmp", "classifications_export.csv.gz")} "#{src}"`
-      #`gunzip #{Rails.root.join("tmp", "classifications_export.csv.gz")}`
-
-      counts_by_user_group = {}
-      counts_by_user = {}
-
-      CSV.foreach(Rails.root.join("tmp", "classifications_export.csv"), headers: true) do |line|
+      CSV.foreach(export_path, headers: true) do |line|
         next unless line["user_id"]
-
-        user_id = line["user_id"]
-        counts_by_user[user_id] ||= 0
-        counts_by_user[user_id] += 1
-
-        if line["metadata"].include?("user_group_ids")
-          metadata = JSON.load(line["metadata"] || "{}")
-          user_group_ids = metadata["user_group_ids"] || []
-          user_group_ids.each do |user_group_id|
-            counts_by_user_group[user_group_id] ||= 0
-            counts_by_user_group += 1
-          end
-        end
+        classifications_counter.process(line)
+        carto_uploader.process(line)
       end
 
-      StudentUser.joins(:user).where(users: {zooniverse_id: counts_by_user.keys}).find_each do |student_user|
-        student_user.classifications_count = counts_by_user[user.zooniverse_id]
-        student_user.save!
-      end
-
-      Classroom.where(zooniverse_group_id: counts_by_user_group.keys).find_each do |classroom|
-        classroom.classifications_count = counts_by_user_group[classroom.zooniverse_group_id]
-        classroom.save!
-      end
+      classifications_counter.finalize
+      carto_uploader.finalize
     end
   end
 end

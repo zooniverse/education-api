@@ -8,5 +8,4 @@ RSpec.describe Classifications::RequestNewExport do
     described_class.run! panoptes: panoptes, project_id: project_id
     expect(panoptes).to have_received(:create_classifications_export).with(project_id).once
   end
-
 end
