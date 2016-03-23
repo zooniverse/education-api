@@ -7,15 +7,16 @@ module Classifications
 
     def execute
       classifications_counter = ClassificationsCounter.new
+      carto_transformer = CartoTransformer.new
 
       CSV.foreach(export_path, headers: true) do |line|
         next unless line["user_id"]
         classifications_counter.process(line)
-        carto_uploader.process(line)
+        carto_transformer.process(line)
       end
 
       classifications_counter.finalize
-      carto_uploader.finalize
+      carto_transformer.finalize
     end
   end
 end
