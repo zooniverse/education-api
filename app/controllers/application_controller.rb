@@ -15,17 +15,17 @@ class ApplicationController < ActionController::Base
     panoptes_user = panoptes.me
     @current_user = User.from_panoptes(panoptes_user)
   rescue Panoptes::Client::ServerError
-    raise Unauthorized
+    raise Unauthorized, "could not check authentication with Panoptes"
   end
 
   def panoptes
     return @panoptes if @panoptes
 
     authorization_header = request.headers["Authorization"]
-    raise Unauthorized unless authorization_header
-    
-    authorization_token  = authorization_header.match(/\ABearer (.*)\Z/).try(:at, 1)
-    raise Unauthorized unless authorization_token
+    raise Unauthorized, "missing authorization header" unless authorization_header
+
+    authorization_token  = authorization_header.match(/\ABearer (.*)\Z/).try { |match| match[1] }
+    raise Unauthorized, "missing bearer token" unless authorization_token
 
     @panoptes = Panoptes::Client.new \
       url: Rails.application.secrets["zooniverse_oauth_url"],
@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def not_authorized
-    render json: {"error" => "not authorized to acess this resource"}, status: :forbidden
+  def not_authorized(exception)
+    render json: {"error" => "not authorized to acess this resource: #{exception.message}"}, status: :forbidden
   end
 end
