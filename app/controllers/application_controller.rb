@@ -22,7 +22,10 @@ class ApplicationController < ActionController::Base
     return @panoptes if @panoptes
 
     authorization_header = request.headers["Authorization"]
-    authorization_token  = authorization_header.match(/\ABearer (.*)\Z/)[1]
+    raise Unauthorized unless authorization_header
+    
+    authorization_token  = authorization_header.match(/\ABearer (.*)\Z/).try(:at, 1)
+    raise Unauthorized unless authorization_token
 
     @panoptes = Panoptes::Client.new \
       url: Rails.application.secrets["zooniverse_oauth_url"],
