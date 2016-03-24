@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   def require_login
     panoptes_user = panoptes.me
     @current_user = User.from_panoptes(panoptes_user)
+  rescue Panoptes::Client::ServerError
+    raise Unauthorized
   end
 
   def panoptes
