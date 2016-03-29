@@ -8,5 +8,4 @@ class TeacherAreaController < ApplicationController
       render json: ErrorSerializer.serialize(operation), status: :unprocessable_entity
     end
   end
-
 end

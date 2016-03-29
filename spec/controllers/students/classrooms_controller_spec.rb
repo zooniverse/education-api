@@ -24,7 +24,7 @@ RSpec.describe Students::ClassroomsController do
       request.headers["Authorization"] = "Bearer xyz"
       classroom = Classroom.create! name: '1', join_token: 'asdf'
       post :join, id: classroom.id, join_token: 'asdf', format: :json
-      expect(response.body).to eq(ActiveModel::SerializableResource.new(classroom).to_json)
+      expect(response.body).to eq(ActiveModel::SerializableResource.new(classroom, include: [:students]).to_json)
     end
   end
 end
