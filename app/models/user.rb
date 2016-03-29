@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  has_many :student_users
+  has_many :classrooms, through: :student_users
+
   def self.from_panoptes(hash)
     user_id = hash.fetch("id")
 

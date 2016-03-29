@@ -4,7 +4,7 @@ module Classrooms
       panoptes_groups = panoptes.paginate("/user_groups", {})
       panoptes_ids = panoptes_groups.fetch("user_groups").map {|group| group["id"] }
 
-      Classroom.where(zooniverse_group_id: panoptes_ids)
+      current_user.classrooms.where(zooniverse_group_id: panoptes_ids).includes(student_users: [:user])
     end
   end
 end
