@@ -14,6 +14,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'sidekiq', '~> 3.0'
 gem 'sidetiq', '~> 0.6.3'
+gem 'sinatra', require: nil
 gem 'active_model_serializers', '0.10.0.rc4'
 gem 'puma'
 gem 'sdoc', '~> 0.4.0', group: :doc
