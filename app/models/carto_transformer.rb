@@ -119,7 +119,8 @@ class CartoTransformer
         item = {
           user_name:             classification["user_name"],
           user_group_ids:        metadata["user_group_ids"],
-          zooniverse_subject_id: subject_id,
+          classification_id:     classification["classification_id"],
+          subject_id:            subject_id,
           gorongosa_id:          subject_data["Gorongosa_id"],
           classified_at:         classification["created_at"],
           species:               ANNOTATION_SPECIES_CHOICES[annotation["value"]["choice"]],
