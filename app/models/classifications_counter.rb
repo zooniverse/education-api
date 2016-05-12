@@ -16,7 +16,7 @@ class ClassificationsCounter
       user_group_ids = metadata["user_group_ids"] || []
       user_group_ids.each do |user_group_id|
         counts_by_user_group[user_group_id] ||= 0
-        counts_by_user_group += 1
+        counts_by_user_group[user_group_id] += 1
       end
     end
   end
