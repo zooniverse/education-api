@@ -12,7 +12,6 @@ module Classifications
 
       CSV.foreach(export_path, headers: true) do |line|
         next unless line["user_id"]
-        puts line
         classifications_counter.process(line)
         # carto_transformer.process(line)
       end

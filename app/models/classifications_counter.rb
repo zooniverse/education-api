@@ -23,7 +23,7 @@ class ClassificationsCounter
 
   def finalize
     StudentUser.joins(:user).where(users: {zooniverse_id: counts_by_user.keys}).find_each do |student_user|
-      student_user.classifications_count = counts_by_user[user.zooniverse_id]
+      student_user.classifications_count = counts_by_user[student_user.zooniverse_id]
       student_user.save!
     end
 
