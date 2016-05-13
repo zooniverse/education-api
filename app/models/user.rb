@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
   has_many :student_users
-  has_many :studied_classrooms, through: :student_users
+  has_many :studied_classrooms, through: :student_users, source: :classroom
 
   has_many :teacher_users
-  has_many :taught_classrooms, through: :teacher_users
+  has_many :taught_classrooms, through: :teacher_users, source: :classroom
 
   def self.from_panoptes(hash)
     user_id = hash.fetch("id")
