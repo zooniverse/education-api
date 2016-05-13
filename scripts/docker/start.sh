@@ -10,6 +10,8 @@ fi
 mkdir -p tmp/pids/
 rm -f tmp/pids/*.pid
 
+bin/rake db:migrate
+
 if [ "$RAILS_ENV" == "development" ]; then
   exec foreman start
 else
