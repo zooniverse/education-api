@@ -19,7 +19,7 @@ education:
     - "3000:3000"
   environment:
     - "RAILS_ENV=development"
-    - "REDIS_HOSTNAME=redis"
+    - "REDIS_URL=redis://redis:6379"
     - "POSTGRES_HOSTNAME=pg"
     - "POSTGRES_USERNAME=education"
     - "POSTGRES_PASSWORD=education"
