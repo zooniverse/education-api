@@ -28,4 +28,3 @@ RSpec.describe Students::ClassroomsController do
     end
   end
 end
-

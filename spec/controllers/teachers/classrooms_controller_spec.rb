@@ -8,6 +8,10 @@ RSpec.describe Teachers::ClassroomsController do
     end
   end
 
+  let(:current_user) do
+    User.create zooniverse_id: '1'
+  end
+
   let(:parsed_response) do
     JSON.parse(response.body)
   end
@@ -25,11 +29,9 @@ RSpec.describe Teachers::ClassroomsController do
     end
 
     it 'returns the classrooms with students' do
-      classroom = Classroom.create! name: 'Foo', zooniverse_group_id: 'asdf', join_token: 'abc'
+      classroom = Classroom.create! name: 'Foo', zooniverse_group_id: 'asdf', join_token: 'abc', teachers: [current_user]
       student   = classroom.students.create! zooniverse_id: 'zoo1'
 
-      request.headers["Authorization"] = "Bearer xyz"
-      allow(client).to receive(:paginate).with("/user_groups", {}).and_return("user_groups" => [{"id" => classroom.zooniverse_group_id}])
       get :index, format: :json
       expect(response.body).to eq(ActiveModel::SerializableResource.new([classroom], include: [:students]).to_json)
     end
