@@ -29,7 +29,7 @@ RSpec.describe Teachers::ClassroomsController do
     end
 
     it 'returns the classrooms with students' do
-      classroom = Classroom.create! name: 'Foo', zooniverse_group_id: 'asdf', join_token: 'abc', teachers: [current_user]
+      classroom = create :classroom, name: 'Foo', zooniverse_group_id: 'asdf', join_token: 'abc', teachers: [current_user]
       student   = classroom.students.create! zooniverse_id: 'zoo1'
 
       get :index, format: :json
@@ -46,6 +46,16 @@ RSpec.describe Teachers::ClassroomsController do
 
       classroom = Classroom.first
       expect(response.body).to eq(ActiveModel::SerializableResource.new(classroom, include: [:students]).to_json)
+    end
+  end
+
+  describe 'PUT update' do
+    let(:classroom) { create :classroom, teachers: [current_user] }
+    let(:outcome) { double(valid?: true, result: classroom) }
+
+    it 'calls the operation' do
+      expect(Classrooms::TeacherUpdate).to receive(:run).once.and_return(outcome)
+      put :update, id: classroom.id, data: {attributes: {name: "Foobar"}}, format: :json
     end
   end
 end
