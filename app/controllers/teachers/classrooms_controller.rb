@@ -7,5 +7,9 @@ module Teachers
     def create
       run Classrooms::TeacherCreate, params.fetch(:data).fetch(:attributes)
     end
+
+    def update
+      run Classrooms::TeacherUpdate, params.fetch(:data).fetch(:attributes).merge(id: params[:id])
+    end
   end
 end
