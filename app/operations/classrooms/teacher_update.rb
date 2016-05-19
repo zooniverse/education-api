@@ -10,7 +10,7 @@ module Classrooms
     validates :name, presence: true
 
     def execute
-      classroom = current_user.taught_classrooms.find(id)
+      classroom = current_user.taught_classrooms.active.find(id)
       classroom.update!(name: name, school: school, subject: subject, description: description)
       classroom
     end

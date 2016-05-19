@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160513125617) do
+ActiveRecord::Schema.define(version: 20160519091949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20160513125617) do
     t.string   "subject"
     t.text     "description"
     t.integer  "classifications_count", default: 0
+    t.datetime "deleted_at"
   end
 
   create_table "groups", force: :cascade do |t|

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 RSpec.describe Classrooms::Join do
-  let(:current_user) { User.new zooniverse_id: 1 }
+  let(:current_user) { build :user }
   let(:panoptes) { instance_double(Panoptes::Client, join_user_group: true) }
-  let(:classroom) { Classroom.create! join_token: 'abc' }
+  let(:classroom) { create :classroom }
 
   it 'joins a student to a classroom' do
     described_class.run! current_user: current_user, panoptes: panoptes,
