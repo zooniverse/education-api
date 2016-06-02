@@ -4,14 +4,12 @@ require 'net/http'
 require 'json'
 
 class CartoUploader
-  #--------------------------------
   CARTODB_ACCOUNT = ENV["CARTODB_ACCOUNT"]
   CARTODB_APIKEY = ENV["CARTODB_APIKEY"]
   CARTODB_URI_GET = "https://#{CARTODB_ACCOUNT}.cartodb.com/api/v2/sql?q=__SQLQUERY__&api_key=#{CARTODB_APIKEY}"
   CARTODB_URI_POST = "https://#{CARTODB_ACCOUNT}.cartodb.com/api/v2/sql"
   CARTODB_TABLE = ENV["CARTODB_TABLE"]  
-  CLASSIFICATIONS_PER_BATCH = 20
-  #--------------------------------
+  CLASSIFICATIONS_PER_BATCH = 200
 
   def initialize()
   end
@@ -22,6 +20,11 @@ class CartoUploader
     latestClassificationID = getLatestClassificationID()
     expectedInsertions = 0
     successfulInsertions = 0
+    
+    #If we can't determine what's already in the database, DELETE AND START ANEW.
+    if (latestClassificationID == 0)
+      truncateEverything()
+    end
     #--------------------------------
     
     arrVals = []
@@ -49,15 +52,20 @@ class CartoUploader
       end
       keys = keys.join(",")
       vals = vals.join(",")
-      arrVals.push("(#{vals})");
+      arrVals.push("(#{vals})")
       #--------------------------------
       
-      #If we have enough classifications, do a batch Insert.
+      #If we have enough classifications queued up, do a batch Insert.
       #--------------------------------
       if (arrVals.length >= CLASSIFICATIONS_PER_BATCH)
         expectedInsertions += arrVals.length
         successfulInsertions += batchInsert(keys, arrVals)
         arrVals = []
+        #Sanity check
+        puts "Inserted #{successfulInsertions} Classifications out of #{expectedInsertions}"
+        if (expectedInsertions != successfulInsertions)
+          #TODO
+        end
       end
       #--------------------------------
     end
@@ -71,7 +79,7 @@ class CartoUploader
     end
     #--------------------------------
     
-    #Final sanity check?
+    #Final Sanity check
     #--------------------------------
     puts "Inserted #{successfulInsertions} Classifications out of #{expectedInsertions}"
     if (expectedInsertions != successfulInsertions)
@@ -91,7 +99,7 @@ class CartoUploader
         raise StandardError, res["error"]
       end
       return (res["rows"] && res["rows"][0] && res["rows"][0] && res["rows"][0]["classification_id"]) ?
-        Integer(res["rows"][0]["classification_id"]) : 0;
+        Integer(res["rows"][0]["classification_id"]) : 0
     rescue StandardError => err
       #TODO: Log error?
       puts "ERROR:"
@@ -111,12 +119,25 @@ class CartoUploader
       if (res["error"])
         raise StandardError, res["error"]
       end
-      return (res["total_rows"]) ? Integer(res["total_rows"]) : 0;
+      return (res["total_rows"]) ? Integer(res["total_rows"]) : 0
     rescue StandardError => err
       #TODO: Log error?
       puts "ERROR:"
       puts err
       return 0
     end
+  end
+  
+  #Truncates the table. Raises an error if something goes wrong; no safeties. 
+  def truncateEverything
+    sqlQuery = "TRUNCATE #{CARTODB_TABLE}"
+    uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sqlQuery)))
+    res = Net::HTTP.get(uri)
+    res = JSON.parse(res)
+    puts "Truncated #{CARTODB_TABLE}"
+    if (res["error"])
+      raise StandardError, res["error"]
+    end
+    return
   end
 end
