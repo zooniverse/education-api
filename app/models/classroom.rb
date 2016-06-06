@@ -11,4 +11,8 @@ class Classroom < ActiveRecord::Base
   def deleted?
     !!deleted_at
   end
+
+  def taught_by?(user)
+    teacher_users.where(user: user).any?
+  end
 end
