@@ -4,7 +4,7 @@ module Classrooms
     string  :join_token
 
     def execute
-      Classroom.find_by(id: id, join_token: join_token)
+      Classroom.active.find_by(id: id, join_token: join_token)
     end
   end
 end
