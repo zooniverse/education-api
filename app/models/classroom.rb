@@ -4,6 +4,7 @@ class Classroom < ActiveRecord::Base
   has_many :teacher_users
   has_many :teachers, through: :teacher_users, source: :user
 
+  has_many :assignments
   has_many :groups
 
   scope :active, -> { where(deleted_at: nil) }
