@@ -1,3 +1,16 @@
+GIT
+  remote: https://github.com/celluloid/celluloid
+  revision: ecea8e99b46343e7c93923fb3ba7998e4cc78f8a
+  submodules: true
+  specs:
+    celluloid (0.17.4)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -47,13 +60,6 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
     byebug (8.2.1)
-    celluloid (0.17.3)
-      celluloid-essentials
-      celluloid-extras
-      celluloid-fsm
-      celluloid-pool
-      celluloid-supervision
-      timers (>= 4.1.1)
     celluloid-essentials (0.20.5)
       timers (>= 4.1.1)
     celluloid-extras (0.20.5)
@@ -129,7 +135,7 @@ GEM
     newrelic_rpm (3.14.1.311)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    panoptes-client (0.2.5)
+    panoptes-client (0.2.6)
       faraday
       faraday-panoptes (~> 0.2.0)
     pg (0.18.4)
@@ -259,6 +265,7 @@ DEPENDENCIES
   active_interaction (~> 3.0.1)
   active_model_serializers (= 0.10.0.rc4)
   byebug
+  celluloid!
   coffee-rails (~> 4.1.0)
   database_cleaner (~> 1.3.0)
   dotenv-rails
@@ -291,4 +298,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.11.2
+   1.12.5
