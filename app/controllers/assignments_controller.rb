@@ -7,6 +7,10 @@ class AssignmentsController < ApplicationController
     run Assignments::Create, params.fetch(:data).fetch(:attributes)
   end
 
+  def update
+    run Assignments::Update, params.fetch(:data).fetch(:attributes).merge(id: params[:id])
+  end
+
   def destroy
     run Assignments::Destroy, params
   end
