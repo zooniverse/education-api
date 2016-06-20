@@ -33,8 +33,8 @@ RSpec.describe Assignments::Index do
     it 'lists assigned assignments' do
       other_user = create :user
       classroom = create :classroom, students: [current_user, other_user]
-      assignment1 = create :assignment, classroom: classroom, students: [current_user.student_users.first]
-      assignment2 = create :assignment, classroom: classroom, students: [other_user.student_users.first]
+      assignment1 = create :assignment, classroom: classroom, student_users: [current_user.student_users.first]
+      assignment2 = create :assignment, classroom: classroom, student_users: [other_user.student_users.first]
 
       result = operation.run!
       expect(result).to eq([assignment1])
@@ -42,9 +42,9 @@ RSpec.describe Assignments::Index do
 
     it 'filters by classroom' do
       classroom1 = create :classroom, students: [current_user]
-      assignment1 = create :assignment, classroom: classroom1, students: [current_user.student_users.first]
+      assignment1 = create :assignment, classroom: classroom1, student_users: [current_user.student_users.first]
       classroom2 = create :classroom, students: [current_user]
-      assignment2 = create :assignment, classroom: classroom2, students: [current_user.student_users.first]
+      assignment2 = create :assignment, classroom: classroom2, student_users: [current_user.student_users.first]
 
       result = operation.run! classroom_id: classroom1.id
       expect(result).to eq([assignment1])

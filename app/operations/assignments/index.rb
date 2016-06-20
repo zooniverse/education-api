@@ -14,7 +14,7 @@ module Assignments
     def assignments_for_user_as_a_student
       classroom_ids = filter_classrooms(current_user.studied_classrooms).pluck(:id)
       student_user_ids = current_user.student_users.pluck(:id)
-      Assignment.active.joins(:students).where(classroom_id: classroom_ids, student_users: {id: student_user_ids}).load
+      Assignment.active.joins(:student_users).where(classroom_id: classroom_ids, student_users: {id: student_user_ids}).load
     end
 
     def filter_classrooms(classrooms)

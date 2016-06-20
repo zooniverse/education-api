@@ -4,9 +4,7 @@ Rails.application.routes.draw do
 
   resources :users
 
-  resources :assignments do
-    # resources :subjects, only: [:index]
-  end
+  resources :assignments
 
   namespace :teachers do
     resources :classrooms do

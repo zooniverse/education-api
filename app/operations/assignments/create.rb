@@ -2,8 +2,13 @@ module Assignments
   class Create < Operation
     integer :base_workflow_id, default: Rails.application.secrets["zooniverse_project_id"]
     integer :classroom_id
-    string :name
-    hash :metadata, strip: false, default: {}
+
+    hash :attributes do
+      string :name
+      hash :metadata, strip: false, default: {}
+    end
+
+    relationships :student_users
 
     def execute
       classroom = current_user.taught_classrooms.find(classroom_id)
@@ -11,7 +16,8 @@ module Assignments
       subject_set = panoptes.create_subject_set display_name: uuid
       workflow = clone_workflow(base_workflow_id, subject_set)
 
-      classroom.assignments.create! name: name, workflow_id: workflow["id"], subject_set_id: subject_set["id"]
+      student_users = classroom.student_users.where(id: student_user_ids)
+      classroom.assignments.create! name: attributes[:name], workflow_id: workflow["id"], subject_set_id: subject_set["id"], student_users: student_users
     end
 
     def clone_workflow(workflow_id, subject_set)
