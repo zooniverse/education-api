@@ -30,6 +30,7 @@ gem 'dotenv-rails'
 
 group :development, :test do
   gem 'byebug'
+  gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.0'
   gem 'pry-rails'
   gem 'faraday-detailed_logger'

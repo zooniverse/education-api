@@ -19,10 +19,15 @@ RSpec.describe AssignmentsController do
       classroom  = create(:classroom, teachers: [current_user])
       assignment = build(:assignment, classroom: classroom)
       outcome = double(result: assignment, valid?: true)
+
+      attributes = {name: "Foo"}
+      relationships = {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
+
       expect(Assignments::Create).to receive(:run)
-        .with(current_user: current_user, panoptes: panoptes_client, classroom_id: classroom.id, attributes: {name: "Foo"})
+        .with(current_user: current_user, panoptes: panoptes_client, attributes: attributes, relationships: relationships)
         .and_return(outcome)
-      post :create, classroom_id: classroom.id, data: {attributes: {name: "Foo"}}, format: :json
+
+      post :create, data: {attributes: attributes, relationships: relationships}, format: :json
       expect(response.body).to eq(ActiveModel::SerializableResource.new(assignment, include: [:students]).to_json)
     end
   end

@@ -8,7 +8,10 @@ module Assignments
       hash :metadata, strip: false, default: {}
     end
 
-    relationships :student_users
+    relationships do
+      belongs_to :classroom
+      has_many :student_users
+    end
 
     def execute
       classroom = current_user.taught_classrooms.find(classroom_id)

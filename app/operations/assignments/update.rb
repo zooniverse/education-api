@@ -7,7 +7,9 @@ module Assignments
       hash :metadata, strip: false, default: nil
     end
 
-    relationships :student_users
+    relationships do
+      has_many :student_users
+    end
 
     def execute
       classroom_ids = current_user.taught_classrooms.active.pluck(:id)
