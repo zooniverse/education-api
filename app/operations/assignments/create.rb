@@ -1,7 +1,6 @@
 module Assignments
   class Create < Operation
     integer :base_workflow_id, default: Rails.application.secrets["zooniverse_project_id"]
-    integer :classroom_id
 
     hash :attributes do
       string :name
