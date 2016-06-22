@@ -14,6 +14,10 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'sidekiq', '~> 4.0'
 gem 'sidetiq', '~> 0.7'
+
+# temporary workaround for https://github.com/celluloid/celluloid/issues/696#issuecomment-221195865
+gem "celluloid", git: "https://github.com/celluloid/celluloid", submodules: true
+
 gem 'sinatra', require: nil
 gem 'active_model_serializers', '0.10.0.rc4'
 gem 'puma'
@@ -26,6 +30,7 @@ gem 'dotenv-rails'
 
 group :development, :test do
   gem 'byebug'
+  gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.0'
   gem 'pry-rails'
   gem 'faraday-detailed_logger'

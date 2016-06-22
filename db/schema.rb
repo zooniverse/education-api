@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519091949) do
+ActiveRecord::Schema.define(version: 20160620133547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assignments", force: :cascade do |t|
+    t.string   "name",           null: false
+    t.jsonb    "metadata"
+    t.string   "workflow_id",    null: false
+    t.string   "subject_set_id", null: false
+    t.integer  "classroom_id",   null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.datetime "deleted_at"
+  end
 
   create_table "classrooms", force: :cascade do |t|
     t.string   "name"
@@ -35,6 +46,11 @@ ActiveRecord::Schema.define(version: 20160519091949) do
     t.integer  "classroom_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+  end
+
+  create_table "student_assignments", force: :cascade do |t|
+    t.integer "assignment_id"
+    t.integer "student_user_id"
   end
 
   create_table "student_users", force: :cascade do |t|
@@ -69,4 +85,7 @@ ActiveRecord::Schema.define(version: 20160519091949) do
     t.jsonb    "metadata"
   end
 
+  add_foreign_key "assignments", "classrooms"
+  add_foreign_key "student_assignments", "assignments", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "student_assignments", "student_users", on_update: :cascade, on_delete: :cascade
 end
