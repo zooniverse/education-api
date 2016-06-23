@@ -104,8 +104,8 @@ class CartoTransformer
     #--------------------------------
 
     #For each annotation answer, we want one line in the output CSV.
-    listOfAnnotations = JSON.parse(classification["annotations"])
-    listOfAnnotations.each do |annotation|
+    list_of_annotations = JSON.parse(classification["annotations"])
+    list_of_annotations.each do |annotation|
       if annotation["task"] == "survey" && annotation["value"].is_a?(Hash)
 
         #Prepare values...

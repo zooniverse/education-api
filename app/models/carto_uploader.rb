@@ -17,23 +17,23 @@ class CartoUploader
   def upload(data)
     #Determine what's already in the database
     #--------------------------------
-    latestClassificationID = getLatestClassificationID()
-    expectedInsertions = 0
-    successfulInsertions = 0
+    latest_classification_id = get_latest_classification_id()
+    expected_insertions = 0
+    successful_insertions = 0
     
     #If we can't determine what's already in the database, DELETE AND START ANEW.
-    if (latestClassificationID == 0)
+    if (latest_classification_id == 0)
       truncateEverything()
     end
     #--------------------------------
     
-    arrVals = []
+    arr_vals = []
     keys = []
     data.each do |classification|
       
       #Only insert new Classifications
       #--------------------------------
-      if (Integer(classification["classification_id"]) <= latestClassificationID)
+      if (Integer(classification["classification_id"]) <= latest_classification_id)
         next
       end
       #--------------------------------
@@ -52,18 +52,18 @@ class CartoUploader
       end
       keys = keys.join(",")
       vals = vals.join(",")
-      arrVals.push("(#{vals})")
+      arr_vals.push("(#{vals})")
       #--------------------------------
       
       #If we have enough classifications queued up, do a batch Insert.
       #--------------------------------
-      if (arrVals.length >= CLASSIFICATIONS_PER_BATCH)
-        expectedInsertions += arrVals.length
-        successfulInsertions += batchInsert(keys, arrVals)
-        arrVals = []
+      if (arr_vals.length >= CLASSIFICATIONS_PER_BATCH)
+        expected_insertions += arr_vals.length
+        successful_insertions += batchInsert(keys, arr_vals)
+        arr_vals = []
         #Sanity check
-        puts "Inserted #{successfulInsertions} Classifications out of #{expectedInsertions}"
-        if (expectedInsertions != successfulInsertions)
+        puts "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
+        if (expected_insertions != successful_insertions)
           #TODO
         end
       end
@@ -72,24 +72,24 @@ class CartoUploader
 
     #Do a final batch Insert for any stragglers
     #--------------------------------
-    if (arrVals.length > 0)
-      expectedInsertions += arrVals.length
-      successfulInsertions += batchInsert(keys, arrVals)
-      arrVals = []
+    if (arr_vals.length > 0)
+      expected_insertions += arr_vals.length
+      successful_insertions += batchInsert(keys, arr_vals)
+      arr_vals = []
     end
     #--------------------------------
     
     #Final Sanity check
     #--------------------------------
-    puts "Inserted #{successfulInsertions} Classifications out of #{expectedInsertions}"
-    if (expectedInsertions != successfulInsertions)
+    puts "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
+    if (expected_insertions != successful_insertions)
       #TODO
     end
     #--------------------------------
   end
   
   #Returns latest Classification ID.
-  def getLatestClassificationID()
+  def get_latest_classification_id()
     begin
       sqlQuery = "SELECT classification_id FROM #{CARTODB_TABLE} ORDER BY classification_id DESC LIMIT 1"
       uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sqlQuery)))
