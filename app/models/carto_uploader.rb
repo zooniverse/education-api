@@ -75,7 +75,7 @@ class CartoUploader
       arr_vals = []
     end
     #--------------------------------
-    
+
     #Final Sanity check
     #--------------------------------
     puts "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
@@ -83,14 +83,14 @@ class CartoUploader
       raise StandardError, "Could not insert Classifications. Aborting attempt."
     end
     #--------------------------------
-    
+
   rescue StandardError => err
     #FINAL SAFETY NET
     #TODO: Log error?
     puts "ERROR:"
     puts err
   end
-  
+
   #Returns latest Classification ID.
   def get_latest_classification_id()
     sql_query = "SELECT classification_id FROM #{CARTODB_TABLE} ORDER BY classification_id DESC LIMIT 1"
@@ -108,10 +108,10 @@ class CartoUploader
     puts err
     return 0
   end
-  
+
   #Uploads a batch of rows. Returns number of successful uploads.
-  def batch_insert(keys, arrValues)
-    all_vals = arrValues.join(",")
+  def batch_insert(keys, arr_values)
+    all_vals = arr_values.join(",")
     sql_query = "INSERT INTO #{CARTODB_TABLE} (#{keys}) VALUES #{all_vals} "
     uri = URI(CARTODB_URI_POST)
     res = Net::HTTP.post_form(uri, "q" => sql_query, "api_key" => CARTODB_APIKEY)
@@ -126,7 +126,7 @@ class CartoUploader
     puts err
     return 0
   end
-  
+
   #Truncates the table. Raises an error if something goes wrong; no safeties. 
   def truncate_everything
     sql_query = "TRUNCATE #{CARTODB_TABLE}"
