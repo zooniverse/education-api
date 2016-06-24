@@ -1,9 +1,9 @@
-require 'csv'
-require 'json'
+require "csv"
+require "json"
 
 class CartoTransformer
   attr_reader :output
-  
+
   ANNOTATION_SPECIES_CHOICES = {
     "RDVRK" => "Aardvark",
     "BBN" => "Baboon",
@@ -87,14 +87,14 @@ class CartoTransformer
     "N" => false
   }
   ANNOTATION_YOUNG.default = false
-  
+
   def initialize(carto: CartoUploader.new)
     @output = []
     @carto = carto
   end
 
   def process(classification)
-    
+
     #Prepare values...
     #--------------------------------
     subject = (classification["subject_data"]) ? JSON.parse(classification["subject_data"]) : { "" => {}}
@@ -141,7 +141,7 @@ class CartoTransformer
         #--------------------------------
       end 
     end
-    
+
   end
 
   def finalize

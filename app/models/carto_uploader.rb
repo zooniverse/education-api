@@ -1,7 +1,7 @@
-require 'csv'
-require 'uri'
-require 'net/http'
-require 'json'
+require "csv"
+require "uri"
+require "net/http"
+require "json"
 
 class CartoUploader
   CARTODB_ACCOUNT = ENV["CARTODB_ACCOUNT"]
@@ -17,31 +17,31 @@ class CartoUploader
     latest_classification_id = get_latest_classification_id()
     expected_insertions = 0
     successful_insertions = 0
-    
+
     #If we can't determine what's already in the database, DELETE AND START ANEW.
-    if (latest_classification_id == 0)
+    if latest_classification_id == 0
       truncate_everything()
     end
     #--------------------------------
-    
+
     arr_vals = []
     keys = []
     data.each do |classification|
-      
+
       #Only insert new Classifications
       #--------------------------------
-      if (Integer(classification["classification_id"]) <= latest_classification_id)
+      if Integer(classification["classification_id"]) <= latest_classification_id
         next
       end
       #--------------------------------
-      
+
       #Take every key-val and package it into a single Classification to be Inserted
       #--------------------------------
       keys = []  #Will be overwritten with the same data over and over again, but whatcha gonna do?
       vals = []
       classification.each do |key, val|
         keys.push(key)
-        if (val.is_a?(NilClass))
+        if val.is_a?(NilClass)
           vals.push("''")
         else
           vals.push("'" + val.to_s.gsub(/'/, "''") + "'")
@@ -51,16 +51,16 @@ class CartoUploader
       vals = vals.join(",")
       arr_vals.push("(#{vals})")
       #--------------------------------
-      
+
       #If we have enough classifications queued up, do a batch Insert.
       #--------------------------------
-      if (arr_vals.length >= CLASSIFICATIONS_PER_BATCH)
+      if arr_vals.length >= CLASSIFICATIONS_PER_BATCH
         expected_insertions += arr_vals.length
         successful_insertions += batch_insert(keys, arr_vals)
         arr_vals = []
         #Sanity check
         puts "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
-        if (expected_insertions != successful_insertions)
+        if expected_insertions != successful_insertions
           raise StandardError, "Could not insert Classifications. Aborting attempt."
         end
       end
@@ -69,7 +69,7 @@ class CartoUploader
 
     #Do a final batch Insert for any stragglers
     #--------------------------------
-    if (arr_vals.length > 0)
+    if !arr_vals.empty?
       expected_insertions += arr_vals.length
       successful_insertions += batch_insert(keys, arr_vals)
       arr_vals = []
@@ -79,7 +79,7 @@ class CartoUploader
     #Final Sanity check
     #--------------------------------
     puts "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
-    if (expected_insertions != successful_insertions)
+    if expected_insertions != successful_insertions
       raise StandardError, "Could not insert Classifications. Aborting attempt."
     end
     #--------------------------------
@@ -97,7 +97,7 @@ class CartoUploader
     uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sql_query)))
     res = Net::HTTP.get(uri)
     res = JSON.parse(res)
-    if (res["error"])
+    if res["error"]
       raise StandardError, res["error"]
     end
     return (res["rows"] && res["rows"][0] && res["rows"][0] && res["rows"][0]["classification_id"]) ?
@@ -116,7 +116,7 @@ class CartoUploader
     uri = URI(CARTODB_URI_POST)
     res = Net::HTTP.post_form(uri, "q" => sql_query, "api_key" => CARTODB_APIKEY)
     res = JSON.parse(res.body)
-    if (res["error"])
+    if res["error"]
       raise StandardError, res["error"]
     end
     return (res["total_rows"]) ? Integer(res["total_rows"]) : 0
@@ -134,9 +134,8 @@ class CartoUploader
     res = Net::HTTP.get(uri)
     res = JSON.parse(res)
     puts "Truncated #{CARTODB_TABLE}"
-    if (res["error"])
+    if res["error"]
       raise StandardError, res["error"]
     end
-    return
   end
 end
