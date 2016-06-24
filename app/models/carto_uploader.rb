@@ -11,9 +11,6 @@ class CartoUploader
   CARTODB_TABLE = ENV["CARTODB_TABLE"]  
   CLASSIFICATIONS_PER_BATCH = 200
 
-  def initialize()
-  end
-  
   def upload(data)
     #Determine what's already in the database
     #--------------------------------
@@ -23,7 +20,7 @@ class CartoUploader
     
     #If we can't determine what's already in the database, DELETE AND START ANEW.
     if (latest_classification_id == 0)
-      truncateEverything()
+      truncate_everything()
     end
     #--------------------------------
     
@@ -59,12 +56,12 @@ class CartoUploader
       #--------------------------------
       if (arr_vals.length >= CLASSIFICATIONS_PER_BATCH)
         expected_insertions += arr_vals.length
-        successful_insertions += batchInsert(keys, arr_vals)
+        successful_insertions += batch_insert(keys, arr_vals)
         arr_vals = []
         #Sanity check
         puts "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
         if (expected_insertions != successful_insertions)
-          #TODO
+          raise StandardError, "Could not insert Classifications. Aborting attempt."
         end
       end
       #--------------------------------
@@ -74,7 +71,7 @@ class CartoUploader
     #--------------------------------
     if (arr_vals.length > 0)
       expected_insertions += arr_vals.length
-      successful_insertions += batchInsert(keys, arr_vals)
+      successful_insertions += batch_insert(keys, arr_vals)
       arr_vals = []
     end
     #--------------------------------
@@ -83,55 +80,57 @@ class CartoUploader
     #--------------------------------
     puts "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
     if (expected_insertions != successful_insertions)
-      #TODO
+      raise StandardError, "Could not insert Classifications. Aborting attempt."
     end
     #--------------------------------
+    
+  rescue StandardError => err
+    #FINAL SAFETY NET
+    #TODO: Log error?
+    puts "ERROR:"
+    puts err
   end
   
   #Returns latest Classification ID.
   def get_latest_classification_id()
-    begin
-      sqlQuery = "SELECT classification_id FROM #{CARTODB_TABLE} ORDER BY classification_id DESC LIMIT 1"
-      uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sqlQuery)))
-      res = Net::HTTP.get(uri)
-      res = JSON.parse(res)
-      if (res["error"])
-        raise StandardError, res["error"]
-      end
-      return (res["rows"] && res["rows"][0] && res["rows"][0] && res["rows"][0]["classification_id"]) ?
-        Integer(res["rows"][0]["classification_id"]) : 0
-    rescue StandardError => err
-      #TODO: Log error?
-      puts "ERROR:"
-      puts err
-      return 0
+    sql_query = "SELECT classification_id FROM #{CARTODB_TABLE} ORDER BY classification_id DESC LIMIT 1"
+    uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sql_query)))
+    res = Net::HTTP.get(uri)
+    res = JSON.parse(res)
+    if (res["error"])
+      raise StandardError, res["error"]
     end
+    return (res["rows"] && res["rows"][0] && res["rows"][0] && res["rows"][0]["classification_id"]) ?
+      Integer(res["rows"][0]["classification_id"]) : 0
+  rescue StandardError => err
+    #TODO: Log error?
+    puts "ERROR:"
+    puts err
+    return 0
   end
   
   #Uploads a batch of rows. Returns number of successful uploads.
-  def batchInsert(keys, arrValues)
-    begin
-      allVals = arrValues.join(",")
-      sqlQuery = "INSERT INTO #{CARTODB_TABLE} (#{keys}) VALUES #{allVals} "
-      uri = URI(CARTODB_URI_POST)
-      res = Net::HTTP.post_form(uri, "q" => sqlQuery, "api_key" => CARTODB_APIKEY)
-      res = JSON.parse(res.body)
-      if (res["error"])
-        raise StandardError, res["error"]
-      end
-      return (res["total_rows"]) ? Integer(res["total_rows"]) : 0
-    rescue StandardError => err
-      #TODO: Log error?
-      puts "ERROR:"
-      puts err
-      return 0
+  def batch_insert(keys, arrValues)
+    all_vals = arrValues.join(",")
+    sql_query = "INSERT INTO #{CARTODB_TABLE} (#{keys}) VALUES #{all_vals} "
+    uri = URI(CARTODB_URI_POST)
+    res = Net::HTTP.post_form(uri, "q" => sql_query, "api_key" => CARTODB_APIKEY)
+    res = JSON.parse(res.body)
+    if (res["error"])
+      raise StandardError, res["error"]
     end
+    return (res["total_rows"]) ? Integer(res["total_rows"]) : 0
+  rescue StandardError => err
+    #TODO: Log error?
+    puts "ERROR:"
+    puts err
+    return 0
   end
   
   #Truncates the table. Raises an error if something goes wrong; no safeties. 
-  def truncateEverything
-    sqlQuery = "TRUNCATE #{CARTODB_TABLE}"
-    uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sqlQuery)))
+  def truncate_everything
+    sql_query = "TRUNCATE #{CARTODB_TABLE}"
+    uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sql_query)))
     res = Net::HTTP.get(uri)
     res = JSON.parse(res)
     puts "Truncated #{CARTODB_TABLE}"
