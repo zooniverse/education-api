@@ -27,7 +27,6 @@ class CartoUploader
     arr_vals = []
     keys = []
     data.each do |classification|
-
       # Only insert new Classifications
       # --------------------------------
       if Integer(classification["classification_id"]) <= latest_classification_id
@@ -92,7 +91,7 @@ class CartoUploader
   end
 
   # Returns latest Classification ID.
-  def get_latest_classification_id()
+  def get_latest_classification_id
     sql_query = "SELECT classification_id FROM #{CARTODB_TABLE} ORDER BY classification_id DESC LIMIT 1"
     uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sql_query)))
     res = Net::HTTP.get(uri)
@@ -100,8 +99,10 @@ class CartoUploader
     if res["error"]
       raise StandardError, res["error"]
     end
-    return (res["rows"] && res["rows"][0] && res["rows"][0] && res["rows"][0]["classification_id"]) ?
-      Integer(res["rows"][0]["classification_id"]) : 0
+    if res["rows"] && res["rows"][0] && res["rows"][0] && res["rows"][0]["classification_id"]
+      return Integer(res["rows"][0]["classification_id"])
+    else
+      return 0
   rescue StandardError => err
     # TODO: Log error?
     puts "ERROR:"
