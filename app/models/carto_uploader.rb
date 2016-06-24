@@ -14,13 +14,13 @@ class CartoUploader
   def upload(data)
     # Determine what's already in the database
     # --------------------------------
-    latest_classification_id = get_latest_classification_id()
+    latest_classification_id = get_latest_classification_id
     expected_insertions = 0
     successful_insertions = 0
 
     # If we can't determine what's already in the database, DELETE AND START ANEW.
     if latest_classification_id == 0
-      truncate_everything()
+      truncate_everything
     end
     # --------------------------------
 
