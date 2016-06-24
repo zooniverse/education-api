@@ -103,6 +103,7 @@ class CartoUploader
       return Integer(res["rows"][0]["classification_id"])
     else
       return 0
+    end
   rescue StandardError => err
     # TODO: Log error?
     puts "ERROR:"
