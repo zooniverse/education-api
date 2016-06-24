@@ -95,27 +95,27 @@ class CartoTransformer
 
   def process(classification)
 
-    #Prepare values...
-    #--------------------------------
+    # Prepare values...
+    # --------------------------------
     subject = (classification["subject_data"]) ? JSON.parse(classification["subject_data"]) : { "" => {}}
     subject_id = subject.keys[0]
     subject_data = subject.values[0]
     metadata = (classification["metadata"]) ? JSON.parse(classification["metadata"]) : {}
-    #--------------------------------
+    # --------------------------------
 
-    #For each annotation answer, we want one line in the output CSV.
+    # For each annotation answer, we want one line in the output CSV.
     list_of_annotations = JSON.parse(classification["annotations"])
     list_of_annotations.each do |annotation|
       if annotation["task"] == "survey" && annotation["value"].is_a?(Hash)
 
-        #Prepare values...
-        #--------------------------------
+        # Prepare values...
+        # --------------------------------
         answers = (annotation["value"]["answers"]) ? annotation["value"]["answers"] : {}
         behaviours = (answers["WHTBHVRSDS"]) ? answers["WHTBHVRSDS"] : []
-        #--------------------------------
+        # --------------------------------
 
-        #Prepare the output item...
-        #--------------------------------
+        # Prepare the output item...
+        # --------------------------------
         item = {
           user_name:             classification["user_name"],
           user_group_ids:        metadata["user_group_ids"],
@@ -133,12 +133,12 @@ class CartoTransformer
           species_interacting:   behaviours.include?("NTRCTNG"),
           species_horns:         ANNOTATION_HORNS[annotation["value"]["choice"]]
         }
-        #--------------------------------
+        # --------------------------------
 
-        #...and record it.
-        #--------------------------------
+        # ...and record it.
+        # --------------------------------
         output << item
-        #--------------------------------
+        # --------------------------------
       end 
     end
 
