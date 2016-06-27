@@ -10,19 +10,24 @@ class Cartodb
   end
 
   def get(sql_query)
+    Rails.logger.info "CARTODB >> #{sql_query}"
     uri = URI(get_url.gsub(/__SQLQUERY__/, URI.escape(sql_query)))
     res = Net::HTTP.get(uri)
 
     JSON.parse(res).tap do |res|
+      Rails.logger.debug("CARTODB << #{res.inspect}")
       raise StandardError, res["error"] if res["error"]
     end
   end
 
   def post(sql_query)
+    Rails.logger.info "CARTODB >> #{sql_query}"
+    
     uri = URI(post_url)
     res = Net::HTTP.post_form(uri, "q" => sql_query, "api_key" => api_key)
 
     JSON.parse(res.body).tap do |res|
+      Rails.logger.debug("CARTODB << #{res.inspect}")
       raise StandardError, res["error"] if res["error"]
     end
   end
