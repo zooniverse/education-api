@@ -1,9 +1,9 @@
-require 'csv'
-require 'json'
+require "csv"
+require "json"
 
 class CartoTransformer
   attr_reader :output
-  
+
   ANNOTATION_SPECIES_CHOICES = {
     "RDVRK" => "Aardvark",
     "BBN" => "Baboon",
@@ -87,39 +87,38 @@ class CartoTransformer
     "N" => false
   }
   ANNOTATION_YOUNG.default = false
-  
+
   def initialize(carto: CartoUploader.new)
     @output = []
     @carto = carto
   end
 
   def process(classification)
-    
-    #Prepare values...
-    #--------------------------------
+    # Prepare values...
+    # --------------------------------
     subject = (classification["subject_data"]) ? JSON.parse(classification["subject_data"]) : { "" => {}}
     subject_id = subject.keys[0]
     subject_data = subject.values[0]
     metadata = (classification["metadata"]) ? JSON.parse(classification["metadata"]) : {}
-    #--------------------------------
+    # --------------------------------
 
-    #For each annotation answer, we want one line in the output CSV.
-    listOfAnnotations = JSON.parse(classification["annotations"])
-    listOfAnnotations.each do |annotation|
+    # For each annotation answer, we want one line in the output CSV.
+    list_of_annotations = JSON.parse(classification["annotations"])
+    list_of_annotations.each do |annotation|
       if annotation["task"] == "survey" && annotation["value"].is_a?(Hash)
-
-        #Prepare values...
-        #--------------------------------
+        # Prepare values...
+        # --------------------------------
         answers = (annotation["value"]["answers"]) ? annotation["value"]["answers"] : {}
         behaviours = (answers["WHTBHVRSDS"]) ? answers["WHTBHVRSDS"] : []
-        #--------------------------------
+        # --------------------------------
 
-        #Prepare the output item...
-        #--------------------------------
+        # Prepare the output item...
+        # --------------------------------
         item = {
           user_name:             classification["user_name"],
           user_group_ids:        metadata["user_group_ids"],
-          zooniverse_subject_id: subject_id,
+          classification_id:     classification["classification_id"],
+          subject_id:            subject_id,
           gorongosa_id:          subject_data["Gorongosa_id"],
           classified_at:         classification["created_at"],
           species:               ANNOTATION_SPECIES_CHOICES[annotation["value"]["choice"]],
@@ -132,15 +131,14 @@ class CartoTransformer
           species_interacting:   behaviours.include?("NTRCTNG"),
           species_horns:         ANNOTATION_HORNS[annotation["value"]["choice"]]
         }
-        #--------------------------------
+        # --------------------------------
 
-        #...and record it.
-        #--------------------------------
+        # ...and record it.
+        # --------------------------------
         output << item
-        #--------------------------------
+        # --------------------------------
       end 
     end
-    
   end
 
   def finalize
