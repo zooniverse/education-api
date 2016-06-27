@@ -4,10 +4,6 @@ require "net/http"
 require "json"
 
 class CartoUploader
-  CARTODB_ACCOUNT = ENV["CARTODB_ACCOUNT"]
-  CARTODB_APIKEY = ENV["CARTODB_APIKEY"]
-  CARTODB_URI_GET = "https://#{CARTODB_ACCOUNT}.cartodb.com/api/v2/sql?q=__SQLQUERY__&api_key=#{CARTODB_APIKEY}"
-  CARTODB_URI_POST = "https://#{CARTODB_ACCOUNT}.cartodb.com/api/v2/sql"
   CARTODB_TABLE = ENV["CARTODB_TABLE"]
   CLASSIFICATIONS_PER_BATCH = 200
 
@@ -93,9 +89,7 @@ class CartoUploader
   # Returns latest Classification ID.
   def get_latest_classification_id
     sql_query = "SELECT classification_id FROM #{CARTODB_TABLE} ORDER BY classification_id DESC LIMIT 1"
-    uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sql_query)))
-    res = Net::HTTP.get(uri)
-    res = JSON.parse(res)
+    cartodb.get(sql_query)
     if res["error"]
       raise StandardError, res["error"]
     end
@@ -115,12 +109,7 @@ class CartoUploader
   def batch_insert(keys, arr_values)
     all_vals = arr_values.join(",")
     sql_query = "INSERT INTO #{CARTODB_TABLE} (#{keys}) VALUES #{all_vals} "
-    uri = URI(CARTODB_URI_POST)
-    res = Net::HTTP.post_form(uri, "q" => sql_query, "api_key" => CARTODB_APIKEY)
-    res = JSON.parse(res.body)
-    if res["error"]
-      raise StandardError, res["error"]
-    end
+    res = cartodb.post(sql_query)
     return (res["total_rows"]) ? Integer(res["total_rows"]) : 0
   rescue StandardError => err
     # TODO: Log error?
@@ -132,12 +121,11 @@ class CartoUploader
   # Truncates the table. Raises an error if something goes wrong; no safeties.
   def truncate_everything
     sql_query = "TRUNCATE #{CARTODB_TABLE}"
-    uri = URI(CARTODB_URI_GET.gsub(/__SQLQUERY__/, URI.escape(sql_query)))
-    res = Net::HTTP.get(uri)
-    res = JSON.parse(res)
+    cartodb.get(sql_query)
     puts "Truncated #{CARTODB_TABLE}"
-    if res["error"]
-      raise StandardError, res["error"]
-    end
+  end
+
+  def cartodb
+    @cartodb ||= Cartodb.new(CARTODB_ACCOUNT, CARTODB_APIKEY)
   end
 end
