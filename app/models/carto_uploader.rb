@@ -7,6 +7,12 @@ class CartoUploader
   CARTODB_TABLE = ENV["CARTODB_TABLE"]
   CLASSIFICATIONS_PER_BATCH = 200
 
+  attr_reader :cartodb
+
+  def initialize(cartodb = Cartodb.new)
+    @cartodb = cartodb
+  end
+
   def upload(data)
     # Determine what's already in the database
     # --------------------------------
@@ -25,7 +31,7 @@ class CartoUploader
     data.each do |classification|
       # Only insert new Classifications
       # --------------------------------
-      if Integer(classification["classification_id"]) <= latest_classification_id
+      if Integer(classification[:classification_id]) <= latest_classification_id
         next
       end
       # --------------------------------
@@ -78,18 +84,12 @@ class CartoUploader
       raise StandardError, "Could not insert Classifications. Aborting attempt."
     end
     # --------------------------------
-
-  rescue StandardError => err
-    # FINAL SAFETY NET
-    # TODO: Log error?
-    puts "ERROR:"
-    puts err
   end
 
   # Returns latest Classification ID.
   def get_latest_classification_id
     sql_query = "SELECT classification_id FROM #{CARTODB_TABLE} ORDER BY classification_id DESC LIMIT 1"
-    cartodb.get(sql_query)
+    res = cartodb.get(sql_query)
     if res["error"]
       raise StandardError, res["error"]
     end
@@ -98,11 +98,6 @@ class CartoUploader
     else
       return 0
     end
-  rescue StandardError => err
-    # TODO: Log error?
-    puts "ERROR:"
-    puts err
-    return 0
   end
 
   # Uploads a batch of rows. Returns number of successful uploads.
@@ -111,11 +106,6 @@ class CartoUploader
     sql_query = "INSERT INTO #{CARTODB_TABLE} (#{keys}) VALUES #{all_vals} "
     res = cartodb.post(sql_query)
     return (res["total_rows"]) ? Integer(res["total_rows"]) : 0
-  rescue StandardError => err
-    # TODO: Log error?
-    puts "ERROR:"
-    puts err
-    return 0
   end
 
   # Truncates the table. Raises an error if something goes wrong; no safeties.
@@ -123,9 +113,5 @@ class CartoUploader
     sql_query = "TRUNCATE #{CARTODB_TABLE}"
     cartodb.get(sql_query)
     puts "Truncated #{CARTODB_TABLE}"
-  end
-
-  def cartodb
-    @cartodb ||= Cartodb.new(CARTODB_ACCOUNT, CARTODB_APIKEY)
   end
 end
