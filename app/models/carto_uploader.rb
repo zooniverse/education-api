@@ -14,76 +14,24 @@ class CartoUploader
   end
 
   def upload(data)
-    # Determine what's already in the database
-    # --------------------------------
-    latest_classification_id = get_latest_classification_id
-    expected_insertions = 0
-    successful_insertions = 0
-
-    # If we can't determine what's already in the database, DELETE AND START ANEW.
-    if latest_classification_id == 0
+    if cannot_determine_latest_classification_in_cartodb
       truncate_everything
     end
     # --------------------------------
 
-    arr_vals = []
-    keys = []
-    data.each do |classification|
-      # Only insert new Classifications
-      # --------------------------------
-      if Integer(classification[:classification_id]) <= latest_classification_id
-        next
-      end
-      # --------------------------------
+    return if data.empty?
+    keys = data.first.keys.join(",")
 
-      # Take every key-val and package it into a single Classification to be Inserted
-      # --------------------------------
-      keys = []  # Will be overwritten with the same data over and over again, but whatcha gonna do?
-      vals = []
-      classification.each do |key, val|
-        keys.push(key)
-        if val.is_a?(NilClass)
-          vals.push("''")
-        else
-          vals.push("'" + val.to_s.gsub(/'/, "''") + "'")
-        end
-      end
-      keys = keys.join(",")
-      vals = vals.join(",")
-      arr_vals.push("(#{vals})")
-      # --------------------------------
+    data.in_groups_of(CLASSIFICATIONS_PER_BATCH, false).each do |classification_batch|
+      arr_vals = classification_batch
+        .lazy
+        .reject { |classification| already_in_carto?(classification) }
+        .map { |classification| insert_statement_values(classification) }
+        .to_a
 
-      # If we have enough classifications queued up, do a batch Insert.
-      # --------------------------------
-      if arr_vals.length >= CLASSIFICATIONS_PER_BATCH
-        expected_insertions += arr_vals.length
-        successful_insertions += batch_insert(keys, arr_vals)
-        arr_vals = []
-        # Sanity check
-        puts "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
-        if expected_insertions != successful_insertions
-          raise StandardError, "Could not insert Classifications. Aborting attempt."
-        end
-      end
-      # --------------------------------
+      inserted = batch_insert(keys, arr_vals)
+      verify_insertion_amounts(arr_vals.length, inserted)
     end
-
-    # Do a final batch Insert for any stragglers
-    # --------------------------------
-    unless arr_vals.empty?
-      expected_insertions += arr_vals.length
-      successful_insertions += batch_insert(keys, arr_vals)
-      arr_vals = []
-    end
-    # --------------------------------
-
-    # Final Sanity check
-    # --------------------------------
-    puts "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
-    if expected_insertions != successful_insertions
-      raise StandardError, "Could not insert Classifications. Aborting attempt."
-    end
-    # --------------------------------
   end
 
   # Returns latest Classification ID.
@@ -100,6 +48,34 @@ class CartoUploader
     end
   end
 
+  def already_in_carto?(classification)
+    Integer(classification[:classification_id]) <= latest_classification_id
+  end
+
+  def latest_classification_id
+    @latest_classification_id ||= get_latest_classification_id
+  end
+
+  def cannot_determine_latest_classification_in_cartodb
+    latest_classification_id == 0
+  end
+
+  def insert_statement_values(classification)
+    vals = classification.values.map do |val|
+      ActiveRecord::Base.connection.quote(val.to_s)
+    end
+
+    "(#{vals.join(",")})"
+  end
+
+  def verify_insertion_amounts(expected_insertions, successful_insertions)
+    # Sanity check
+    Rails.logger.info "Inserted #{successful_insertions} Classifications out of #{expected_insertions}"
+    if expected_insertions != successful_insertions
+      raise StandardError, "Could not insert Classifications. Aborting attempt."
+    end
+  end
+
   # Uploads a batch of rows. Returns number of successful uploads.
   def batch_insert(keys, arr_values)
     all_vals = arr_values.join(",")
@@ -112,6 +88,6 @@ class CartoUploader
   def truncate_everything
     sql_query = "TRUNCATE #{CARTODB_TABLE}"
     cartodb.get(sql_query)
-    puts "Truncated #{CARTODB_TABLE}"
+    Rails.logger.info "Truncated #{CARTODB_TABLE}"
   end
 end
