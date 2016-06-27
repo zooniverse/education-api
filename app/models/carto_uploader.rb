@@ -4,7 +4,7 @@ require "net/http"
 require "json"
 
 class CartoUploader
-  CARTODB_TABLE = ENV["CARTODB_TABLE"]
+  CARTODB_TABLE = ENV["CARTODB_TABLE"] || "classifications"
   CLASSIFICATIONS_PER_BATCH = 200
 
   attr_reader :cartodb
