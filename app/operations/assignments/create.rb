@@ -15,7 +15,10 @@ module Assignments
     def execute
       classroom = current_user.taught_classrooms.find(classroom_id)
 
-      subject_set = panoptes.create_subject_set display_name: uuid
+      subject_set = panoptes.create_subject_set display_name: uuid, links: {
+        project: base_project_id,
+      }
+
       workflow = clone_workflow(base_workflow_id, subject_set)
 
       student_users = classroom.student_users.where(id: student_user_ids)
