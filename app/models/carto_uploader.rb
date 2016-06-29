@@ -22,6 +22,8 @@ class CartoUploader
     return if data.empty?
     keys = data.first.keys.join(",")
 
+    Rails.logger.info "CARTODB: To upload #{data.size} records"
+
     data.in_groups_of(CLASSIFICATIONS_PER_BATCH, false).each do |classification_batch|
       arr_vals = classification_batch
         .lazy
