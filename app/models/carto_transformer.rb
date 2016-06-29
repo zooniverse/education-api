@@ -105,41 +105,36 @@ class CartoTransformer
     # For each annotation answer, we want one line in the output CSV.
     list_of_annotations = JSON.parse(classification["annotations"])
     list_of_annotations.each do |annotation|
-      if annotation["task"] == "survey" || annotation["task"] == "T1"
-        Array.wrap(annotation["value"]).each do |annotation_value|
-          next unless annotation_value.is_a?(Hash)
-          # Prepare values...
-          # --------------------------------
-          answers = (annotation_value["answers"]) ? annotation_value["answers"] : {}
-          behaviours = (answers["WHTBHVRSDS"]) ? answers["WHTBHVRSDS"] : []
-          # --------------------------------
+      next unless ["survey", "T1"].include?(annotation["task"])
 
-          # Prepare the output item...
-          # --------------------------------
-          item = {
-            user_name:             classification["user_name"],
-            user_group_ids:        metadata["user_group_ids"],
-            classification_id:     classification["classification_id"],
-            subject_id:            subject_id,
-            gorongosa_id:          subject_data["Gorongosa_id"],
-            classified_at:         classification["created_at"],
-            species:               ANNOTATION_SPECIES_CHOICES[annotation_value["choice"]],
-            species_count:         ANNOTATION_HOW_MANY[answers["HWMN"]],
-            species_young:         ANNOTATION_YOUNG[answers["RTHRNNGPRSNT"]],
-            species_moving:        behaviours.include?("MVNG"),
-            species_resting:       behaviours.include?("RSTNG"),
-            species_standing:      behaviours.include?("STNDNG"),
-            species_eating:        behaviours.include?("TNG"),
-            species_interacting:   behaviours.include?("NTRCTNG"),
-            species_horns:         ANNOTATION_HORNS[annotation_value["choice"]]
-          }
-          # --------------------------------
+      Array.wrap(annotation["value"]).each do |annotation_value|
+        next unless annotation_value.is_a?(Hash)
 
-          # ...and record it.
-          # --------------------------------
-          output << item
-          # --------------------------------
-        end
+        # Prepare values...
+        answers = (annotation_value["answers"]) ? annotation_value["answers"] : {}
+        behaviours = (answers["WHTBHVRSDS"]) ? answers["WHTBHVRSDS"] : []
+
+        # Prepare the output item...
+        item = {
+          user_name:             classification["user_name"],
+          user_group_ids:        metadata["user_group_ids"],
+          classification_id:     classification["classification_id"],
+          subject_id:            subject_id,
+          gorongosa_id:          subject_data["Gorongosa_id"],
+          classified_at:         classification["created_at"],
+          species:               ANNOTATION_SPECIES_CHOICES[annotation_value["choice"]],
+          species_count:         ANNOTATION_HOW_MANY[answers["HWMN"]],
+          species_young:         ANNOTATION_YOUNG[answers["RTHRNNGPRSNT"]],
+          species_moving:        behaviours.include?("MVNG"),
+          species_resting:       behaviours.include?("RSTNG"),
+          species_standing:      behaviours.include?("STNDNG"),
+          species_eating:        behaviours.include?("TNG"),
+          species_interacting:   behaviours.include?("NTRCTNG"),
+          species_horns:         ANNOTATION_HORNS[annotation_value["choice"]]
+        }
+
+        # ...and record it.
+        output << item
       end
     end
   end
