@@ -9,6 +9,7 @@ module Assignments
 
     relationships do
       has_many :student_users
+      has_many :subjects
     end
 
     def execute
@@ -20,6 +21,10 @@ module Assignments
 
         if student_user_ids
           assignment.student_users = assignment.classroom.student_users.where(id: student_user_ids)
+        end
+
+        if subject_ids
+          panoptes.update_subject_set links: {subjects: subject_ids}
         end
 
         assignment.save!
