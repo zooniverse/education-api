@@ -1,5 +1,6 @@
 module Assignments
   class Create < Operation
+    integer :base_project_id, default: Rails.application.secrets["zooniverse_project_id"]
     integer :base_workflow_id, default: Rails.application.secrets["zooniverse_workflow_id"]
 
     hash :attributes do
@@ -10,12 +11,17 @@ module Assignments
     relationships do
       belongs_to :classroom
       has_many :student_users
+      has_many :subjects
     end
 
     def execute
       classroom = current_user.taught_classrooms.find(classroom_id)
 
-      subject_set = panoptes.create_subject_set display_name: uuid
+      subject_set = panoptes.create_subject_set display_name: uuid, links: {
+        project: base_project_id,
+        subjects: subject_ids
+      }
+
       workflow = clone_workflow(base_workflow_id, subject_set)
 
       student_users = classroom.student_users.where(id: student_user_ids)
