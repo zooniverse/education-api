@@ -21,7 +21,7 @@ RSpec.describe Assignments::Create do
   it 'creates a new workflow' do
     expect(panoptes).to receive(:create_workflow)
                     .with("display_name" => an_instance_of(String),
-                          "retirement" => {criteria: "never", options: {}},
+                          "retirement" => {criteria: "never_retire", options: {}},
                           "links" => {project: "1", subject_sets: ["123"]})
                     .and_return("id" => "2")
     operation.run! attributes: {name: 'foo'},
