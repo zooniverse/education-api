@@ -5,6 +5,10 @@ RSpec.describe AssignmentsController do
 
   before { authenticate! }
 
+  let(:panoptes_application_client) do
+    double(:panoptes_application_client)
+  end
+
   describe "GET index" do
     it 'returns a list of assignments' do
       classroom  = create(:classroom, teachers: [current_user])
@@ -15,6 +19,8 @@ RSpec.describe AssignmentsController do
   end
 
   describe "POST create" do
+    before { allow(controller).to receive(:panoptes_application_client).and_return(panoptes_application_client) }
+
     it 'returns a new assignment' do
       classroom  = create(:classroom, teachers: [current_user])
       assignment = build(:assignment, classroom: classroom)
@@ -24,7 +30,7 @@ RSpec.describe AssignmentsController do
       relationships = {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
 
       expect(Assignments::Create).to receive(:run)
-        .with(current_user: current_user, panoptes: panoptes_client, attributes: attributes, relationships: relationships)
+        .with(current_user: current_user, panoptes: panoptes_application_client, attributes: attributes, relationships: relationships)
         .and_return(outcome)
 
       post :create, data: {attributes: attributes, relationships: relationships}, format: :json
@@ -33,12 +39,14 @@ RSpec.describe AssignmentsController do
   end
 
   describe "DELETE" do
+    before { allow(controller).to receive(:panoptes_application_client).and_return(panoptes_application_client) }
+
     it 'marks the assignment as deleted' do
       classroom  = build(:classroom, teachers: [current_user])
       assignment = build(:assignment, id: 123, classroom: classroom)
       outcome = double(result: assignment, valid?: true)
       expect(Assignments::Destroy).to receive(:run)
-        .with(a_hash_including("current_user" => current_user, "panoptes" => panoptes_client, "id" => assignment.id.to_s))
+        .with(a_hash_including("current_user" => current_user, "panoptes" => panoptes_application_client, "id" => assignment.id.to_s))
         .and_return(outcome)
       delete :destroy, id: assignment.id, format: :json
       expect(response.status).to eq(204)
