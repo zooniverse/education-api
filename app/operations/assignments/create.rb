@@ -33,7 +33,7 @@ module Assignments
 
       attributes = base_workflow.slice('primary_language', 'tasks', 'first_task', 'configuration')
       attributes['display_name'] = uuid
-      attributes['retirement'] = {criteria: 'never', options: {}}
+      attributes['retirement'] = {criteria: 'never_retire', options: {}}
       attributes['links'] = {
         project: base_workflow['links']['project'],
         subject_sets: [subject_set['id']]
