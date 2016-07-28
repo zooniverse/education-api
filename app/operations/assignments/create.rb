@@ -25,7 +25,7 @@ module Assignments
       workflow = clone_workflow(base_workflow_id, subject_set)
 
       student_users = classroom.student_users.where(id: student_user_ids)
-      classroom.assignments.create! name: attributes[:name], workflow_id: workflow["id"], subject_set_id: subject_set["id"], student_users: student_users
+      classroom.assignments.create! name: attributes[:name], metadata: attributes[:metadata], workflow_id: workflow["id"], subject_set_id: subject_set["id"], student_users: student_users
     end
 
     def clone_workflow(workflow_id, subject_set)

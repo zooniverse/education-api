@@ -29,10 +29,12 @@ RSpec.describe Assignments::Create do
   end
 
   it 'creates an assignment' do
-    assignment = operation.run! attributes: {name: 'foo'},
+    metadata = { "fake" => "data" }
+    assignment = operation.run! attributes: { name: "foo", metadata: metadata },
                                 relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
     expect(classroom.assignments.count).to eq(1)
     expect(classroom.assignments.first).to eq(assignment)
+    expect(classroom.assignments.first.attributes["metadata"]).to eq(metadata)
   end
 
   it 'links students' do
