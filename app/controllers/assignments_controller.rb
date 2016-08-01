@@ -1,16 +1,19 @@
 class AssignmentsController < ApplicationController
   def index
-    run Assignments::Index
+    run Assignments::Index, params,
+      includes: [:student_assignments]
   end
 
   def create
     run Assignments::Create.with(panoptes: panoptes_application_client),
-      params.fetch(:data).merge(path_params)
+      params.fetch(:data).merge(path_params),
+      includes: [:student_assignments]
   end
 
   def update
     run Assignments::Update.with(panoptes: panoptes_application_client),
-      params.fetch(:data).merge(path_params)
+      params.fetch(:data).merge(path_params),
+      includes: [:student_assignments]
   end
 
   def destroy
