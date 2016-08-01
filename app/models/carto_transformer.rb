@@ -141,5 +141,6 @@ class CartoTransformer
 
   def finalize
     @carto.upload(output)
+    @output = []
   end
 end
