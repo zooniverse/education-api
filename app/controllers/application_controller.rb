@@ -32,11 +32,11 @@ class ApplicationController < ActionController::Base
       auth: {token: authorization_token}
   end
 
-  def run(operation_class, data=params)
+  def run(operation_class, data=params, includes: [])
     operation = operation_class.run(data.merge(panoptes: panoptes, current_user: current_user))
 
     if operation.valid?
-      respond_with operation.result
+      respond_with operation.result, include: includes
     else
       render json: ErrorSerializer.serialize(operation), status: :unprocessable_entity
     end
