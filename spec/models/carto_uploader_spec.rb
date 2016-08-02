@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe CartoUploader, type: :model do
-  let(:cartodb) { double }
+  let(:cartodb) { double(account: "foo") }
   let(:uploader) { described_class.new(cartodb) }
 
   let(:item) do

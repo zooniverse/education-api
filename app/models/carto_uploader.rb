@@ -27,14 +27,14 @@ class CartoUploader
     Rails.logger.info "CARTODB: To upload #{data.size} records"
 
     data.in_groups_of(CLASSIFICATIONS_PER_BATCH, false).each do |classification_batch|
-      arr_vals = classification_batch
+      arr_vals = classification_batch \
         .lazy
         .reject { |classification| already_in_carto?(classification) }
         .map { |classification| insert_statement_values(classification) }
         .to_a
 
-      inserted = batch_insert(keys, arr_vals)
-      verify_insertion_amounts(arr_vals.length, inserted)
+			inserted = batch_insert(keys, arr_vals)
+			verify_insertion_amounts(arr_vals.length, inserted)
     end
   end
 
@@ -82,6 +82,8 @@ class CartoUploader
 
   # Uploads a batch of rows. Returns number of successful uploads.
   def batch_insert(keys, arr_values)
+  	return 0 if arr_values.empty?
+
     all_vals = arr_values.join(",")
     sql_query = "INSERT INTO #{CARTODB_TABLE} (#{keys}) VALUES #{all_vals} "
     res = cartodb.post(sql_query)
