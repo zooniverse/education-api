@@ -22,7 +22,7 @@ class Cartodb
 
   def post(sql_query)
     Rails.logger.info "CARTODB >> #{sql_query}"
-    
+
     uri = URI(post_url)
     res = Net::HTTP.post_form(uri, "q" => sql_query, "api_key" => api_key)
 

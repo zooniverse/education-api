@@ -14,6 +14,8 @@ class CartoUploader
   end
 
   def upload(data)
+    return unless cartodb.account.present?
+
     if cannot_determine_latest_classification_in_cartodb
       truncate_everything
     end
