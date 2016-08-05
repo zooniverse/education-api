@@ -121,6 +121,7 @@ class CartoTransformer
           classification_id:     classification["classification_id"],
           subject_id:            subject_id,
           gorongosa_id:          subject_data["Gorongosa_id"],
+          workflow_id:           classification["workflow_id"],
           classified_at:         classification["created_at"],
           species:               ANNOTATION_SPECIES_CHOICES[annotation_value["choice"]],
           species_count:         ANNOTATION_HOW_MANY[answers["HWMN"]],
