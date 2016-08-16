@@ -1,5 +1,13 @@
 == README
 
+== Updating the Kinesis-to-HTTP forwarder
+
+```
+cd kinesis-to-http
+pip install -r requirements.txt
+lambda-uploader
+```
+
 == Development setup
 
 Go to https://panoptes-staging.zooniverse.org/oauth/applications and create an application. Paste the credentials into a
