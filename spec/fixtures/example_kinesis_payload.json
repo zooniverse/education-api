@@ -1,0 +1,61 @@
+{
+    "source": "panoptes",
+    "type": "classification",
+    "version": "1.0.0",
+    "timestamp": "2016-08-16T12:28:51Z",
+    "data": {
+        "id": "15563067",
+        "created_at": "2016-08-16T12:28:51.497Z",
+        "updated_at": "2016-08-16T12:28:51.611Z",
+        "user_ip": "141.218.61.21",
+        "workflow_version": "1045.89",
+        "gold_standard": null,
+        "expert_classifier": null,
+        "annotations": [
+            {
+                "task": "T0",
+                "value": [
+                    {
+                        "choice": "VHCL",
+                        "answers": {},
+                        "filters": {}
+                    }
+                ]
+            }
+        ],
+        "metadata": {
+            "session": "2a259d13f6a964bce120d419788831b6988dd3534b6d93c6e313de6df41a2611",
+            "viewport": {
+                "width": 1618,
+                "height": 860
+            },
+            "started_at": "2016-08-16T12:28:44.571Z",
+            "utc_offset": "14400",
+            "finished_at": "2016-08-16T12:28:50.513Z",
+            "live_project": true,
+            "user_language": "en",
+            "user_group_ids": ["1234"],
+            "subject_dimensions": [
+                {
+                    "clientWidth": 800,
+                    "clientHeight": 600,
+                    "naturalWidth": 800,
+                    "naturalHeight": 600
+                }
+            ],
+            "workflow_version": "1045.89"
+        },
+        "href": "/classifications/15563067",
+        "links": {
+            "project": "593",
+            "user": "41506",
+            "workflow": "4378",
+            "subjects": [
+                "2852006"
+            ]
+        }
+    },
+    "linked": {
+
+    }
+}
