@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 
+  post 'downloads', to: 'downloads#create'
   post 'kinesis', to: 'kinesis#create'
 
   resources :users
