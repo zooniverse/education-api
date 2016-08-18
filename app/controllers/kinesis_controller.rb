@@ -1,7 +1,7 @@
 class KinesisController < ApplicationController
   def create
     Kinesis::Create.run!(params)
-    render :nothing
+    head :no_content
   end
 
   def require_login
