@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-RSpec.describe Kinesis::Create do
+RSpec.describe Kinesis::CountClassification do
   let(:payload) { JSON.load(File.read(Rails.root.join("spec/fixtures/example_kinesis_payload.json"))) }
   let(:operation) { described_class.with(payload) }
 
-  let(:student)   { create :user, zooniverse_id: "41506" }
+  let(:student)   { create :user, zooniverse_id: "1234" }
   let(:classroom) { create :classroom, zooniverse_group_id: "1234", students: [student] }
 
   it 'increments counter for the classroom' do

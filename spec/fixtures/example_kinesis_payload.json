@@ -7,7 +7,6 @@
         "id": "15563067",
         "created_at": "2016-08-16T12:28:51.497Z",
         "updated_at": "2016-08-16T12:28:51.611Z",
-        "user_ip": "141.218.61.21",
         "workflow_version": "1045.89",
         "gold_standard": null,
         "expert_classifier": null,
@@ -48,7 +47,7 @@
         "href": "/classifications/15563067",
         "links": {
             "project": "593",
-            "user": "41506",
+            "user": "1234",
             "workflow": "4378",
             "subjects": [
                 "2852006"
