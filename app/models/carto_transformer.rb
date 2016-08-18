@@ -96,10 +96,10 @@ class CartoTransformer
   def process(stream_event)
     classification = stream_event.fetch("data")
     subject_id     = classification.fetch("links").fetch("subjects").first
-    user_id        = classification.fetch("links").fetch("user")
+    user_id        = classification.dig("links", "user")
     workflow_id    = classification.fetch("links").fetch("workflow")
     subject_data   = stream_event.fetch("linked").fetch("subjects").find { |subject| subject.fetch("id") == subject_id }
-    user_data      = stream_event.fetch("linked").fetch("users").find { |user| user.fetch("id") == user_id }
+    user_data      = stream_event.fetch("linked").fetch("users", []).find { |user| user.fetch("id") == user_id } || {}
     metadata       = classification.fetch("metadata")
 
     # For each annotation answer, we want one line in the output CSV.
