@@ -1,7 +1,7 @@
 module Kinesis
   class Create < Operation
     array :payload do
-      hash strip: false, default: {}
+      hash strip: false
     end
 
     def execute
