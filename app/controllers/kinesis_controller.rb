@@ -1,6 +1,6 @@
 class KinesisController < ApplicationController
   def create
-    Kinesis::Create.run!(params[:payload])
+    Kinesis::Create.run!(params)
     render :nothing
   end
 

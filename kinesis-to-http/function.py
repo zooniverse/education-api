@@ -10,7 +10,7 @@ def lambda_handler(event, context):
   dicts    = [payload for payload in payloads if should_send(payload)]
 
   if dicts:
-    r = requests.post(ENDPOINT, headers=HEADERS, data={"payload": dicts})
+    r = requests.post(ENDPOINT, headers=HEADERS, data=json.dumps({"payload": dicts}))
     r.raise_for_status()
 
 def should_send(payload):
