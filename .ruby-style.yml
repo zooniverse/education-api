@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 AllCops:
   Exclude:
     - "vendor/**/*"
@@ -127,6 +125,8 @@ Lint/AssignmentInCondition:
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#safe-assignment-in-condition
   Enabled: true
   AllowSafeAssignment: true
+Style/Documentation:
+  Enabled: false
 Style/DoubleNegation:
   Description: Checks for uses of double negation (!!).
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-bang-bang
@@ -155,6 +155,10 @@ Style/Send:
     may overlap with existing methods.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#prefer-public-send
   Enabled: true
+Style/SpaceInsideHashLiteralBraces:
+  Enabled: false
+Style/StringLiterals:
+  Enabled: false
 Style/SpecialGlobalVars:
   Description: Avoid Perl-style global variables.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-cryptic-perlisms

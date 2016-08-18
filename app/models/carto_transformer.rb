@@ -93,18 +93,17 @@ class CartoTransformer
     @carto = carto
   end
 
-  def process(classification)
-    # Prepare values...
-    # --------------------------------
-    subject = (classification["subject_data"]) ? JSON.parse(classification["subject_data"]) : { "" => {}}
-    subject_id = subject.keys[0]
-    subject_data = subject.values[0]
-    metadata = (classification["metadata"]) ? JSON.parse(classification["metadata"]) : {}
-    # --------------------------------
+  def process(stream_event)
+    classification = stream_event.fetch("data")
+    subject_id     = classification.fetch("links").fetch("subjects").first
+    user_id        = classification.fetch("links").fetch("user")
+    workflow_id    = classification.fetch("links").fetch("workflow")
+    subject_data   = stream_event.fetch("linked").fetch("subjects").find { |subject| subject.fetch("id") == subject_id }
+    user_data      = stream_event.fetch("linked").fetch("users").find { |user| user.fetch("id") == user_id }
+    metadata       = classification.fetch("metadata")
 
     # For each annotation answer, we want one line in the output CSV.
-    list_of_annotations = JSON.parse(classification["annotations"])
-    list_of_annotations.each do |annotation|
+    classification["annotations"].each do |annotation|
       next unless ["survey", "T1"].include?(annotation["task"])
 
       Array.wrap(annotation["value"]).each do |annotation_value|
@@ -116,12 +115,12 @@ class CartoTransformer
 
         # Prepare the output item...
         item = {
-          user_name:             classification["user_name"],
+          user_name:             user_data["login"],
           user_group_ids:        metadata["user_group_ids"],
-          classification_id:     classification["classification_id"],
+          classification_id:     classification["id"],
           subject_id:            subject_id,
-          gorongosa_id:          subject_data["Gorongosa_id"],
-          workflow_id:           classification["workflow_id"],
+          gorongosa_id:          subject_data.dig("metadata", "Gorongosa_id"),
+          workflow_id:           workflow_id,
           classified_at:         classification["created_at"],
           species:               ANNOTATION_SPECIES_CHOICES[annotation_value["choice"]],
           species_count:         ANNOTATION_HOW_MANY[answers["HWMN"]],
