@@ -21,12 +21,6 @@ module Kinesis
     end
 
     def execute
-      return unless source == "panoptes"
-      return unless type == "classification"
-      return unless project_id == 593
-      return unless user_id.present?
-      return unless user_group_ids.present?
-
       User.transaction do
         student_user_ids = StudentUser.joins(:user).where(users: {zooniverse_id: user_id}).pluck(:id)
 

@@ -6,15 +6,27 @@ module Kinesis
 
     def execute
       ActiveRecord::Base.transaction do
-        carto_transformer = CartoTransformer.new
-
         payload.each do |stream_event|
-          Kinesis::CountClassification.run! stream_event
-          carto_transformer.process(stream_event)
+          process(stream_event)
         end
 
         carto_transformer.finalize
       end
+    end
+
+    def process(stream_event)
+      return unless stream_event.fetch("source") == "panoptes"
+      return unless stream_event.fetch("type") == "classification"
+      return unless stream_event.fetch("data").fetch("links").fetch("project") == 593
+      return unless stream_event.fetch("data").fetch("links").fetch("user").present?
+      return unless stream_event.fetch("data").fetch("metadata").fetch("user_group_ids").present?
+
+      Kinesis::CountClassification.run! stream_event
+      carto_transformer.process(stream_event)
+    end
+
+    def carto_transformer
+      @carto_transformer ||= CartoTransformer.new
     end
   end
 end
