@@ -17,7 +17,7 @@ module Kinesis
     def process(stream_event)
       return unless stream_event.fetch("source") == "panoptes"
       return unless stream_event.fetch("type") == "classification"
-      return unless stream_event.fetch("data").fetch("links").fetch("project") == 593
+      return unless stream_event.fetch("data").fetch("links").fetch("project") == "593"
       return unless stream_event.fetch("data").fetch("links").fetch("user").present?
       return unless stream_event.fetch("data").fetch("metadata").fetch("user_group_ids").present?
 
