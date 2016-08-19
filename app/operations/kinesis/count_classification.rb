@@ -9,7 +9,7 @@ module Kinesis
     hash :data do
       hash :metadata do
         array :user_group_ids, default: [] do
-          string
+          integer
         end
       end
 
