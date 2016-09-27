@@ -19,8 +19,10 @@ module Assignments
 
       subject_set = panoptes.create_subject_set display_name: uuid, links: {
         project: base_project_id,
-        subjects: subject_ids
+        subjects: []
       }
+
+      panoptes.add_subjects_to_subject_set(subject_set["id"], subject_ids)
 
       workflow = clone_workflow(base_workflow_id, subject_set)
 

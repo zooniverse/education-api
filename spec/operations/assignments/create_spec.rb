@@ -10,6 +10,7 @@ RSpec.describe Assignments::Create do
     allow(panoptes).to receive(:workflow).and_return("links" => {"project" => "1"})
     allow(panoptes).to receive(:create_workflow).and_return("id" => "2", "links" => {"project" => "1"})
     allow(panoptes).to receive(:create_subject_set).and_return("id" => "123")
+    allow(panoptes).to receive(:add_subjects_to_subject_set).and_return(true)
   end
 
   it 'creates a new subject set' do
