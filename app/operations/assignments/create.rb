@@ -22,7 +22,7 @@ module Assignments
         subjects: []
       }
 
-      panoptes.add_subjects_to_subject_set(subject_set["id"], subject_ids)
+      FillSubjectSetWorker.perform_async(subject_set["id"], subject_ids)
 
       workflow = clone_workflow(base_workflow_id, subject_set)
 
