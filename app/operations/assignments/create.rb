@@ -18,8 +18,7 @@ module Assignments
       classroom = current_user.taught_classrooms.find(classroom_id)
 
       subject_set = panoptes.create_subject_set display_name: uuid, links: {
-        project: base_project_id,
-        subjects: []
+        project: base_project_id
       }
 
       FillSubjectSetWorker.perform_async(subject_set["id"], subject_ids)
