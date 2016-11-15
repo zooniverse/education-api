@@ -19,7 +19,7 @@ gem 'sinatra', require: nil
 gem 'active_model_serializers', '0.10.0.rc4'
 gem 'puma'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'newrelic_rpm', '~> 3.0', require: false
+gem 'newrelic_rpm', '~> 3.0'
 gem 'active_interaction', '~> 3.0.1'
 gem 'faraday-panoptes', '~> 0.2.0'
 gem 'panoptes-client'
