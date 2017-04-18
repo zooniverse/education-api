@@ -20,5 +20,7 @@ else
     cp commit_id.txt public/
   fi
 
+  bin/rake db:migrate
+
   exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
 fi
