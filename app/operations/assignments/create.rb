@@ -21,7 +21,7 @@ module Assignments
         project: base_project_id
       }
 
-      FillSubjectSetWorker.perform_async(subject_set["id"], subject_ids.uniq)
+      FillSubjectSetWorker.perform_async(subject_set["id"], subject_ids&.uniq)
 
       workflow = clone_workflow(base_workflow_id, subject_set)
 
