@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160712122651) do
+ActiveRecord::Schema.define(version: 20170427120805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,8 @@ ActiveRecord::Schema.define(version: 20160712122651) do
     t.string   "zooniverse_display_name"
     t.jsonb    "metadata"
   end
+
+  add_index "users", ["zooniverse_id"], name: "index_users_on_zooniverse_id", unique: true, using: :btree
 
   add_foreign_key "assignments", "classrooms"
   add_foreign_key "student_assignments", "assignments", on_update: :cascade, on_delete: :cascade
