@@ -2,10 +2,10 @@ require 'spec_helper'
 
 RSpec.describe Assignments::Destroy do
   let(:current_user) { build :user }
-  let(:panoptes) { instance_double(Panoptes::Client) }
+  let(:client) { instance_double(Panoptes::Client) }
   let(:classroom) { create :classroom, teachers: [current_user] }
   let(:assignment) { create :assignment, classroom: classroom }
-  let(:operation) { described_class.with(current_user: current_user, panoptes: panoptes) }
+  let(:operation) { described_class.with(current_user: current_user, client: client) }
 
   it 'marks the assignment as deleted' do
     operation.run! id: assignment.id

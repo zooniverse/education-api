@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def panoptes
-    return @panoptes if @panoptes
+    return @client if @client
 
     authorization_header = request.headers["Authorization"]
     raise Unauthorized, "missing authorization header" unless authorization_header
@@ -27,12 +27,12 @@ class ApplicationController < ActionController::Base
     authorization_token  = authorization_header.match(/\ABearer (.*)\Z/).try { |match| match[1] }
     raise Unauthorized, "missing bearer token" unless authorization_token
 
-    @panoptes = Panoptes::Client.new \
+    @client = Panoptes::Client.new \
       url: Rails.application.secrets["zooniverse_oauth_url"],
       auth: {token: authorization_token}
   end
 
-  def run(operation_class, data=params, includes: [])
+  def run(operation_class, data=params.to_h, includes: [])
     operation = operation_class.run(data.merge(panoptes: panoptes, current_user: current_user))
 
     if operation.valid?

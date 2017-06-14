@@ -19,6 +19,6 @@ module AuthenticationHelpers
   end
 
   def current_user
-    @current_user ||= User.create(zooniverse_id: "1")
+    @current_user ||= User.create(zooniverse_id: "9999")
   end
 end

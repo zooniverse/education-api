@@ -25,6 +25,7 @@ RSpec.describe AssignmentsController do
       classroom  = create(:classroom, teachers: [current_user])
       assignment = build(:assignment, classroom: classroom)
       outcome = double(result: assignment, valid?: true)
+      current_user
 
       attributes = {name: "Foo"}
       relationships = {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
@@ -33,7 +34,7 @@ RSpec.describe AssignmentsController do
         .with(current_user: current_user, panoptes: panoptes_application_client, attributes: attributes, relationships: relationships)
         .and_return(outcome)
 
-      post :create, data: {attributes: attributes, relationships: relationships}, format: :json
+      post :create, params: {data: {attributes: attributes, relationships: relationships}}, format: :json
       expect(response.body).to eq(ActiveModel::SerializableResource.new(assignment, include: [:students]).to_json)
     end
   end
@@ -48,7 +49,7 @@ RSpec.describe AssignmentsController do
       expect(Assignments::Destroy).to receive(:run)
         .with(a_hash_including(current_user: current_user, panoptes: panoptes_application_client, "id" => assignment.id.to_s))
         .and_return(outcome)
-      delete :destroy, id: assignment.id, format: :json
+      delete :destroy, params: {id: assignment.id}, format: :json
       expect(response.status).to eq(204)
     end
   end

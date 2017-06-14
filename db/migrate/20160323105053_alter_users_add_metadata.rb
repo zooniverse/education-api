@@ -1,4 +1,4 @@
-class AlterUsersAddMetadata < ActiveRecord::Migration
+class AlterUsersAddMetadata < ActiveRecord::Migration[5.1]
   def change
     add_column :users, :metadata, :jsonb
   end

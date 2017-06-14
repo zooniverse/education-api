@@ -23,7 +23,7 @@ module Classrooms
 
     def join_panoptes_group(classroom)
       return true if classroom.taught_by?(current_user)
-      panoptes.join_user_group(classroom.zooniverse_group_id, current_user.zooniverse_id, join_token: classroom.join_token)
+      client.join_user_group(classroom.zooniverse_group_id, current_user.zooniverse_id, join_token: classroom.join_token)
     rescue Panoptes::Client::ServerError
       false
     end

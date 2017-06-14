@@ -1,10 +1,9 @@
 require 'spec_helper'
 
 RSpec.describe Classrooms::TeacherUpdate do
-  let(:current_user) { User.new zooniverse_id: 1 }
-  let(:panoptes)     { instance_double(Panoptes::Client, join_user_group: true) }
-  let(:operation)    { described_class.with(current_user: current_user, panoptes: panoptes) }
-
+  let(:current_user) { create(:user) }
+  let(:client) { instance_double(Panoptes::Client) }
+  let(:operation)    { described_class.with(current_user: current_user, client: client) }
   let(:classroom)    { create :classroom, teachers: [current_user] }
 
   it 'changes a classroom attributes', :aggregate_failures do

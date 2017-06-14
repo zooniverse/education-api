@@ -3,5 +3,5 @@ class Operation < Operand::Base
   include Operand::Relationships
 
   object :current_user, class: :User
-  object :panoptes, class: "Panoptes::Client"
+  object :client, class: "Panoptes::Client"
 end

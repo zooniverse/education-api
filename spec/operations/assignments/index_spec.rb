@@ -2,8 +2,8 @@ require 'spec_helper'
 
 RSpec.describe Assignments::Index do
   let(:current_user) { create :user }
-  let(:panoptes) { instance_double(Panoptes::Client, join_user_group: true) }
-  let(:operation) { described_class.with(current_user: current_user, panoptes: panoptes) }
+  let(:client) { instance_double(Panoptes::Client, join_user_group: true) }
+  let(:operation) { described_class.with(current_user: current_user, client: client) }
 
   it 'lists no assignments when there are none' do
     result = operation.run!

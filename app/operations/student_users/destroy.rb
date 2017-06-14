@@ -9,7 +9,7 @@ module StudentUsers
 
       StudentUser.transaction do
         student_user.destroy!
-        panoptes.remove_user_from_user_group(classroom.zooniverse_group_id, student_user.zooniverse_id)
+        client.remove_user_from_user_group(classroom.zooniverse_group_id, student_user.zooniverse_id)
       end
     end
   end
