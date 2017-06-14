@@ -12,13 +12,13 @@ class ApplicationController < ActionController::Base
   private
 
   def require_login
-    panoptes_user = panoptes.me
+    panoptes_user = client.me
     @current_user = User.from_panoptes(panoptes_user)
   rescue Panoptes::Client::ServerError
     raise Unauthorized, "could not check authentication with Panoptes"
   end
 
-  def panoptes
+  def client
     return @client if @client
 
     authorization_header = request.headers["Authorization"]
@@ -32,8 +32,8 @@ class ApplicationController < ActionController::Base
       auth: {token: authorization_token}
   end
 
-  def run(operation_class, data=params.to_h, includes: [])
-    operation = operation_class.run(data.merge(panoptes: panoptes, current_user: current_user))
+  def run(operation_class, data=params, includes: [])
+    operation = operation_class.run(data.merge(client: client, current_user: current_user))
 
     if operation.valid?
       respond_with operation.result, include: includes

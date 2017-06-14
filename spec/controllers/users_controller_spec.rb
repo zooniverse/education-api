@@ -5,17 +5,17 @@ RSpec.describe UsersController do
 
   before { authenticate! }
 
-  describe "GET show" do
+  describe "GET show", :focus do
     it "returns the current user" do
       request.headers["Authorization"] = "Bearer xyz"
-      get :show, id: current_user.zooniverse_id, format: :json
+      get :show, params: { id: current_user.zooniverse_id }, format: :json
       expect(response.status).to eq(200)
     end
 
     it 'does not allow updating other users' do
-      other_user = User.create! zooniverse_id: '2'
+      other_user = create(:user, zooniverse_id: "2")
       request.headers["Authorization"] = "Bearer xyz"
-      get :show, id: other_user.zooniverse_id, format: :json
+      get :show, params: { id: other_user.zooniverse_id }, format: :json
       expect(response.status).to eq(403)
     end
 
