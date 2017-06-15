@@ -18,7 +18,7 @@ RSpec.describe AssignmentsController do
     end
   end
 
-  describe "POST create", :focus do
+  describe "POST create" do
     before { allow(controller).to receive(:panoptes_application_client).and_return(panoptes_application_client) }
 
     it 'returns a new assignment' do
@@ -33,8 +33,8 @@ RSpec.describe AssignmentsController do
         .with(current_user: current_user, client: panoptes_application_client, attributes: attributes, relationships: relationships)
         .and_return(outcome)
 
-      post :create, params: {data: {attributes: attributes}, relationships: relationships}, format: :json
-      expect(response.body).to eq(ActiveModelSerializers::SerializableResource.new(assignment, include: [:students]).to_json)
+      post :create, params: {data: {attributes: attributes, relationships: relationships}}, as: :json
+      expect(response.body).to include(ActiveModelSerializers::SerializableResource.new(assignment, include: [:students]).to_json)
     end
   end
 

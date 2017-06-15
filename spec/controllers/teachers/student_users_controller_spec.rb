@@ -11,7 +11,7 @@ RSpec.describe Teachers::StudentUsersController do
 
     it 'calls the operation' do
       expect(StudentUsers::Destroy).to receive(:run).once.and_return(outcome)
-      delete :destroy, classroom_id: classroom.id, id: classroom.student_users.first.id, format: :json
+      delete :destroy, params: {classroom_id: classroom.id, id: classroom.student_users.first.id}, format: :json
     end
   end
 end

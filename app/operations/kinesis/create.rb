@@ -1,5 +1,5 @@
 module Kinesis
-  class Create < Operation
+  class Create < ActiveInteraction::Base
     array :payload do
       hash strip: false
     end
