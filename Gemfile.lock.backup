@@ -237,32 +237,32 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_interaction (~> 3.5)
-  active_model_serializers (~> 0.10)
-  byebug (~> 9.0)
-  database_cleaner (~> 1.6)
-  dotenv-rails (~> 2.2)
-  factory_girl_rails (~> 4.8)
-  faraday-detailed_logger (~> 2.1)
-  faraday-panoptes (~> 0.3)
-  foreman (~> 0.84)
-  honeybadger (~> 3.1)
-  logstasher (~> 1.2)
-  newrelic_rpm (~> 4.2)
-  panoptes-client (~> 0.3)
-  pg (~> 0.20)
-  pry-byebug (~> 3.4)
-  pry-rails (~> 0.3)
-  puma (~> 3.9)
-  rack-cors (~> 0.4)
-  rails (~> 5.1)
-  responders (~> 2.4)
-  rspec-rails (~> 3.6)
-  sdoc (~> 0.4)
-  sidekiq (~> 5.0)
-  sidetiq (~> 0.7)
-  sinatra (~> 2.0)
-  web-console (~> 3.5)
+  active_interaction
+  active_model_serializers
+  byebug
+  database_cleaner
+  dotenv-rails
+  factory_girl_rails
+  faraday-detailed_logger
+  faraday-panoptes
+  foreman
+  honeybadger
+  logstasher
+  newrelic_rpm
+  panoptes-client
+  pg
+  pry-byebug
+  pry-rails
+  puma
+  rack-cors
+  rails
+  responders
+  rspec-rails
+  sdoc
+  sidekiq
+  sidetiq
+  sinatra
+  web-console
 
 BUNDLED WITH
    1.14.6
