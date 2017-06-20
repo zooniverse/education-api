@@ -1,4 +1,4 @@
-class AddClassroomMetadata < ActiveRecord::Migration[5.1]
+class AddClassroomMetadata < ActiveRecord::Migration[4.2]
   def change
     add_column :classrooms, :school, :string
     add_column :classrooms, :subject, :string

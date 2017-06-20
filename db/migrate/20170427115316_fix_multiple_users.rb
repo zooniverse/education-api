@@ -1,4 +1,4 @@
-class FixMultipleUsers < ActiveRecord::Migration[5.1]
+class FixMultipleUsers < ActiveRecord::Migration[4.2]
   def up
     list_of_ids = User.group("zooniverse_id").having("count(*) > 1").pluck(:zooniverse_id)
     list_of_ids.each do |id|
