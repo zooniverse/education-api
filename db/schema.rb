@@ -15,19 +15,18 @@ ActiveRecord::Schema.define(version: 20170427120805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "assignments", force: :cascade do |t|
+  create_table "assignments", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.jsonb "metadata"
     t.string "workflow_id", null: false
     t.string "subject_set_id", null: false
-    t.bigint "classroom_id", null: false
+    t.integer "classroom_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
-    t.index ["classroom_id"], name: "index_assignments_on_classroom_id"
   end
 
-  create_table "classrooms", force: :cascade do |t|
+  create_table "classrooms", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "zooniverse_group_id"
     t.string "join_token"
@@ -40,41 +39,34 @@ ActiveRecord::Schema.define(version: 20170427120805) do
     t.datetime "deleted_at"
   end
 
-  create_table "groups", force: :cascade do |t|
+  create_table "groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "zooniverse_group_id"
-    t.bigint "classroom_id"
+    t.integer "classroom_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["classroom_id"], name: "index_groups_on_classroom_id"
   end
 
-  create_table "student_assignments", force: :cascade do |t|
-    t.bigint "assignment_id"
-    t.bigint "student_user_id"
+  create_table "student_assignments", id: :serial, force: :cascade do |t|
+    t.integer "assignment_id"
+    t.integer "student_user_id"
     t.integer "classifications_count", default: 0
-    t.index ["assignment_id"], name: "index_student_assignments_on_assignment_id"
-    t.index ["student_user_id"], name: "index_student_assignments_on_student_user_id"
   end
 
-  create_table "student_users", force: :cascade do |t|
-    t.bigint "classroom_id"
-    t.bigint "user_id"
+  create_table "student_users", id: :serial, force: :cascade do |t|
+    t.integer "classroom_id"
+    t.integer "user_id"
     t.integer "classifications_count", default: 0
     t.index ["classroom_id", "user_id"], name: "index_student_users_on_classroom_id_and_user_id", unique: true
-    t.index ["classroom_id"], name: "index_student_users_on_classroom_id"
-    t.index ["user_id"], name: "index_student_users_on_user_id"
   end
 
-  create_table "teacher_users", force: :cascade do |t|
-    t.bigint "classroom_id"
-    t.bigint "user_id"
+  create_table "teacher_users", id: :serial, force: :cascade do |t|
+    t.integer "classroom_id"
+    t.integer "user_id"
     t.index ["classroom_id", "user_id"], name: "index_teacher_users_on_classroom_id_and_user_id", unique: true
-    t.index ["classroom_id"], name: "index_teacher_users_on_classroom_id"
-    t.index ["user_id"], name: "index_teacher_users_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "zooniverse_id"
     t.string "access_token"
     t.string "refresh_token"

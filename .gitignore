@@ -14,3 +14,4 @@
 /spec/examples.txt
 /.env
 /*.csv
+.ruby-version
