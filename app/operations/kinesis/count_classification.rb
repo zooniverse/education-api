@@ -1,7 +1,7 @@
 module Kinesis
   class CountClassification < Operation
     filters[:current_user].options[:default] = nil
-    filters[:panoptes].options[:default] = nil
+    filters[:client].options[:default] = nil
 
     string :source
     string :type

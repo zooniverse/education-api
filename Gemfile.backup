@@ -1,0 +1,38 @@
+source 'https://rubygems.org'
+
+gem 'rails'
+gem 'rack-cors'
+gem 'pg'
+gem 'responders'
+gem 'logstasher'
+gem 'honeybadger'
+gem 'sidekiq'
+gem 'sidetiq'
+
+gem 'sinatra', require: nil
+gem 'active_model_serializers'
+gem 'puma'
+gem 'sdoc'
+gem 'newrelic_rpm'
+gem 'active_interaction'
+gem 'faraday-panoptes'
+gem 'panoptes-client'
+
+group :development, :test do
+  gem 'byebug'
+  gem 'pry-byebug'
+  gem 'rspec-rails'
+  gem 'pry-rails'
+  gem 'faraday-detailed_logger'
+  gem 'dotenv-rails'
+end
+
+group :development do
+  gem 'web-console'
+  gem 'foreman'
+end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+end

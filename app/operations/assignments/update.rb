@@ -24,7 +24,7 @@ module Assignments
         end
 
         if subject_ids
-          panoptes.update_subject_set links: {subjects: subject_ids}
+          client.panoptes.update_subject_set links: {subjects: subject_ids}
         end
 
         assignment.save!

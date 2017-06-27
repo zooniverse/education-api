@@ -2,10 +2,10 @@ require 'spec_helper'
 
 RSpec.describe Assignments::Update do
   let(:current_user) { build :user }
-  let(:panoptes) { instance_double(Panoptes::Client) }
+  let(:client) { instance_double(Panoptes::Client, join_user_group: true) }
   let(:classroom) { create :classroom, teachers: [current_user] }
   let(:assignment) { create :assignment, classroom: classroom }
-  let(:operation) { described_class.with(current_user: current_user, panoptes: panoptes) }
+  let(:operation) { described_class.with(current_user: current_user, client: client) }
 
   it 'updates name' do
     operation.run! id: assignment.id, attributes: {name: 'bar'}

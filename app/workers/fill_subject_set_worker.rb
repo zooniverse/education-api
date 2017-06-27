@@ -6,7 +6,7 @@ class FillSubjectSetWorker
 
   def perform(subject_set_id, subject_ids)
     batch, rest = select_batch(subject_ids)
-    panoptes.add_subjects_to_subject_set(subject_set_id, batch)
+    client.add_subjects_to_subject_set(subject_set_id, batch)
 
     if rest.present?
       FillSubjectSetWorker.perform_async(subject_set_id, rest)

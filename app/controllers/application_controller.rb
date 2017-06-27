@@ -12,14 +12,14 @@ class ApplicationController < ActionController::Base
   private
 
   def require_login
-    panoptes_user = panoptes.me
+    panoptes_user = client.me
     @current_user = User.from_panoptes(panoptes_user)
   rescue Panoptes::Client::ServerError
     raise Unauthorized, "could not check authentication with Panoptes"
   end
 
-  def panoptes
-    return @panoptes if @panoptes
+  def client
+    return @client if @client
 
     authorization_header = request.headers["Authorization"]
     raise Unauthorized, "missing authorization header" unless authorization_header
@@ -27,13 +27,13 @@ class ApplicationController < ActionController::Base
     authorization_token  = authorization_header.match(/\ABearer (.*)\Z/).try { |match| match[1] }
     raise Unauthorized, "missing bearer token" unless authorization_token
 
-    @panoptes = Panoptes::Client.new \
+    @client = Panoptes::Client.new \
       url: Rails.application.secrets["zooniverse_oauth_url"],
       auth: {token: authorization_token}
   end
 
   def run(operation_class, data=params, includes: [])
-    operation = operation_class.run(data.merge(panoptes: panoptes, current_user: current_user))
+    operation = operation_class.run(data.merge(client: client, current_user: current_user))
 
     if operation.valid?
       respond_with operation.result, include: includes

@@ -1,10 +1,10 @@
 module AuthenticationHelpers
   def authenticate!
-    allow(controller).to receive(:panoptes).and_return(panoptes_client)
+    allow(controller).to receive(:client).and_return(client)
   end
 
-  def panoptes_client
-    return @panoptes_client if @panoptes_client
+  def client
+    return @client if @client
 
     me_hash = {
       "id" => current_user.zooniverse_id,
@@ -12,13 +12,13 @@ module AuthenticationHelpers
       "display_name" => "display_name"
     }
 
-    @panoptes_client = double(Panoptes::Client, me: me_hash).tap do |client|
+    @client = double(Panoptes::Client, me: me_hash).tap do |client|
       allow(client).to receive(:is_a?).and_return(false)
       allow(client).to receive(:is_a?).with(Panoptes::Client).and_return(true)
     end
   end
 
   def current_user
-    @current_user ||= User.create(zooniverse_id: "1")
+    @current_user ||= User.create(zooniverse_id: "9999", zooniverse_login: "login", zooniverse_display_name: "display_name")
   end
 end

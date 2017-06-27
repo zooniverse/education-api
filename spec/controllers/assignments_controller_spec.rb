@@ -14,7 +14,7 @@ RSpec.describe AssignmentsController do
       classroom  = create(:classroom, teachers: [current_user], students: [create(:user)])
       assignment = create(:assignment, classroom: classroom, student_users: classroom.student_users)
       get :index, format: :json
-      expect(response.body).to eq(ActiveModel::SerializableResource.new([assignment], include: [:student_assignments]).to_json)
+      expect(response.body).to eq(ActiveModelSerializers::SerializableResource.new([assignment], include: [:student_assignments]).to_json)
     end
   end
 
@@ -30,11 +30,11 @@ RSpec.describe AssignmentsController do
       relationships = {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
 
       expect(Assignments::Create).to receive(:run)
-        .with(current_user: current_user, panoptes: panoptes_application_client, attributes: attributes, relationships: relationships)
+        .with(current_user: current_user, client: panoptes_application_client, attributes: attributes, relationships: relationships)
         .and_return(outcome)
 
-      post :create, data: {attributes: attributes, relationships: relationships}, format: :json
-      expect(response.body).to eq(ActiveModel::SerializableResource.new(assignment, include: [:students]).to_json)
+      post :create, params: {data: {attributes: attributes, relationships: relationships}}, as: :json
+      expect(response.body).to include(ActiveModelSerializers::SerializableResource.new(assignment, include: [:students]).to_json)
     end
   end
 
@@ -46,9 +46,9 @@ RSpec.describe AssignmentsController do
       assignment = build(:assignment, id: 123, classroom: classroom)
       outcome = double(result: assignment, valid?: true)
       expect(Assignments::Destroy).to receive(:run)
-        .with(a_hash_including(current_user: current_user, panoptes: panoptes_application_client, "id" => assignment.id.to_s))
+        .with(a_hash_including(current_user: current_user, client: panoptes_application_client, "id" => assignment.id.to_s))
         .and_return(outcome)
-      delete :destroy, id: assignment.id, format: :json
+      delete :destroy, params: {id: assignment.id}, format: :json
       expect(response.status).to eq(204)
     end
   end
