@@ -17,6 +17,7 @@ gem 'newrelic_rpm', "~> 4.2"
 gem 'active_interaction', "~> 3.5"
 gem 'faraday-panoptes', "~> 0.3"
 gem 'panoptes-client', "~> 0.3"
+gem 'dotenv-rails', "~> 2.2"
 
 group :development, :test do
   gem 'byebug', "~> 9.0"
@@ -24,7 +25,6 @@ group :development, :test do
   gem 'rspec-rails', "~> 3.6"
   gem 'pry-rails', "~> 0.3"
   gem 'faraday-detailed_logger', "~> 2.1"
-  gem 'dotenv-rails', "~> 2.2"
 end
 
 group :development do
