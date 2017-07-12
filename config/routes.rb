@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   resources :assignments
 
+  resources :projects
+
   namespace :teachers do
     resources :classrooms do
       resources :student_users

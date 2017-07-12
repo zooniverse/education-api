@@ -7,7 +7,7 @@ RSpec.describe Classrooms::TeacherUpdate do
   let(:classroom)    { create :classroom, teachers: [current_user] }
 
   it 'changes a classroom attributes', :aggregate_failures do
-    result = operation.run! id: classroom.id, name: 'foobar', school: 'school-updated', subject: 'subject-updated', description: 'description-updated'
+    result = operation.run! id: classroom.id, name: 'foobar', school: 'school-updated', subject: 'subject-updated'
     expect(result.name).to eq('foobar')
     expect(result.school).to eq('school-updated')
     expect(result.subject).to eq('subject-updated')
