@@ -2,11 +2,11 @@ class ProjectsController < ApplicationController
   before_action :set_project_id, only: :create
 
   def create
-    run Projects::Create, params_hash.fetch(:data)#.fetch(:attributes)
+    run Projects::Create, params.fetch(:data)
   end
 
   def update
-    run Projects::Update, params_hash.fetch(:data).fetch(:attributes).merge(id: params[:id], client: client, current_user: current_user)
+    run Projects::Update, params.fetch(:data).merge(id: params[:id])
   end
 
   private
