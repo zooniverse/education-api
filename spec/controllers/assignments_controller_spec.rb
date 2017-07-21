@@ -29,8 +29,17 @@ RSpec.describe AssignmentsController do
       attributes = {name: "Foo"}
       relationships = {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
 
+      rebuilt = {}.tap do |param|
+        param[:attributes] = attributes
+        param[:relationships] = relationships
+        param[:current_user] = current_user
+        param[:client] = panoptes_application_client
+      end
+
+      action_params = ActionController::Parameters.new(rebuilt)
+
       expect(Assignments::Create).to receive(:run)
-        .with(current_user: current_user, client: panoptes_application_client, attributes: attributes, relationships: relationships)
+        .with(action_params)
         .and_return(outcome)
 
       post :create, params: {data: {attributes: attributes, relationships: relationships}}, as: :json

@@ -52,8 +52,4 @@ class ApplicationController < ActionController::Base
       auth: {client_id: Rails.application.secrets["zooniverse_oauth_key"],
              client_secret: Rails.application.secrets["zooniverse_oauth_secret"]}
   end
-
-  def params_hash
-    params.to_h
-  end
 end
