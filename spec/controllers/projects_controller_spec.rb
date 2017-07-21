@@ -33,7 +33,7 @@ RSpec.describe ProjectsController do
 
     it 'returns a new project' do
       project = create(:project)
-      attributes = {clone_workflow: true}
+      attributes = {custom_subject_set: true}
 
       # Why is this spec busted?
       # expect(Projects::Update).to receive(:run).once
@@ -42,7 +42,7 @@ RSpec.describe ProjectsController do
 
       put :update, params: {id: project.id, data: {attributes: attributes}}, as: :json
       expect(response.status).to eq(204)
-      expect(project.reload.clone_workflow).to be true
+      expect(project.reload.custom_subject_set).to be true
     end
   end
 end

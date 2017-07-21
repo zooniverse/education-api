@@ -10,9 +10,8 @@ RSpec.describe Projects::Create do
   end
 
   it 'sets booleans' do
-    described_class.run! current_user: current_user, client: client, attributes: {id: 1234, slug: 'zach/new-slug', clone_workflow: true, create_subject_set: true}
+    described_class.run! current_user: current_user, client: client, attributes: {id: 1234, slug: 'zach/new-slug', custom_subject_set: true}
     project = Project.find(1234)
-    expect(project.create_subject_set?).to be true
-    expect(project.clone_workflow?).to be true
+    expect(project.custom_subject_set?).to be true
   end
 end

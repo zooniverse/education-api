@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170712190806) do
+ActiveRecord::Schema.define(version: 20170718202715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20170712190806) do
     t.string "name", null: false
     t.jsonb "metadata"
     t.string "workflow_id", null: false
-    t.string "subject_set_id", null: false
+    t.string "subject_set_id"
     t.integer "classroom_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -51,8 +51,7 @@ ActiveRecord::Schema.define(version: 20170712190806) do
 
   create_table "projects", force: :cascade do |t|
     t.string "slug", null: false
-    t.boolean "clone_workflow", default: false
-    t.boolean "create_subject_set", default: false
+    t.boolean "custom_subject_set", default: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
