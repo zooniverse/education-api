@@ -23,19 +23,7 @@ class AssignmentsController < ApplicationController
 
   private
 
-  # Rails 5 gives you a Params object instead of a hash. ActiveInteraction hates it.
-  def params_hash
-    params.to_h
-  end
-
   def path_params
     params_hash.slice(:classroom_id, :id, :relationships)
-  end
-
-  def panoptes_application_client
-    @panoptes_application_client ||= Panoptes::Client.new \
-      url: Rails.application.secrets["zooniverse_oauth_url"],
-      auth: {client_id: Rails.application.secrets["zooniverse_oauth_key"],
-             client_secret: Rails.application.secrets["zooniverse_oauth_secret"]}
   end
 end

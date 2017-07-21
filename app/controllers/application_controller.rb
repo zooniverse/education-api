@@ -44,4 +44,15 @@ class ApplicationController < ActionController::Base
   def not_authorized(exception)
     render json: {"error" => "not authorized to acess this resource: #{exception.message}"}, status: :forbidden
   end
+
+  def panoptes_application_client
+    @panoptes_application_client ||= Panoptes::Client.new \
+      url: Rails.application.secrets["zooniverse_oauth_url"],
+      auth: {client_id: Rails.application.secrets["zooniverse_oauth_key"],
+             client_secret: Rails.application.secrets["zooniverse_oauth_secret"]}
+  end
+
+  def params_hash
+    params.to_h
+  end
 end
