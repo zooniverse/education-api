@@ -3,14 +3,14 @@ module Projects
     hash :attributes do
       integer :id
       string :slug
-      boolean :custom_subject_set, default: false
+      boolean :base_workflow_id, default: false
     end
 
     def execute
       project = Project.create!(
         id: attributes[:id],
         slug: attributes[:slug],
-        custom_subject_set: attributes[:custom_subject_set]
+        base_workflow_id: attributes[:base_workflow_id]
       )
     end
   end

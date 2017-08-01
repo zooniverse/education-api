@@ -17,7 +17,7 @@ module Assignments
     def execute
       classroom = current_user.taught_classrooms.find(classroom_id)
 
-      subject_set = project.custom_subject_set? ? create_and_fill_subject_set : nil
+      subject_set = project.base_workflow_id? ? create_and_fill_subject_set : nil
       workflow_id = get_workflow(subject_set)
 
       student_users = classroom.student_users.where(id: student_user_ids)
@@ -51,8 +51,8 @@ module Assignments
     end
 
     def get_workflow(subject_set)
-      if project.custom_subject_set?
-        workflow = clone_workflow(workflow_id, subject_set)
+      if project.base_workflow_id?
+        workflow = clone_workflow(project.base_workflow_id, subject_set)
         workflow["id"]
       elsif workflow_id?
         workflow_id

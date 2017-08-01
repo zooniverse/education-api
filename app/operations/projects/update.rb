@@ -3,12 +3,12 @@ module Projects
     integer :id
 
     hash :attributes do
-      boolean :custom_subject_set, default: false
+      integer :base_workflow_id, default: false
     end
 
     def execute
       project = Project.find(id)
-      project.update!(custom_subject_set: attributes[:custom_subject_set])
+      project.update!(base_workflow_id: attributes[:base_workflow_id])
     end
   end
 end

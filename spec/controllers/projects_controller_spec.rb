@@ -42,7 +42,7 @@ RSpec.describe ProjectsController do
     it 'returns a new project' do
       project = create(:project)
       outcome = double(result: project, valid?: true)
-      attributes = {custom_subject_set: true}
+      attributes = {base_workflow_id: 9999}
 
       params = {}.tap do |param|
         param[:attributes] = attributes
@@ -58,7 +58,7 @@ RSpec.describe ProjectsController do
 
       put :update, params: {id: project.id, data: {attributes: attributes}}, as: :json
       expect(response.status).to eq(204)
-      expect(project.reload.custom_subject_set).to be true
+      expect(project.reload.base_workflow_id).to be 9999
     end
   end
 end

@@ -5,7 +5,7 @@ RSpec.describe Assignments::Create do
   let(:client) { instance_double(Panoptes::Client) }
   let(:operation) { described_class.with(current_user: current_user, client: client) }
   let(:project) { create :project }
-  let(:custom_project) { create(:project, custom_subject_set: true) }
+  let(:custom_project) { create(:project, base_workflow_id: 9999) }
   let(:classroom) { create :classroom, teachers: [current_user] }
 
   before do
@@ -53,7 +53,7 @@ RSpec.describe Assignments::Create do
     end
 
     it "does not create a new workflow" do
-      project.update(custom_subject_set: false)
+      project.update(base_workflow_id: false)
       operation.run!  project_id: project.id,
                       workflow_id: "999",
                       attributes: {name: 'foo'},
@@ -82,5 +82,15 @@ RSpec.describe Assignments::Create do
                                                 student_users: {data: [{id: student_user1.id, type: 'student_user'},
                                                                        {id: student_user2.id, type: 'student_user'}]}}
     expect(assignment.student_users).to match_array([student_user1, student_user2])
+  end
+
+  describe "for unfound projects" do
+    it 'should return an error' do
+      expect {
+        operation.run!  project_id: 0,
+                        attributes: {name: 'foo'},
+                        relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
+      }.to raise_error ActiveRecord::RecordNotFound
+    end
   end
 end

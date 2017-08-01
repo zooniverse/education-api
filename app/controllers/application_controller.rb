@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   respond_to :json
   rescue_from Unauthorized, with: :not_authorized
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   before_action :require_login
 
@@ -42,8 +43,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def render_exception(status, exception)
+    self.response_body = nil
+    render status: status, json: { error: exception.message }
+  end
+
   def not_authorized(exception)
-    render json: {"error" => "not authorized to acess this resource: #{exception.message}"}, status: :forbidden
+    render_exception :forbidden, exception
+  end
+
+  def not_found(exception)
+    render_exception :not_found, exception
   end
 
   def panoptes_application_client

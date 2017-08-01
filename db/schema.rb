@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20170718202715) do
 
   create_table "projects", force: :cascade do |t|
     t.string "slug", null: false
-    t.boolean "custom_subject_set", default: false
+    t.integer "base_workflow_id", default: 0
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
