@@ -17,7 +17,7 @@ module Assignments
     def execute
       classroom = current_user.taught_classrooms.find(classroom_id)
 
-      subject_set = client.panoptes.create_subject_set display_name: uuid, links: {
+      subject_set = client.create_subject_set display_name: uuid, links: {
         project: base_project_id
       }
 
@@ -30,7 +30,7 @@ module Assignments
     end
 
     def clone_workflow(workflow_id, subject_set)
-      base_workflow = client.panoptes.workflow(base_workflow_id)
+      base_workflow = client.workflow(base_workflow_id)
 
       attributes = base_workflow.slice('primary_language', 'tasks', 'first_task', 'configuration')
       attributes['display_name'] = uuid
@@ -40,7 +40,7 @@ module Assignments
         subject_sets: [subject_set['id']]
       }
 
-      client.panoptes.create_workflow(attributes)
+      client.create_workflow(attributes)
     end
 
     def uuid

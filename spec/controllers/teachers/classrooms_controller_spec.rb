@@ -7,7 +7,6 @@ RSpec.describe Teachers::ClassroomsController do
 
   describe "GET index" do
     it "returns an empty list if there are no classrooms" do
-      allow(client).to receive(:paginate).with("/user_groups", {}).and_return("user_groups" => [])
       get :index, format: :json
       expect(parsed_response).to eq("data" => [])
     end
