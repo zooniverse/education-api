@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
     raise Unauthorized, "missing bearer token" unless authorization_token
 
     @client = Panoptes::Client.new \
+      env: Rails.env.to_sym,
       auth: {token: authorization_token}
   end
 
