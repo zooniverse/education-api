@@ -1,7 +1,7 @@
 module WorkerHelpers
   def client
     @client ||= Panoptes::Client.new \
-      url: Rails.application.secrets["zooniverse_oauth_url"],
+      env: Rails.env.to_sym,
       auth: {client_id: Rails.application.secrets["zooniverse_oauth_key"],
              client_secret: Rails.application.secrets["zooniverse_oauth_secret"]}
   end
