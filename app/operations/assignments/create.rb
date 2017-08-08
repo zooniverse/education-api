@@ -33,7 +33,7 @@ module Assignments
     end
 
     def clone_workflow(workflow_id, subject_set)
-      base_workflow = client.workflow(base_workflow_id)
+      base_workflow = client.workflow(project.base_workflow_id)
 
       attributes = base_workflow.slice('primary_language', 'tasks', 'first_task', 'configuration')
       attributes['display_name'] = uuid
@@ -66,7 +66,7 @@ module Assignments
     end
 
     def create_and_fill_subject_set
-      subject_set = client.panoptes.create_subject_set display_name: uuid, links: {
+      subject_set = client.create_subject_set display_name: uuid, links: {
         project: project_id
       }
 

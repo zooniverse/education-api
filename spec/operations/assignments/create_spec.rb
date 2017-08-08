@@ -17,14 +17,14 @@ RSpec.describe Assignments::Create do
 
   describe "project uses a custom subject set and workflow" do
     it 'creates a new subject set' do
-      expect(client).to receive_message_chain(:panoptes, :create_subject_set).and_return("id" => "123")
+      expect(client).to receive(:create_subject_set).and_return("id" => "123")
       operation.run!  project_id: custom_project.id,
                       attributes: {name: 'foo'},
                       relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
     end
 
     it 'clones the workflow' do
-      expect(client).to receive_message_chain(:panoptes, :create_workflow)
+      expect(client).to receive(:create_workflow)
                       .with("display_name" => an_instance_of(String),
                             "retirement" => {criteria: "never_retire", options: {}},
                             "links" => {project: "1", subject_sets: ["123"]})
@@ -60,21 +60,6 @@ RSpec.describe Assignments::Create do
                       relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
       expect(classroom.assignments.first.workflow_id).to eq("999")
     end
-
-  it 'creates a new subject set' do
-    expect(client).to receive(:create_subject_set).and_return("id" => "123")
-    operation.run! attributes: {name: 'foo'},
-                   relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
-  end
-
-  it 'creates a new workflow' do
-    expect(client).to receive(:create_workflow)
-                    .with("display_name" => an_instance_of(String),
-                          "retirement" => {criteria: "never_retire", options: {}},
-                          "links" => {project: "1", subject_sets: ["123"]})
-                    .and_return("id" => "2")
-    operation.run! attributes: {name: 'foo'},
-                   relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
   end
 
   it 'creates an assignment' do
