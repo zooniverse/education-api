@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
     raise Unauthorized, "missing bearer token" unless authorization_token
 
     @client = Panoptes::Client.new \
-      url: Rails.application.secrets["zooniverse_oauth_url"],
+      env: Rails.env.to_sym,
       auth: {token: authorization_token}
   end
 

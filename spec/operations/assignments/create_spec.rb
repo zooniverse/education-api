@@ -9,10 +9,10 @@ RSpec.describe Assignments::Create do
   let(:classroom) { create :classroom, teachers: [current_user] }
 
   before do
-    allow(client).to receive_message_chain(:panoptes, :workflow).and_return("links" => {"project" => "1"})
-    allow(client).to receive_message_chain(:panoptes, :create_workflow).and_return("id" => "2", "links" => {"project" => "1"})
-    allow(client).to receive_message_chain(:panoptes, :create_subject_set).and_return("id" => "123")
-    allow(client).to receive_message_chain(:panoptes, :add_subjects_to_subject_set).and_return(true)
+    allow(client).to receive(:workflow).and_return("links" => {"project" => "1"})
+    allow(client).to receive(:create_workflow).and_return("id" => "2", "links" => {"project" => "1"})
+    allow(client).to receive(:create_subject_set).and_return("id" => "123")
+    allow(client).to receive(:add_subjects_to_subject_set).and_return(true)
   end
 
   describe "project uses a custom subject set and workflow" do
@@ -60,6 +60,21 @@ RSpec.describe Assignments::Create do
                       relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
       expect(classroom.assignments.first.workflow_id).to eq("999")
     end
+
+  it 'creates a new subject set' do
+    expect(client).to receive(:create_subject_set).and_return("id" => "123")
+    operation.run! attributes: {name: 'foo'},
+                   relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
+  end
+
+  it 'creates a new workflow' do
+    expect(client).to receive(:create_workflow)
+                    .with("display_name" => an_instance_of(String),
+                          "retirement" => {criteria: "never_retire", options: {}},
+                          "links" => {project: "1", subject_sets: ["123"]})
+                    .and_return("id" => "2")
+    operation.run! attributes: {name: 'foo'},
+                   relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
   end
 
   it 'creates an assignment' do

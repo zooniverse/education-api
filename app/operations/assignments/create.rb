@@ -33,7 +33,7 @@ module Assignments
     end
 
     def clone_workflow(workflow_id, subject_set)
-      base_workflow = client.panoptes.workflow(workflow_id)
+      base_workflow = client.workflow(base_workflow_id)
 
       attributes = base_workflow.slice('primary_language', 'tasks', 'first_task', 'configuration')
       attributes['display_name'] = uuid
@@ -43,7 +43,7 @@ module Assignments
         subject_sets: [subject_set['id']]
       }
 
-      client.panoptes.create_workflow(attributes)
+      client.create_workflow(attributes)
     end
 
     def uuid
