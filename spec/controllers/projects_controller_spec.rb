@@ -17,7 +17,7 @@ RSpec.describe ProjectsController do
       outcome = double(result: project, valid?: true)
       attributes = {slug: project.slug}
       op_attributes = attributes.merge(id: "1234")
-      allow(panoptes_application_client).to receive(:projects).and_return([{id: "1234"}])
+      allow(panoptes_application_client).to receive(:projects).and_return([{"id" => "1234"}])
 
       rebuilt = {}.tap do |param|
         param[:attributes] = op_attributes
