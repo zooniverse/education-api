@@ -14,7 +14,7 @@ class ProjectsController < ApplicationController
   def set_project_id
     slug = params.fetch(:data).fetch(:attributes).fetch(:slug)
     return unless slug
-    project ||= panoptes_application_client.project slug
+    project ||= panoptes_application_client.projects(search: slug).first
     params[:data][:attributes][:id] = project[:id]
   end
 end
