@@ -3,7 +3,7 @@ module Projects
     hash :attributes do
       integer :id
       string :slug
-      boolean :base_workflow_id, default: nil
+      integer :base_workflow_id, default: nil
     end
 
     def execute
