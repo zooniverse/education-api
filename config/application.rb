@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module EducationApi
   class Application < Rails::Application
+    attr_accessor :revision
 
     config.action_controller.permit_all_parameters = true
 
