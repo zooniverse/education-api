@@ -1,7 +1,7 @@
 module Assignments
   class Create < Operation
-    integer :project_id
-    integer :workflow_id, default: nil
+    integer :program_id
+    integer :workflow_id
 
     hash :attributes do
       string :name
@@ -17,7 +17,7 @@ module Assignments
     def execute
       classroom = current_user.taught_classrooms.find(classroom_id)
 
-      subject_set = project.base_workflow_id? ? create_and_fill_subject_set : nil
+      subject_set = program.custom? ? create_and_fill_subject_set : nil
       workflow_id = get_workflow(subject_set)
 
       student_users = classroom.student_users.where(id: student_user_ids)
@@ -33,7 +33,7 @@ module Assignments
     end
 
     def clone_workflow(workflow_id, subject_set)
-      base_workflow = client.workflow(project.base_workflow_id)
+      base_workflow = client.workflow(workflow_id)
 
       attributes = base_workflow.slice('primary_language', 'tasks', 'first_task', 'configuration')
       attributes['display_name'] = uuid
@@ -51,23 +51,21 @@ module Assignments
     end
 
     def get_workflow(subject_set)
-      if project.base_workflow_id?
-        workflow = clone_workflow(project.base_workflow_id, subject_set)
+      if program.custom?
+        workflow = clone_workflow(workflow_id, subject_set)
         workflow["id"]
-      elsif workflow_id?
-        workflow_id
       else
-        raise ActiveInteraction::InvalidInteractionError.new("Workflow id missing and project does not clone")
+        workflow_id
       end
     end
 
-    def project
-      project ||= Project.find(project_id)
+    def program
+      @program ||= Program.find(program_id)
     end
 
     def create_and_fill_subject_set
       subject_set = client.create_subject_set display_name: uuid, links: {
-        project: project_id
+        program: program_id
       }
 
       FillSubjectSetWorker.perform_async(subject_set["id"], subject_ids&.uniq)
