@@ -1,6 +1,8 @@
 class Classroom < ActiveRecord::Base
   include Deletable
 
+  belongs_to :program, optional: true
+
   has_many :student_users
   has_many :students, through: :student_users, source: :user
   has_many :teacher_users

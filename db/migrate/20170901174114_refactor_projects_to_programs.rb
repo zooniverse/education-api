@@ -9,6 +9,6 @@ class RefactorProjectsToPrograms < ActiveRecord::Migration[5.1]
     add_column :projects, :metadata, :jsonb
 
     rename_table :projects, :programs
-    add_reference :classrooms, :programs, index: true, foreign_key: true
+    add_reference :classrooms, :program, index: true, foreign_key: true
   end
 end

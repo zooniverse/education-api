@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 20170901174114) do
     t.text "description"
     t.integer "classifications_count", default: 0
     t.datetime "deleted_at"
-    t.bigint "programs_id"
-    t.index ["programs_id"], name: "index_classrooms_on_programs_id"
+    t.bigint "program_id"
+    t.index ["program_id"], name: "index_classrooms_on_program_id"
   end
 
   create_table "groups", id: :serial, force: :cascade do |t|
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20170901174114) do
   end
 
   add_foreign_key "assignments", "classrooms"
-  add_foreign_key "classrooms", "programs", column: "programs_id"
+  add_foreign_key "classrooms", "programs"
   add_foreign_key "student_assignments", "assignments", on_update: :cascade, on_delete: :cascade
   add_foreign_key "student_assignments", "student_users", on_update: :cascade, on_delete: :cascade
 end
