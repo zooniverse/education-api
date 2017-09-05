@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20170901174114) do
   end
 
   create_table "programs", force: :cascade do |t|
+    t.string "slug"
     t.boolean "custom", default: false, null: false
     t.string "name", null: false
     t.string "description"
