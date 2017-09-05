@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 20170901174114) do
     t.text "description"
     t.integer "classifications_count", default: 0
     t.datetime "deleted_at"
-    t.bigint "projects_id"
-    t.index ["projects_id"], name: "index_classrooms_on_projects_id"
+    t.bigint "programs_id"
+    t.index ["programs_id"], name: "index_classrooms_on_programs_id"
   end
 
   create_table "groups", id: :serial, force: :cascade do |t|
@@ -50,12 +50,10 @@ ActiveRecord::Schema.define(version: 20170901174114) do
   end
 
   create_table "programs", force: :cascade do |t|
-    t.string "slug", null: false
     t.boolean "custom", default: false, null: false
     t.string "name", null: false
     t.string "description"
     t.jsonb "metadata"
-    t.index ["slug"], name: "index_programs_on_slug", unique: true
   end
 
   create_table "student_assignments", id: :serial, force: :cascade do |t|
@@ -90,7 +88,7 @@ ActiveRecord::Schema.define(version: 20170901174114) do
   end
 
   add_foreign_key "assignments", "classrooms"
-  add_foreign_key "classrooms", "programs", column: "projects_id"
+  add_foreign_key "classrooms", "programs", column: "programs_id"
   add_foreign_key "student_assignments", "assignments", on_update: :cascade, on_delete: :cascade
   add_foreign_key "student_assignments", "student_users", on_update: :cascade, on_delete: :cascade
 end
