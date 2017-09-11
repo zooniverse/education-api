@@ -26,7 +26,7 @@ RSpec.describe AssignmentsController do
       assignment = build(:assignment, classroom: classroom)
       outcome = double(result: assignment, valid?: true)
 
-      attributes = {project_id: 8888, name: "Foo"}
+      attributes = {program_id: 8888, name: "Foo"}
       relationships = {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
 
       rebuilt = {}.tap do |param|

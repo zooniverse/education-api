@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170718202715) do
+ActiveRecord::Schema.define(version: 20170901174114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 20170718202715) do
     t.text "description"
     t.integer "classifications_count", default: 0
     t.datetime "deleted_at"
-    t.bigint "projects_id"
-    t.index ["projects_id"], name: "index_classrooms_on_projects_id"
+    t.bigint "program_id"
+    t.index ["program_id"], name: "index_classrooms_on_program_id"
   end
 
   create_table "groups", id: :serial, force: :cascade do |t|
@@ -49,10 +49,12 @@ ActiveRecord::Schema.define(version: 20170718202715) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "projects", force: :cascade do |t|
-    t.string "slug", null: false
-    t.integer "base_workflow_id"
-    t.index ["slug"], name: "index_projects_on_slug", unique: true
+  create_table "programs", force: :cascade do |t|
+    t.string "slug"
+    t.boolean "custom", default: false, null: false
+    t.string "name", null: false
+    t.string "description"
+    t.jsonb "metadata"
   end
 
   create_table "student_assignments", id: :serial, force: :cascade do |t|
@@ -87,7 +89,7 @@ ActiveRecord::Schema.define(version: 20170718202715) do
   end
 
   add_foreign_key "assignments", "classrooms"
-  add_foreign_key "classrooms", "projects", column: "projects_id"
+  add_foreign_key "classrooms", "programs"
   add_foreign_key "student_assignments", "assignments", on_update: :cascade, on_delete: :cascade
   add_foreign_key "student_assignments", "student_users", on_update: :cascade, on_delete: :cascade
 end

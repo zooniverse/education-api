@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   resources :assignments
 
-  resources :projects
+  resources :programs
 
   namespace :teachers do
     resources :classrooms do
