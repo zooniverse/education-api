@@ -4,7 +4,7 @@ class RefactorProjectsToPrograms < ActiveRecord::Migration[5.1]
     remove_reference :classrooms, :projects, index: true, foreign_key: true
 
     add_column :projects, :custom, :boolean, null: false, default: false
-    add_column :projects, :name, :string, null: false
+    add_column :projects, :name, :string
     add_column :projects, :description, :string
     add_column :projects, :metadata, :jsonb
 
