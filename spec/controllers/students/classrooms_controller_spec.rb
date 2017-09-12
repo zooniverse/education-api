@@ -5,8 +5,6 @@ RSpec.describe Students::ClassroomsController do
 
   before { authenticate! }
 
-  describe "GET index"
-
   describe "POST join" do
     it "joins a classroom" do
       expect(client).to receive(:join_user_group).with(nil, "9999", join_token: "asdf").and_return(true)
