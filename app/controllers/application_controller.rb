@@ -5,10 +5,16 @@ class ApplicationController < ActionController::Base
   rescue_from Unauthorized, with: :not_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-  before_action :require_login
+  before_action :require_login, except: [:root]
 
   attr_reader :panoptes
   attr_reader :current_user
+
+  def root
+    render json: {
+      revision: Rails.application.revision
+    }
+  end
 
   private
 
