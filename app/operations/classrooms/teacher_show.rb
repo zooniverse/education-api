@@ -4,7 +4,7 @@ module Classrooms
     validates :id, presence: true
 
     def execute
-      Classroom.active.find!(id)
+      Classroom.active.find(id)
     end
   end
 end
