@@ -3,4 +3,5 @@ class ClassroomSerializer < ActiveModel::Serializer
 
   has_many :groups
   has_many :student_users, key: :students, serializer: StudentUserSerializer
+  belongs_to :program
 end
