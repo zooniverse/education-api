@@ -5,19 +5,18 @@ class AssignmentsController < ApplicationController
   end
 
   def create
-    run Assignments::Create.with(client: panoptes_application_client),
+    run Assignments::Create,
       params.fetch(:data),
       includes: [:student_assignments]
   end
 
   def update
-    run Assignments::Update.with(client: panoptes_application_client),
+    run Assignments::Update,
       params.fetch(:data),
       includes: [:student_assignments]
   end
 
   def destroy
-    run Assignments::Destroy.with(client: panoptes_application_client),
-      params
+    run Assignments::Destroy, params
   end
 end

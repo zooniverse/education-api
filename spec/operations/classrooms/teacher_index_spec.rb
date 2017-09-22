@@ -23,6 +23,6 @@ RSpec.describe Classrooms::TeacherIndex do
     program_classroom = create :classroom, teachers: [current_user], program: program
     result = operation.run! program_id: program.id
     expect(result).to include(program_classroom)
-    expect(result).to_not include(classroom)
+    expect(result).not_to include(classroom)
   end
 end

@@ -18,6 +18,14 @@ RSpec.describe Teachers::ClassroomsController do
       get :index, format: :json
       expect(response.body).to eq(ActiveModelSerializers::SerializableResource.new([classroom], include: [:students]).to_json)
     end
+
+    it 'filters by program id' do
+      program = create(:program)
+      classroom = create :classroom, teachers: [current_user], program: program
+      other_classroom = create :classroom
+      get :index, params: { program_id: program.id }, format: :json
+      expect(parsed_response).not_to include(other_classroom)
+    end
   end
 
   describe "POST create" do

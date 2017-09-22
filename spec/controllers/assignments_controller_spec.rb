@@ -22,28 +22,15 @@ RSpec.describe AssignmentsController do
     before { allow(controller).to receive(:panoptes_application_client).and_return(panoptes_application_client) }
 
     it 'returns a new assignment' do
-      classroom  = create(:classroom, teachers: [current_user])
+      program = create(:program)
+      classroom  = create(:classroom, program: program, teachers: [current_user])
       assignment = build(:assignment, classroom: classroom)
-      outcome = double(result: assignment, valid?: true)
 
-      attributes = {program_id: 8888, name: "Foo"}
+      attributes = {workflow_id: 8888, name: "Foo"}
       relationships = {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
 
-      rebuilt = {}.tap do |param|
-        param[:attributes] = attributes
-        param[:relationships] = relationships
-        param[:current_user] = current_user
-        param[:client] = panoptes_application_client
-      end
-
-      action_params = ActionController::Parameters.new(rebuilt)
-
-      expect(Assignments::Create).to receive(:run)
-        .with(action_params)
-        .and_return(outcome)
-
-      post :create, params: {data: {attributes: attributes, relationships: relationships}}, as: :json
-      expect(response.body).to include(ActiveModelSerializers::SerializableResource.new(assignment, include: [:students]).to_json)
+      post :create, params: {data: {attributes: attributes, relationships: relationships}}, format: :json
+      expect(parsed_response[:data][:attributes][:name]).to eq(assignment.name)
     end
   end
 
@@ -51,14 +38,11 @@ RSpec.describe AssignmentsController do
     before { allow(controller).to receive(:panoptes_application_client).and_return(panoptes_application_client) }
 
     it 'marks the assignment as deleted' do
-      classroom  = build(:classroom, teachers: [current_user])
-      assignment = build(:assignment, id: 123, classroom: classroom)
-      outcome = double(result: assignment, valid?: true)
-      expect(Assignments::Destroy).to receive(:run)
-        .with(a_hash_including(current_user: current_user, client: panoptes_application_client, "id" => assignment.id.to_s))
-        .and_return(outcome)
+      classroom  = create(:classroom, teachers: [current_user])
+      assignment = create(:assignment, id: 123, classroom: classroom)
       delete :destroy, params: {id: assignment.id}, format: :json
       expect(response.status).to eq(204)
+      expect(Assignment.find(123).deleted_at).not_to be(nil)
     end
   end
 end

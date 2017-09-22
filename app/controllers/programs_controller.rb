@@ -1,4 +1,12 @@
 class ProgramsController < ApplicationController
+  def show
+    run Programs::Show, params
+  end
+
+  def index
+    run Programs::Index
+  end
+
   def create
     run Programs::Create, params.fetch(:data)
   end
