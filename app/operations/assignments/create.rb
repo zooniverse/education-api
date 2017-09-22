@@ -1,7 +1,7 @@
 module Assignments
   class Create < Operation
     hash :attributes do
-      integer :workflow_id, default: nil
+      integer :workflow_id
       string :name
       hash :metadata, strip: false, default: {}
     end

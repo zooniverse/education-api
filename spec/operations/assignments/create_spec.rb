@@ -47,9 +47,9 @@ RSpec.describe Assignments::Create do
       expect(classroom.assignments.first.subject_set_id).to be_nil
     end
 
-    xit "raises an error if a workflow is not included" do
+    it "raises an error if a workflow is not included" do
       expect {
-        operation.run!  attributes: {workflow_id: workflow_id, name: 'foo'},
+        operation.run!  attributes: {name: 'foo'},
                         relationships: {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
       }.to raise_error ActiveInteraction::InvalidInteractionError
     end
