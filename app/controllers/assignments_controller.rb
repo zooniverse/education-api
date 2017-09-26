@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   end
 
   def create
-    run Assignments::Create,
+    run Assignments::Create.with(client: panoptes_application_client),,
       params.fetch(:data),
       includes: [:student_assignments]
   end
