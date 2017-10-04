@@ -12,7 +12,7 @@ class AssignmentsController < ApplicationController
 
   def update
     run Assignments::Update.with(client: panoptes_application_client),
-      params.fetch(:data),
+      params.fetch(:data).merge(id: params[:id]),
       includes: [:student_assignments]
   end
 

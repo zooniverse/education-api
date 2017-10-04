@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
   def require_login
     panoptes_user = client.me
     @current_user = User.from_panoptes(panoptes_user)
+    # @current_user = User.first
   rescue Panoptes::Client::ServerError
     raise Unauthorized, "could not check authentication with Panoptes"
   end
