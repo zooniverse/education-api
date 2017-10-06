@@ -12,6 +12,10 @@ if rails_env == "production"
   stdout_redirect "#{app_path}/log/production.log", "#{app_path}/log/production_err.log", true
 end
 
+if rails_env == 'development'
+  worker_timeout 3600
+end
+
 bind "tcp://0.0.0.0:#{port}"
 
 # Code to run before doing a restart. This code should

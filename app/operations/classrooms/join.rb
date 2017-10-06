@@ -15,11 +15,8 @@ module Classrooms
       else
         errors.add(:id, "cannot join")
       end
-
       classroom
     end
-
-
 
     def join_panoptes_group(classroom)
       return true if classroom.taught_by?(current_user)

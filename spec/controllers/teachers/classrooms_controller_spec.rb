@@ -18,12 +18,20 @@ RSpec.describe Teachers::ClassroomsController do
       get :index, format: :json
       expect(response.body).to eq(ActiveModelSerializers::SerializableResource.new([classroom], include: [:students]).to_json)
     end
+
+    it 'filters by program id' do
+      program = create(:program)
+      classroom = create :classroom, teachers: [current_user], program: program
+      other_classroom = create :classroom
+      get :index, params: { program_id: program.id }, format: :json
+      expect(parsed_response).not_to include(other_classroom)
+    end
   end
 
   describe "POST create" do
     it "creates a new classroom" do
       created_user_group = {'id' => 1, 'join_token' => 'asdf'}
-      allow(client).to receive_message_chain(:panoptes, :post).with("/user_groups", user_groups: {name: an_instance_of(String)}).and_return("user_groups" => [created_user_group])
+      allow(user_client).to receive_message_chain(:panoptes, :post).with("/user_groups", user_groups: {name: an_instance_of(String)}).and_return("user_groups" => [created_user_group])
       post :create, params: {data: {attributes: {name: "Foo"}}}, format: :json
 
       classroom = Classroom.first

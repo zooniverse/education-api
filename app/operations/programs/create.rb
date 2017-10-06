@@ -14,11 +14,13 @@ module Programs
 
     def execute
       program = Program.create!(
-        id: attributes[:id],
         slug: attributes[:slug],
         name: attributes[:name],
-        custom: attributes[:custom]
       )
+      program.custom = attributes[:custom] if attributes[:custom]
+      program.description = attributes[:description] if attributes[:description]
+      program.metadata = attributes[:metadata] if attributes[:metadata]
+      program.tap(&:save!)
     end
   end
 end

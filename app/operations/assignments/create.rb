@@ -1,9 +1,7 @@
 module Assignments
   class Create < Operation
-    integer :program_id
-    integer :workflow_id
-
     hash :attributes do
+      integer :workflow_id
       string :name
       hash :metadata, strip: false, default: {}
     end
@@ -15,16 +13,14 @@ module Assignments
     end
 
     def execute
-      classroom = current_user.taught_classrooms.find(classroom_id)
-
       subject_set = program.custom? ? create_and_fill_subject_set : nil
-      workflow_id = get_workflow(subject_set)
+      local_workflow_id = get_workflow_id(subject_set)
 
       student_users = classroom.student_users.where(id: student_user_ids)
       assignment = classroom.assignments.create!(
         name: attributes[:name],
         metadata: attributes[:metadata],
-        workflow_id: workflow_id,
+        workflow_id: local_workflow_id,
         student_users: student_users
       )
 
@@ -32,8 +28,8 @@ module Assignments
       assignment
     end
 
-    def clone_workflow(workflow_id, subject_set)
-      base_workflow = client.workflow(workflow_id)
+    def clone_workflow(local_workflow_id, subject_set)
+      base_workflow = client.workflow(local_workflow_id)
 
       attributes = base_workflow.slice('primary_language', 'tasks', 'first_task', 'configuration')
       attributes['display_name'] = uuid
@@ -50,22 +46,26 @@ module Assignments
       @uuid ||= SecureRandom.uuid
     end
 
-    def get_workflow(subject_set)
+    def get_workflow_id(subject_set)
       if program.custom?
-        workflow = clone_workflow(workflow_id, subject_set)
+        workflow = clone_workflow(attributes[:workflow_id], subject_set)
         workflow["id"]
       else
-        workflow_id
+        attributes[:workflow_id]
       end
     end
 
+    def classroom
+      @classroom ||= current_user.taught_classrooms.find(classroom_id)
+    end
+
     def program
-      @program ||= Program.find(program_id)
+      @program ||= classroom.program
     end
 
     def create_and_fill_subject_set
       subject_set = client.create_subject_set display_name: uuid, links: {
-        program: program_id
+        program: program.id
       }
 
       FillSubjectSetWorker.perform_async(subject_set["id"], subject_ids&.uniq)
