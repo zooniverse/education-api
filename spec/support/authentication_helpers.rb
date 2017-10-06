@@ -17,9 +17,6 @@ module AuthenticationHelpers
       allow(client).to receive(:is_a?).with(Panoptes::Client).and_return(true)
     end
 
-    allow(Panoptes::Client).to receive(:===).and_call_original
-    allow(Panoptes::Client).to receive(:===).with(@application_client).and_return(true)
-
     @application_client
   end
 
@@ -38,8 +35,6 @@ module AuthenticationHelpers
       allow(client).to receive(:is_a?).with(Panoptes::Client).and_return(true)
     end
 
-    allow(Panoptes::Client).to receive(:===).and_call_original
-    allow(Panoptes::Client).to receive(:===).with(@user_client).and_return(true)
 
     @user_client
   end
