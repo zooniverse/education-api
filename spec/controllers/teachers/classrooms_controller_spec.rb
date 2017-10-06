@@ -31,7 +31,7 @@ RSpec.describe Teachers::ClassroomsController do
   describe "POST create" do
     it "creates a new classroom" do
       created_user_group = {'id' => 1, 'join_token' => 'asdf'}
-      allow(client).to receive_message_chain(:panoptes, :post).with("/user_groups", user_groups: {name: an_instance_of(String)}).and_return("user_groups" => [created_user_group])
+      allow(user_client).to receive_message_chain(:panoptes, :post).with("/user_groups", user_groups: {name: an_instance_of(String)}).and_return("user_groups" => [created_user_group])
       post :create, params: {data: {attributes: {name: "Foo"}}}, format: :json
 
       classroom = Classroom.first
