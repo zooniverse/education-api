@@ -1,17 +1,27 @@
 class ProgramsController < ApplicationController
+  skip_before_action :require_login
+
   def show
-    run Programs::Show, params
+    anon_run Programs::Show, params
   end
 
   def index
-    run Programs::Index
+    anon_run Programs::Index
   end
 
   def create
     run Programs::Create, params.fetch(:data)
   end
 
-  def update
-    run Programs::Update, params.fetch(:data).merge(id: params[:id])
+  private
+
+  def anon_run(operation_class, data=params)
+    operation = operation_class.run(data)
+
+    if operation.valid?
+      respond_with operation.result
+    else
+      render json: ErrorSerializer.serialize(operation), status: :unprocessable_entity
+    end
   end
 end

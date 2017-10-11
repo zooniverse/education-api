@@ -1,5 +1,5 @@
 module Programs
-  class Index < Operation
+  class Index < ActiveInteraction::Base
     def execute
       Program.all
     end

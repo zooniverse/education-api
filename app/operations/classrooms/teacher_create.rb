@@ -7,6 +7,10 @@ module Classrooms
 
     validates :name, presence: true
 
+    relationships do
+      belongs_to :program
+    end
+
     def execute
       Classroom.create!(name: name, school: school, subject: subject, description: description, teachers: [current_user]).tap do |classroom|
         panoptes_group = client.panoptes.post("/user_groups", user_groups: {name: SecureRandom.uuid})["user_groups"][0]
