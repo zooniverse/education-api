@@ -9,7 +9,7 @@ module Teachers
     end
 
     def create
-      run Classrooms::TeacherCreate, params.to_h.fetch(:data).fetch(:attributes)
+      run Classrooms::TeacherCreate, params.to_h.fetch(:data)
     end
 
     def update
