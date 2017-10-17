@@ -9,6 +9,10 @@ module Classrooms
 
     validates :name, presence: true
 
+    relationships do
+      belongs_to :program
+    end
+
     def execute
       classroom = current_user.taught_classrooms.active.find(id)
       classroom.update!(name: name, school: school, subject: subject, description: description)

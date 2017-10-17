@@ -1,6 +1,7 @@
 module Programs
-  class Show < Operation
+  class Show < ActiveInteraction::Base
     integer :id
+    validates :id, presence: true
 
     def execute
       Program.find(id)
