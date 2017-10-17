@@ -29,10 +29,12 @@ RSpec.describe Teachers::ClassroomsController do
   end
 
   describe "POST create" do
+    let(:program) {create(:program)}
     it "creates a new classroom" do
       created_user_group = {'id' => 1, 'join_token' => 'asdf'}
       allow(user_client).to receive_message_chain(:panoptes, :post).with("/user_groups", user_groups: {name: an_instance_of(String)}).and_return("user_groups" => [created_user_group])
-      post :create, params: {data: {attributes: {name: "Foo"}}}, format: :json
+      relationships = {program: {data: {id: program.id, type: 'program'}}}
+      post :create, params: {data: {attributes: {name: "Foo"}, relationships: relationships}}, format: :json
 
       classroom = Classroom.first
       expect(response.body).to eq(ActiveModelSerializers::SerializableResource.new(classroom, include: [:students]).to_json)
