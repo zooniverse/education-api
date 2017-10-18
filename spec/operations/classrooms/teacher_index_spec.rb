@@ -7,13 +7,13 @@ RSpec.describe Classrooms::TeacherIndex do
 
   it 'returns classrooms the current user is a teacher of' do
     classroom = create :classroom, teachers: [current_user]
-    classrooms = operation.run!
+    classrooms = operation.run! program_id: classroom.program.id
     expect(classrooms).to include(classroom)
   end
 
   it 'does not return deleted classrooms' do
     classroom = create :classroom, :deleted, teachers: [current_user]
-    classrooms = operation.run!
+    classrooms = operation.run! program_id: classroom.program.id
     expect(classrooms).not_to include(classroom)
   end
 

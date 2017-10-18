@@ -4,6 +4,8 @@ FactoryGirl.define do
     zooniverse_group_id "1"
     join_token "asdf"
 
+    association :program, factory: :program
+
     trait :deleted do
       deleted_at { Time.now }
     end
