@@ -50,7 +50,7 @@ RSpec.describe Classrooms::Join do
       it "adds the user to all assignments" do
         outcome = described_class.run!(current_user: current_user, client: client,
           id: classroom.id, join_token: classroom.join_token)
-        expect(standard_assignment.student_users.map {|su| su.user_id }).to include(current_user.id)
+        expect(standard_assignment.student_users.map(&:user_id)).to include(current_user.id)
       end
     end
   end

@@ -11,7 +11,7 @@ module Classrooms
 
       if response
         classroom.students << current_user
-        add_user_to_assignments if !classroom.program.custom?
+        add_user_to_assignments unless classroom.program.custom?
       else
         errors.add(:id, "cannot join")
       end
