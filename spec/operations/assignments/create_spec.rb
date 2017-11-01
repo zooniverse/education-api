@@ -80,13 +80,4 @@ RSpec.describe Assignments::Create do
                                                                        {id: student_user2.id, type: 'student_user'}]}}
     expect(assignment.student_users).to match_array([student_user1, student_user2])
   end
-
-  describe "for classrooms without an associated program" do
-    it 'should return an error' do
-      expect {
-        operation.run! attributes: {workflow_id: workflow_id, name: 'foo'},
-                        relationships: {classroom: {data: {id: programless_classroom.id, type: 'classrooms'}}}
-      }.to raise_error NoMethodError
-    end
-  end
 end
