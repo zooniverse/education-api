@@ -6,16 +6,18 @@ RSpec.describe Teachers::ClassroomsController do
   before { authenticate! }
 
   describe "GET index" do
+    let(:program) {create(:program)}
+
     it "returns an empty list if there are no classrooms" do
-      get :index, format: :json
+      get :index, params: { program_id: program.id }, format: :json
       expect(parsed_response).to eq("data" => [])
     end
 
     it 'returns the classrooms with students' do
-      classroom = create :classroom, name: 'Foo', zooniverse_group_id: 'asdf', join_token: 'abc', teachers: [current_user]
+      classroom = create :classroom, name: 'Foo', zooniverse_group_id: 'asdf', join_token: 'abc', teachers: [current_user], program: program
       student   = classroom.students.create! zooniverse_id: 'zoo1'
 
-      get :index, format: :json
+      get :index, params: { program_id: program.id }, format: :json
       expect(response.body).to eq(ActiveModelSerializers::SerializableResource.new([classroom], include: [:students]).to_json)
     end
 

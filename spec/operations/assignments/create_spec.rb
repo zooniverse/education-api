@@ -11,7 +11,7 @@ RSpec.describe Assignments::Create do
   let(:custom_program) { create(:program, custom: true) }
   let(:custom_classroom) { create :classroom, teachers: [current_user], program: custom_program }
 
-  let(:programless_classroom) { create :classroom, teachers: [current_user] }
+  let(:programless_classroom) { create :classroom, teachers: [current_user], program: nil}
 
   let(:workflow_id) { 999 }
 

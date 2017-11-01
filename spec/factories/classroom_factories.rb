@@ -3,6 +3,7 @@ FactoryGirl.define do
     name "Foo"
     zooniverse_group_id "1"
     join_token "asdf"
+    program
 
     trait :deleted do
       deleted_at { Time.now }
