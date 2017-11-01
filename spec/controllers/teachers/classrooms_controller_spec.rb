@@ -17,7 +17,7 @@ RSpec.describe Teachers::ClassroomsController do
       classroom = create :classroom, name: 'Foo', zooniverse_group_id: 'asdf', join_token: 'abc', teachers: [current_user], program: program
       student   = classroom.students.create! zooniverse_id: 'zoo1'
 
-      get :index, params: { program_id: program.id }, format: :json
+      get :index, params: { program_id: classroom.program.id }, format: :json
       expect(response.body).to eq(ActiveModelSerializers::SerializableResource.new([classroom], include: [:students]).to_json)
     end
 

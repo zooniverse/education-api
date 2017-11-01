@@ -1,6 +1,6 @@
 module Classrooms
   class StudentIndex < Operation
-    integer :program_id, default: nil
+    integer :program_id
 
     def execute
       current_user.studied_classrooms
