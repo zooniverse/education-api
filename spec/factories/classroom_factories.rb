@@ -5,8 +5,6 @@ FactoryGirl.define do
     join_token "asdf"
     program
 
-    association :program, factory: :program
-
     trait :deleted do
       deleted_at { Time.now }
     end

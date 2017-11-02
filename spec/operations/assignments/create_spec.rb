@@ -5,8 +5,7 @@ RSpec.describe Assignments::Create do
   let(:client) { instance_double(Panoptes::Client) }
   let(:operation) { described_class.with(current_user: current_user, client: client) }
 
-  let(:program) { create :program }
-  let(:classroom) { create :classroom, teachers: [current_user], program: program }
+  let(:classroom) { create :classroom, teachers: [current_user] }
 
   let(:custom_program) { create(:program, custom: true) }
   let(:custom_classroom) { create :classroom, teachers: [current_user], program: custom_program }
