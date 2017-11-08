@@ -4,7 +4,7 @@ pidfile "#{app_path}/tmp/pids/server.pid"
 
 dev_env = 'development'
 rails_env = ENV['RAILS_ENV'] || dev_env
-port = rails_env == dev_env ? 3000 : 81
+port = rails_env == dev_env ? 3000 : 80
 environment rails_env
 state_path "#{app_path}/tmp/pids/puma.state"
 
