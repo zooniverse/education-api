@@ -18,6 +18,6 @@ ADD ./ /app
 
 RUN (cd /app && git log --format="%H" -n 1 > commit_id.txt && rm -rf .git)
 
-EXPOSE 81
+EXPOSE 80
 
 ENTRYPOINT /app/scripts/docker/start.sh
