@@ -16,10 +16,10 @@ RSpec.describe Students::ClassroomsController do
   end
 
   describe "POST join" do
+    let(:classroom) { create(:classroom) }
     it "joins a classroom" do
-      expect(user_client).to receive(:join_user_group).with(nil, "9999", join_token: "asdf").and_return(true)
-      classroom = Classroom.create! name: '1', join_token: 'asdf'
-      post :join, params: {id: classroom.id, join_token: 'asdf'}, as: :json
+      expect(user_client).to receive(:join_user_group).with(classroom.zooniverse_group_id, current_user.zooniverse_id, join_token: classroom.join_token).and_return(true)
+      post :join, params: {id: classroom.id, join_token: classroom.join_token}, as: :json
       expect(response.body).to eq(ActiveModelSerializers::SerializableResource.new(classroom, include: [:students]).to_json)
     end
   end

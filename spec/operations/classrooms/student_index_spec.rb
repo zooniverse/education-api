@@ -3,8 +3,7 @@ require 'spec_helper'
 RSpec.describe Classrooms::StudentIndex do
   let(:current_user) { User.new zooniverse_id: 1 }
   let(:client) { instance_double(Panoptes::Client, join_user_group: true) }
-  let(:program) { create(:program) }
-  let(:classroom) { Classroom.create! join_token: 'abc', zooniverse_group_id: "asdf", program: program }
+  let(:classroom) { create(:classroom, join_token: 'abc', zooniverse_group_id: "asdf") }
 
   it 'returns classrooms the current user is a student of' do
     Classrooms::Join.run! current_user: current_user, client: client, id: classroom.id, join_token: classroom.join_token

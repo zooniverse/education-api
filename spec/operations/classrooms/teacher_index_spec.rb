@@ -18,11 +18,11 @@ RSpec.describe Classrooms::TeacherIndex do
   end
 
   it 'filters by program id' do
-    program = create(:program)
+    new_program = create(:program)
     classroom = create :classroom, teachers: [current_user]
-    program_classroom = create :classroom, teachers: [current_user], program: program
-    result = operation.run! program_id: program.id
-    expect(result).to include(program_classroom)
+    new_program_classroom = create :classroom, teachers: [current_user], program: new_program
+    result = operation.run! program_id: new_program.id
+    expect(result).to include(new_program_classroom)
     expect(result).not_to include(classroom)
   end
 end
