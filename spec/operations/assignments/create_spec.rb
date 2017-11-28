@@ -13,11 +13,19 @@ RSpec.describe Assignments::Create do
   let(:programless_classroom) { create :classroom, teachers: [current_user], program: nil}
 
   let(:workflow_id) { 999 }
+  let(:cloned_workflow_id) { 123 }
+  let(:cloned_workflow) {
+    {
+     "id" => cloned_workflow_id,
+     "links" => {"project" => "1"}
+    }
+  }
 
   before do
-    allow(client).to receive(:workflow).and_return("links" => {"project" => "1"})
-    allow(client).to receive(:create_workflow).and_return("id" => "999", "links" => {"project" => "1"})
+    allow(client).to receive(:workflow).and_return({"id"=> workflow_id, "links" => {"project" => "1"}})
+    allow(client).to receive(:create_workflow).and_return(cloned_workflow)
     allow(client).to receive(:create_subject_set).and_return("id" => "123")
+    allow(client).to receive(:add_subject_set_to_workflow).and_return("id" => "123")
     allow(client).to receive(:add_subjects_to_subject_set).and_return(true)
   end
 
@@ -32,8 +40,8 @@ RSpec.describe Assignments::Create do
       expect(client).to receive(:create_workflow)
                       .with("display_name" => an_instance_of(String),
                             "retirement" => {criteria: "never_retire", options: {}},
-                            "links" => {project: "1", subject_sets: ["123"]})
-                      .and_return("id" => "2")
+                            "links" => {project: "1"})
+                      .and_return(cloned_workflow)
       operation.run!  attributes: {workflow_id: workflow_id, name: 'foo'},
                       relationships: {classroom: {data: {id: custom_classroom.id, type: 'classrooms'}}}
     end
