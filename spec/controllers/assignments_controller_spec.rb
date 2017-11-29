@@ -15,8 +15,11 @@ RSpec.describe AssignmentsController do
   end
 
   describe "POST create" do
+    let(:workflow_id) { 8888 }
+
     before do
       allow(controller).to receive(:panoptes_application_client).and_return(application_client)
+      allow(application_client).to receive(:workflow).and_return({"id"=> workflow_id, "links" => {"project" => "1"}})
     end
 
     it 'returns a new assignment' do
@@ -25,7 +28,7 @@ RSpec.describe AssignmentsController do
       assignment = build(:assignment, classroom: classroom)
       outcome = double(result: assignment, valid?: true)
 
-      attributes = {workflow_id: '8888', name: "Foo"}
+      attributes = {workflow_id: workflow_id, name: "Foo"}
       relationships = {classroom: {data: {id: classroom.id, type: 'classrooms'}}}
 
       post :create, params: {data: {attributes: attributes, relationships: relationships}}, format: :json
