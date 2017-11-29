@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   respond_to :json
   rescue_from Unauthorized, with: :not_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from Panoptes::Client::ResourceNotFound, with: :not_found
 
   before_action :require_login, except: [:root]
 
