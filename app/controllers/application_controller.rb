@@ -66,6 +66,7 @@ class ApplicationController < ActionController::Base
     @panoptes_application_client ||= Panoptes::Client.new \
       env: Rails.env.to_sym,
       auth: {client_id: Rails.application.secrets["zooniverse_oauth_key"],
-             client_secret: Rails.application.secrets["zooniverse_oauth_secret"]}
+             client_secret: Rails.application.secrets["zooniverse_oauth_secret"]},
+      params: {:admin => true}
   end
 end
