@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170901174114) do
+ActiveRecord::Schema.define(version: 20171204160047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,11 @@ ActiveRecord::Schema.define(version: 20170901174114) do
     t.string "name", null: false
     t.string "description"
     t.jsonb "metadata"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.bigint "program_id"
+    t.index ["program_id"], name: "index_projects_on_program_id"
   end
 
   create_table "student_assignments", id: :serial, force: :cascade do |t|

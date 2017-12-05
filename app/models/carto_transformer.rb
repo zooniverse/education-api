@@ -140,7 +140,7 @@ class CartoTransformer
   end
 
   def finalize
-    @carto.upload(output)
+    @carto.upload(output) unless output.empty?
     @output = []
   end
 end

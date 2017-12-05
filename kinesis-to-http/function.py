@@ -4,6 +4,7 @@ import requests
 
 ENDPOINT = "https://education-api.zooniverse.org/kinesis"
 HEADERS  = {"content-type": "application/json"}
+PROJECTS = ["593", "3525", "2308", "2545"]
 
 def lambda_handler(event, context):
   payloads = [json.loads(base64.b64decode(record["kinesis"]["data"])) for record in event["Records"]]
@@ -14,4 +15,4 @@ def lambda_handler(event, context):
     r.raise_for_status()
 
 def should_send(payload):
-  return payload["source"] == "panoptes" and payload["type"] == "classification" and payload["data"]["links"]["project"] == "593"
+  return payload["source"] == "panoptes" and payload["type"] == "classification" and (payload["data"]["links"]["project"] in PROJECTS)
