@@ -10,7 +10,7 @@ module Kinesis
           process(stream_event)
         end
 
-        carto_transformer.finalize
+        # carto_transformer.finalize
       end
     end
 
@@ -26,7 +26,7 @@ module Kinesis
         Kinesis::CountClassification.run! stream_event
       end
 
-      carto_transformer.process(stream_event) if project.program.custom?
+      # carto_transformer.process(stream_event) if project.program.custom?
     end
 
     def carto_transformer
