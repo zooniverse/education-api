@@ -4,7 +4,8 @@ gem 'rails', "~> 5.1"
 gem 'rack-cors', "~> 0.4"
 gem 'pg', "~> 0.20"
 gem 'responders', "~> 2.4"
-gem 'logstasher', "~> 1.2"
+gem 'gelf'
+gem 'lograge'
 gem 'honeybadger', "~> 3.1"
 gem 'sidekiq', "~> 5.0"
 gem 'sidetiq', "~> 0.7"
