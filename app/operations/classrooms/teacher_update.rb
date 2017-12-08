@@ -15,7 +15,11 @@ module Classrooms
 
     def execute
       classroom = current_user.taught_classrooms.active.find(id)
-      classroom.update!(name: name, school: school, subject: subject, description: description)
+      classroom.name = name if name
+      classroom.school = school if school
+      classroom.subject = subject if subject
+      classroom.description = description if description
+      classroom.save!
       classroom
     end
   end

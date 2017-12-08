@@ -9,8 +9,10 @@ RSpec.describe Classrooms::TeacherCreate do
   it 'creates a classroom' do
     created_user_group = {'id' => 1, 'join_token' => 'asdf'}
     allow(client).to receive_message_chain(:panoptes, :post).with("/user_groups", user_groups: {name: an_instance_of(String)}).and_return("user_groups" => [created_user_group])
-    classroom = operation.run!  attributes: { name: "Kool Klass" },
+    classroom = operation.run!  attributes: { name: "Kool Klass", description: "A Kool, Kool Klass For Kool Kids", school: "Kool Skool" },
                                 relationships: {program: {data: {id: program.id, type: 'program'}}}
+
+    classroom.reload
     expect(classroom.name).to eq("Kool Klass")
     expect(program.classrooms.count).to eq(1)
     expect(classroom.program).to eq(program)
