@@ -26,8 +26,7 @@ module Assignments
         if subject_ids
           client.update_subject_set links: {subjects: subject_ids}
         end
-
-        assignment.save!
+        assignment.tap(&:save!)
       end
     end
   end

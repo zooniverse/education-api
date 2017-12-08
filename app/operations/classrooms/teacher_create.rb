@@ -19,6 +19,7 @@ module Classrooms
       classroom.school = attributes[:school] if attributes[:school]
       classroom.subject = attributes[:subject] if attributes[:subject]
       classroom.description = attributes[:description] if attributes[:description]
+      classroom.save!
       join_group(classroom)
     end
 
