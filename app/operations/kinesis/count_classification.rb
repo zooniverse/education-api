@@ -35,13 +35,13 @@ module Kinesis
           StudentAssignment.increment_counter :classifications_count, student_assignment_id
         end
 
-        unless user_group.blank?
-          classroom = Classroom.find_by_zooniverse_group_id(data[:metadata][:user_group])
-          Classroom.increment_counter :classifications_count, classroom.id
-        else
+        if user_group.blank?
           Classroom.where(zooniverse_group_id: data[:metadata][:user_group_ids]).pluck(:id).each do |id|
             Classroom.increment_counter :classifications_count, id
           end
+        else
+          classroom = Classroom.find_by_zooniverse_group_id(data[:metadata][:user_group])
+          Classroom.increment_counter :classifications_count, classroom.id
         end
       end
 
