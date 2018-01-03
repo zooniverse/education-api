@@ -34,6 +34,7 @@
             "live_project": true,
             "user_language": "en",
             "user_group_ids": [1234],
+            "user_group": "1234",
             "subject_dimensions": [
                 {
                     "clientWidth": 800,

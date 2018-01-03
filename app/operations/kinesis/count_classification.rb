@@ -11,6 +11,7 @@ module Kinesis
         array :user_group_ids, default: [] do
           integer
         end
+        string :user_group, default: ""
       end
 
       hash :links do
@@ -34,8 +35,13 @@ module Kinesis
           StudentAssignment.increment_counter :classifications_count, student_assignment_id
         end
 
-        Classroom.where(zooniverse_group_id: data[:metadata][:user_group_ids]).pluck(:id).each do |id|
-          Classroom.increment_counter :classifications_count, id
+        unless user_group.blank?
+          classroom = Classroom.find_by_zooniverse_group_id(data[:metadata][:user_group])
+          Classroom.increment_counter :classifications_count, classroom.id
+        else
+          Classroom.where(zooniverse_group_id: data[:metadata][:user_group_ids]).pluck(:id).each do |id|
+            Classroom.increment_counter :classifications_count, id
+          end
         end
       end
 
@@ -58,6 +64,10 @@ module Kinesis
 
     def user_group_ids
       data[:metadata][:user_group_ids]
+    end
+
+    def user_group
+      data[:metadata][:user_group]
     end
   end
 end
