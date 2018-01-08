@@ -4,7 +4,7 @@ RSpec.describe Kinesis::CountClassification do
   let(:payload) { JSON.load(File.read(Rails.root.join("spec/fixtures/example_kinesis_payload.json"))) }
   let(:operation) { described_class.with(payload) }
 
-  let(:payload_sans_user_group) { payload.tap { |p| p["data"]["metadata"].delete("user_group") } }
+  let(:payload_sans_user_group) { payload.tap { |p| p["data"]["metadata"].delete("selected_user_group_id") } }
   let(:operation_sans_user_group) { described_class.with(payload_sans_user_group) }
 
   let(:student)   { create :user, zooniverse_id: "1234" }
