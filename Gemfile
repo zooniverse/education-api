@@ -5,7 +5,7 @@ gem 'rack-cors', "~> 0.4"
 gem 'pg', "~> 0.20"
 gem 'responders', "~> 2.4"
 gem 'gelf'
-gem 'lograge'
+gem 'logstasher'
 gem 'honeybadger', "~> 3.1"
 gem 'sidekiq', "~> 5.0"
 gem 'sidetiq', "~> 0.7"
