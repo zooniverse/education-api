@@ -41,4 +41,5 @@ Rails.application.configure do
 
   config.logstasher.enabled = true
   config.logstasher.log_controller_parameters = true
+  config.logstasher.logger = Logger.new(STDOUT)
 end
