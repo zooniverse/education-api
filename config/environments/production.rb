@@ -78,7 +78,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Enable GELF and forwarding to Graylog
-  config.logger = GELF::Logger.new("graylog.zooniverse.org", 12201, "WAN", { :host => "eduapi_production" })
+  config.logstash.logger = GELF::Logger.new("graylog.zooniverse.org", 12201, "WAN", { :host => "eduapi_production" })
   config.logstasher.enabled = true
   config.logstasher.log_controller_parameters = true
 end
