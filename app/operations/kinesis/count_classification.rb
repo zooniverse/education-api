@@ -29,18 +29,21 @@ module Kinesis
           StudentUser.increment_counter :classifications_count, student_user_id
         end
 
-        StudentAssignment.joins(:assignment).where(assignments: {workflow_id: workflow_id},
-                                                   student_user_id: student_user_ids)
-                                            .pluck(:id).each do |student_assignment_id|
-          StudentAssignment.increment_counter :classifications_count, student_assignment_id
+        StudentAssignment
+          .joins(:assignment)
+          .where(assignments: {workflow_id: workflow_id}, student_user_id: student_user_ids).each do |student_assignment|
+          if selected_user_group_id.blank? ||
+            student_assignment.assignment.classroom.zooniverse_group_id == selected_user_group_id.to_i
+            StudentAssignment.increment_counter :classifications_count, student_assignment.id
+          end
         end
 
         if selected_user_group_id.blank?
-          Classroom.where(zooniverse_group_id: data[:metadata][:user_group_ids]).pluck(:id).each do |id|
+          Classroom.where(zooniverse_group_id: user_group_ids).pluck(:id).each do |id|
             Classroom.increment_counter :classifications_count, id
           end
         else
-          classroom = Classroom.find_by_zooniverse_group_id(data[:metadata][:selected_user_group_id])
+          classroom = Classroom.find_by_zooniverse_group_id(selected_user_group_id)
           Classroom.increment_counter :classifications_count, classroom.id
         end
       end
