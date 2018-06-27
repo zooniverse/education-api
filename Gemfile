@@ -7,7 +7,7 @@ gem 'responders', "~> 2.4"
 gem 'gelf'
 gem 'logstasher'
 gem 'honeybadger', "~> 3.1"
-gem 'sidekiq', "~> 5.0"
+gem 'sidekiq', "~> 5.1"
 gem 'sidetiq', "~> 0.7"
 
 gem 'sinatra', "~> 2.0", require: nil
