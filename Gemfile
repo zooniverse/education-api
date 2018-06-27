@@ -14,7 +14,7 @@ gem 'sinatra', "~> 2.0", require: nil
 gem 'active_model_serializers', "~> 0.10"
 gem 'puma', "~> 3.9"
 gem 'sdoc', "~> 0.4"
-gem 'newrelic_rpm', "~> 4.2"
+gem 'newrelic_rpm', "~> 5.2"
 gem 'active_interaction', "~> 3.5"
 gem 'faraday-panoptes', "~> 0.3"
 gem 'panoptes-client', "~> 0.3"
