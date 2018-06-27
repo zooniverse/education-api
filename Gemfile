@@ -29,7 +29,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'web-console', "~> 3.5"
+  gem 'web-console', "~> 3.6"
   gem 'foreman', "~> 0.84"
 end
 
