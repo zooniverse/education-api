@@ -23,6 +23,8 @@ education:
     - "POSTGRES_HOSTNAME=pg"
     - "POSTGRES_USERNAME=education"
     - "POSTGRES_PASSWORD=education"
+    - "SIDEKIQ_USERNAME=education"
+    - "SIDEKIQ_PASSWORD=education"
   links:
     - postgres:pg
     - redis:redis
