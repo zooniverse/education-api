@@ -123,7 +123,7 @@ GEM
     minitest (5.11.3)
     multipart-post (2.0.0)
     mustermann (1.0.2)
-    newrelic_rpm (4.7.1.340)
+    newrelic_rpm (6.0.0.351)
     nio4r (2.3.1)
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
@@ -250,7 +250,7 @@ DEPENDENCIES
   gelf
   honeybadger (~> 3.1)
   logstasher
-  newrelic_rpm (~> 4.2)
+  newrelic_rpm (~> 6.0)
   panoptes-client (~> 0.3)
   pg (~> 0.20)
   pry-byebug (~> 3.4)
