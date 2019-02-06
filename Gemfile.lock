@@ -225,7 +225,7 @@ GEM
       hitimes
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    web-console (3.5.1)
+    web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
@@ -264,7 +264,7 @@ DEPENDENCIES
   sidekiq (~> 5.0)
   sidetiq (~> 0.7)
   sinatra (~> 2.0)
-  web-console (~> 3.5)
+  web-console (~> 3.7)
 
 BUNDLED WITH
    1.15.4
