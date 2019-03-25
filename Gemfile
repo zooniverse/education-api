@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', "5.1.6.1"
+gem 'rails', "5.2.2"
 gem 'rack-cors', "~> 0.4"
 gem 'pg', "~> 0.20"
 gem 'responders', "~> 2.4"
@@ -15,14 +15,14 @@ gem 'active_model_serializers', "~> 0.10"
 gem 'puma', "~> 3.12"
 gem 'sdoc', "~> 1.0"
 gem 'newrelic_rpm', "~> 4.2"
-gem 'active_interaction', "~> 3.5"
+gem 'active_interaction', "~> 3.6"
 gem 'faraday-panoptes', "~> 0.3"
 gem 'panoptes-client', "~> 0.3"
 gem 'dotenv-rails', "~> 2.6"
 
 group :development, :test do
-  gem 'byebug', "~> 9.0"
-  gem 'pry-byebug', "~> 3.4"
+  gem 'byebug', "~> 10.0"
+  gem 'pry-byebug', "~> 3.6"
   gem 'rspec-rails', "~> 3.6"
   gem 'pry-rails', "~> 0.3"
   gem 'faraday-detailed_logger', "~> 2.1"
