@@ -1,46 +1,48 @@
 #!groovy
 
-node {
-    checkout scm
+pipeline {
+  agent none
 
-    def dockerRepoName = 'zooniverse/education-api'
-    def dockerImageName = "${dockerRepoName}:${BRANCH_NAME}"
-    def newImage = null
+  options {
+    disableConcurrentBuilds()
+  }
 
+  stages {
     stage('Build Docker image') {
-        newImage = docker.build(dockerImageName)
-        newImage.push()
+      agent any
+      steps {
+        script {
+          def dockerRepoName = 'zooniverse/education-api'
+          def dockerImageName = "${dockerRepoName}:${BRANCH_NAME}"
+          def newImage = docker.build(dockerImageName)
+          newImage.push()
+          newImage.push('${GIT_COMMIT}')
+
+          if (BRANCH_NAME == 'master') {
+            stage('Update latest tag') {
+              newImage.push('latest')
+            }
+          }
+        }
+      }
     }
 
-    if (BRANCH_NAME == 'master') {
-        stage('Update latest tag') {
-            newImage.push('latest')
-        }
-
-        stage('Deploy to Swarm') {
-            sh """
-                cd "/var/jenkins_home/jobs/Zooniverse GitHub/jobs/operations/branches/master/workspace" && \
-                ./hermes_wrapper.sh exec StandaloneAppsSwarm -- \
-                    docker stack deploy --prune \
-                    -c /opt/infrastructure/stacks/education-staging.yml \
-                    education-staging
-            """
-        }
+    stage('Deploy staging to Kubernetes') {
+      when { branch 'master' }
+      agent any
+      steps {
+        sh "kubectl apply --record -f kubernetes/redis-staging.yaml"
+        sh "sed 's/__IMAGE_TAG__/${GIT_COMMIT}/g' kubernetes/deployment-staging.tmpl | kubectl apply --record -f -"
+      }
     }
 
-    if (BRANCH_NAME == 'production') {
-        stage('Update production tag') {
-            newImage.push('production')
-        }
-
-        stage('Deploy to Swarm') {
-            sh """
-                cd "/var/jenkins_home/jobs/Zooniverse GitHub/jobs/operations/branches/master/workspace" && \
-                ./hermes_wrapper.sh exec StandaloneAppsSwarm -- \
-                    docker stack deploy --prune \
-                    -c /opt/infrastructure/stacks/education.yml \
-                    education
-            """
-        }
+    stage('Deploy production to Kubernetes') {
+      when { tag 'production-release' }
+      agent any
+      steps {
+        sh "kubectl apply --record -f kubernetes/redis-production.yaml"
+        sh "sed 's/__IMAGE_TAG__/${GIT_COMMIT}/g' kubernetes/deployment-production.tmpl | kubectl apply --record -f -"
+      }
     }
+  }
 }

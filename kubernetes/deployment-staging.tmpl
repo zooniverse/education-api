@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: education-api-staging-app
+  labels:
+    app: education-api-staging-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: education-api-staging-app
+  template:
+    metadata:
+      labels:
+        app: education-api-staging-app
+    spec:
+      containers:
+        - name: education-api-staging-app
+          image: zooniverse/education-api:__IMAGE_TAG__
+          env:
+            - name: RAILS_ENV
+              value: staging
+            - name: DOTENV_FILE
+              value: "/run/secrets/environment"
+          volumeMounts:
+            - name: education-api-staging-environment
+              mountPath: "/run/secrets/environment"
+              subPath: "environment"
+              readOnly: true
+      volumes:
+        - name: education-api-staging-environment
+          secret:
+            secretName: education-api-staging-environment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: education-api-staging-app
+spec:
+  selector:
+    app: education-api-staging-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
