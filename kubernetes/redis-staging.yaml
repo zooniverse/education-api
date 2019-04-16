@@ -1,0 +1,55 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: education-api-staging-redis
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "aws-efs"
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: education-api-staging-redis
+  labels:
+    app: education-api-staging-redis
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: education-api-staging-redis
+  template:
+    metadata:
+      labels:
+        app: education-api-staging-redis
+    spec:
+      containers:
+        - name: education-api-staging-redis
+          image: redis
+          volumeMounts:
+          - name: education-api-staging-redis-data
+            mountPath: "/data"
+      volumes:
+      - name: education-api-staging-redis-data
+        persistentVolumeClaim:
+          claimName: education-api-staging-redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: education-api-staging-redis
+spec:
+  selector:
+    app: education-api-staging-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+  type: NodePort
