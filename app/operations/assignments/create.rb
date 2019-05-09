@@ -35,6 +35,7 @@ module Assignments
 
       attributes = base_workflow.slice('primary_language', 'tasks', 'first_task', 'configuration')
       attributes['display_name'] = uuid
+      attributes['serialize_with_project'] = false
       attributes['retirement'] = {criteria: 'never_retire', options: {}}
       attributes['links'] = {
         project: base_workflow['links']['project']

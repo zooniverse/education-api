@@ -40,6 +40,7 @@ RSpec.describe Assignments::Create do
       expect(client).to receive(:create_workflow)
                       .with("display_name" => an_instance_of(String),
                             "retirement" => {criteria: "never_retire", options: {}},
+                            "serialize_with_project" => false,
                             "links" => {project: "1"})
                       .and_return(cloned_workflow)
       operation.run!  attributes: {workflow_id: workflow_id, name: 'foo'},
