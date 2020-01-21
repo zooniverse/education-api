@@ -31,8 +31,8 @@ pipeline {
       when { branch 'master' }
       agent any
       steps {
-        sh "kubectl apply --record -f kubernetes/redis-staging.yaml"
-        sh "sed 's/__IMAGE_TAG__/${GIT_COMMIT}/g' kubernetes/deployment-staging.tmpl | kubectl apply --record -f -"
+        sh "kubectl --context azure apply --record -f kubernetes/redis-staging.yaml"
+        sh "sed 's/__IMAGE_TAG__/${GIT_COMMIT}/g' kubernetes/deployment-staging.tmpl | kubectl --context azure apply --record -f -"
       }
     }
 
