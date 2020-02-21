@@ -1,32 +1,15 @@
-language: ruby
-cache: bundler
-sudo: false
-
-env:
-  global:
-    - RACK_ENV=test
-    - POSTGRES_HOSTNAME=localhost
-    - POSTGRES_DATABASE=travis_ci_test
-    - POSTGRES_USERNAME=postgres
-    - POSTGRES_PASSWORD=
-    - REDIS_HOSTNAME=localhost
-
-matrix:
-  fast_finish: true
-  allow_failures:
-  include:
-    - rvm: 2.3.0
+language: go # skip default ruby installs, use docker images
 
 services:
-  - postgresql
-  - redis
+  - docker
 
-addons:
-  postgresql: "9.4"
+branches:
+  only:
+  - master
 
-before_script: &before_script
-  - psql -c 'create database travis_ci_test;' -U postgres
-  - mkdir -p tmp
-  - bundle exec rake db:setup
+before_install:
+ - docker-compose build
+ - docker-compose run -T -e RAILS_ENV=test --rm --entrypoint="bundle exec rake db:create" education
 
-script: bundle exec rspec
+script:
+  - docker-compose run -T -e RAILS_ENV=test --rm --entrypoint="bundle exec rspec" education
