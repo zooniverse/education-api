@@ -8,9 +8,9 @@ branches:
 before_install:
  - docker-compose build
  - docker-compose run -T -e RAILS_ENV=test --rm --entrypoint="bundle exec rake db:create" education
-
-install: # skip the ruby bundler install,
-         # https://docs.travis-ci.com/user/languages/ruby/#default-build-script
+ - rm -rf Gemfile # skip the ruby bundler install
+ - rm -rf Gemfile.lock # to avoid clashing gem installs in our container
+ # https://docs.travis-ci.com/user/languages/ruby/#default-build-script
 
 script:
   - docker-compose run -T -e RAILS_ENV=test --rm --entrypoint="bundle exec rspec" education
