@@ -1,3 +1,5 @@
+language: go # skip default ruby installs, use docker images
+
 services:
   - docker
 
@@ -8,9 +10,6 @@ branches:
 before_install:
  - docker-compose build
  - docker-compose run -T -e RAILS_ENV=test --rm --entrypoint="bundle exec rake db:create" education
- - rm -rf Gemfile # skip the ruby bundler install
- - rm -rf Gemfile.lock # to avoid clashing gem installs in our container
- # https://docs.travis-ci.com/user/languages/ruby/#default-build-script
 
 script:
   - docker-compose run -T -e RAILS_ENV=test --rm --entrypoint="bundle exec rspec" education
