@@ -13,8 +13,8 @@ redis:
 education:
   dockerfile: Dockerfile
   build: ./
-  # volumes:
-  #   - ./:/app
+  volumes:
+    - ./:/app
   ports:
     - "3000:3000"
   environment:
