@@ -17,6 +17,13 @@ spec:
       containers:
         - name: education-api-staging-app
           image: zooniverse/education-api:__IMAGE_TAG__
+          resources:
+            requests:
+              memory: "700Mi"
+              cpu: "5m"
+            limits:
+              memory: "700Mi"
+              cpu: "5m"
           env:
             - name: RAILS_ENV
               value: staging
