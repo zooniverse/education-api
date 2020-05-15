@@ -32,6 +32,13 @@ spec:
       containers:
         - name: education-api-production-redis
           image: redis
+          resources:
+             requests:
+               memory: "40Mi"
+               cpu: "20m"
+             limits:
+               memory: "40Mi"
+               cpu: "500m"
           volumeMounts:
           - name: education-api-production-redis-data
             mountPath: "/data"
