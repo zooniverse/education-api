@@ -37,7 +37,7 @@ spec:
                memory: "40Mi"
                cpu: "20m"
              limits:
-               memory: "40Mi"
+               memory: "400Mi"
                cpu: "500m"
           volumeMounts:
           - name: education-api-production-redis-data
