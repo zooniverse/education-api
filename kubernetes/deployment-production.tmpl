@@ -5,7 +5,6 @@ metadata:
   labels:
     app: education-api-production-app
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app: education-api-production-app
@@ -20,7 +19,7 @@ spec:
           resources:
             requests:
               memory: "2000Mi"
-              cpu: "10m"
+              cpu: "250m"
             limits:
               memory: "2000Mi"
               cpu: "500m"
@@ -51,3 +50,16 @@ spec:
       port: 80
       targetPort: 80
   type: NodePort
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: education-api-production-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: education-api-production-app
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
