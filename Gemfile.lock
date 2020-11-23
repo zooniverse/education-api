@@ -130,7 +130,7 @@ GEM
     minitest (5.14.2)
     multipart-post (2.0.0)
     mustermann (1.0.3)
-    newrelic_rpm (4.7.1.340)
+    newrelic_rpm (6.14.0)
     nio4r (2.5.4)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
