@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', "~> 5.2.4"
-gem 'rack-cors', "~> 1.0"
+gem 'rack-cors', "~> 1.1"
 gem 'pg', "~> 0.20"
 gem 'responders', "~> 2.4"
 gem 'gelf'
