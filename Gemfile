@@ -25,7 +25,7 @@ group :development, :test do
   gem 'pry-byebug', "~> 3.6"
   gem 'rspec-rails', "~> 3.6"
   gem 'pry-rails', "~> 0.3"
-  gem 'faraday-detailed_logger', "~> 2.1"
+  gem 'faraday-detailed_logger', "~> 2.3"
 end
 
 group :development do
