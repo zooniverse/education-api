@@ -24,8 +24,8 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_interaction (3.6.2)
-      activemodel (>= 4, < 6)
+    active_interaction (4.0.0)
+      activemodel (>= 5, < 7)
     active_model_serializers (0.10.8)
       actionpack (>= 4.1, < 6)
       activemodel (>= 4.1, < 6)
@@ -105,7 +105,7 @@ GEM
       activesupport (>= 4.2.0)
     hitimes (1.2.6)
     honeybadger (3.2.0)
-    i18n (1.8.9)
+    i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     ice_cube (0.14.0)
     json (2.3.0)
@@ -249,7 +249,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_interaction (~> 3.6)
+  active_interaction (~> 4.0)
   active_model_serializers (~> 0.10)
   byebug (~> 10.0)
   database_cleaner (~> 1.7)
