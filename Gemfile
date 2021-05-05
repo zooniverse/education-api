@@ -12,7 +12,7 @@ gem 'sidetiq', "~> 0.7"
 
 gem 'sinatra', "~> 2.0", require: nil
 gem 'active_model_serializers', "~> 0.10"
-gem 'puma', "~> 4.3"
+gem 'puma', "~> 5.2"
 gem 'newrelic_rpm'
 gem 'active_interaction', "~> 3.6"
 gem 'faraday-panoptes', "~> 0.3"
