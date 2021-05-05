@@ -1,5 +1,5 @@
 postgres:
-  image: postgres
+  image: postgres:11
   environment:
     - "POSTGRES_USER=education"
     - "POSTGRES_PASSWORD=education"
