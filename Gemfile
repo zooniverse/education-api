@@ -20,8 +20,8 @@ gem 'panoptes-client', "~> 0.3"
 gem 'dotenv-rails', "~> 2.6"
 
 group :development, :test do
-  gem 'byebug', "~> 10.0"
-  gem 'pry-byebug', "~> 3.6"
+  gem 'byebug', "~> 11.1"
+  gem 'pry-byebug', "~> 3.9"
   gem 'rspec-rails', "~> 3.6"
   gem 'pry-rails', "~> 0.3"
   gem 'faraday-detailed_logger', "~> 2.1"
