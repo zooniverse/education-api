@@ -2,16 +2,16 @@
 # Options here can still be overridden by cmd line args.
 # sidekiq -C config.yml
 ---
-:verbose: false
-:logfile: ./log/sidekiq.log
-:pidfile: ./tmp/pids/sidekiq.pid
-:concurrency: 5
+:verbose: <%= !!ENV.fetch('SIDEKIQ_VERBOSE', false) %>
+:concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY', 1).to_i %>
+# Default graceperiod in K8s is 30s
+# we can specify longer but will need to increase the terminationGracePeriod
+# https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace
+:timeout: <%= ENV.fetch('SIDEKIQ_TIMEOUT', 25).to_i %>
 staging:
   :concurrency: 5
 production:
   :concurrency: 25
-# Set timeout to 8 on Heroku, longer if you manage your own systems.
-:timeout: 30
 :queues:
   - high
   - medium
