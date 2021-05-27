@@ -19,12 +19,34 @@ spec:
           image: zooniverse/education-api:__IMAGE_TAG__
           resources:
             requests:
-              memory: "700Mi"
-              cpu: "5m"
+              memory: "500Mi"
+              cpu: "50m"
             limits:
               memory: "700Mi"
-              cpu: "500m"
+              cpu: "1000m"
           env:
+            - name: RAILS_ENV
+              value: staging
+            - name: DOTENV_FILE
+              value: "/run/secrets/environment"
+          volumeMounts:
+            - name: education-api-staging-environment
+              mountPath: "/run/secrets/environment"
+              subPath: "environment"
+              readOnly: true
+        - name: education-api-staging-sidekiq
+          image: zooniverse/education-api:__IMAGE_TAG__
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "50m"
+            limits:
+              memory: "1000Mi"
+              cpu: "500m"
+          args: ["/app/scripts/docker/start-sidekiq.sh"]
+          env:
+            - name: SIDEKIQ_CONCURRENCY
+              value: '5'
             - name: RAILS_ENV
               value: staging
             - name: DOTENV_FILE
