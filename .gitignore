@@ -15,3 +15,4 @@
 /.env
 /*.csv
 .ruby-version
+.ruby-gemset
