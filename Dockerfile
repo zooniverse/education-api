@@ -1,22 +1,28 @@
-FROM ruby:2.6-stretch
+FROM ruby:2.6-slim-stretch
 
 WORKDIR /app
 
-ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    libpq-dev \
+    && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get -y upgrade && \
-    apt-get install --no-install-recommends -y git curl supervisor libpq-dev  && \
-    apt-get clean
+ARG REVISION=''
+ENV REVISION=$REVISION
+ARG RAILS_ENV=production
+ENV RAILS_ENV=$RAILS_ENV
 
 ADD ./Gemfile /app/
 ADD ./Gemfile.lock /app/
 
-RUN bundle install
+RUN bundle config --global jobs `cat /proc/cpuinfo | grep processor | wc -l | xargs -I % expr % - 1` && \
+  if echo "development test" | grep -w "$RAILS_ENV"; then \
+  bundle install; \
+  else bundle install --without development test; fi
 
-ADD supervisord.conf /etc/supervisor/conf.d/app.conf
 ADD ./ /app
-
-RUN (cd /app && git log --format="%H" -n 1 > commit_id.txt && rm -rf .git)
 
 EXPOSE 80
 
