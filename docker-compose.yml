@@ -1,30 +1,58 @@
-postgres:
-  image: postgres:11
-  environment:
-    - "POSTGRES_USER=education"
-    - "POSTGRES_PASSWORD=education"
-  ports:
-    - "5432:5432"
+version: '3'
+services:
+  postgres:
+    image: postgres:11
+    environment:
+      - "POSTGRES_USER=education"
+      - "POSTGRES_PASSWORD=education"
+    ports:
+      - "5432:5432"
 
-redis:
-  image: redis
-  command: redis-server --appendonly yes
+  redis:
+    image: redis
+    command: redis-server --appendonly yes
 
-education:
-  dockerfile: Dockerfile
-  build: ./
-  volumes:
-    - ./:/app
-  ports:
-    - "3000:3000"
-  environment:
-    - "RAILS_ENV=development"
-    - "REDIS_URL=redis://redis:6379"
-    - "POSTGRES_HOSTNAME=pg"
-    - "POSTGRES_USERNAME=education"
-    - "POSTGRES_PASSWORD=education"
-    - "SIDEKIQ_USERNAME=education"
-    - "SIDEKIQ_PASSWORD=education"
-  links:
-    - postgres:pg
-    - redis:redis
+  education:
+    image: education:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+          RAILS_ENV: development
+          REVISION: 559c-fake-revision-string-f9fb
+    volumes:
+      - ./:/app
+      - gem_cache:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    environment:
+      - "RAILS_ENV=development"
+      - "REDIS_URL=redis://redis:6379"
+      - "POSTGRES_HOSTNAME=pg"
+      - "POSTGRES_USERNAME=education"
+      - "POSTGRES_PASSWORD=education"
+      - "SIDEKIQ_USERNAME=education"
+      - "SIDEKIQ_PASSWORD=education"
+    links:
+      - postgres:pg
+      - redis:redis
+
+  sidekiq:
+    image: education:local
+    volumes:
+      - ./:/app
+      - gem_cache:/usr/local/bundle
+    command: ["/app/scripts/docker/start-sidekiq.sh"]
+    environment:
+      - "RAILS_ENV=development"
+      - "REDIS_URL=redis://redis:6379"
+      - "POSTGRES_HOSTNAME=pg"
+      - "POSTGRES_USERNAME=education"
+      - "POSTGRES_PASSWORD=education"
+      - "SIDEKIQ_VERBOSE=true"
+    links:
+      - postgres:pg
+      - redis:redis
+
+volumes:
+  gem_cache:
