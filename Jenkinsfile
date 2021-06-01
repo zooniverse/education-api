@@ -14,7 +14,7 @@ pipeline {
         script {
           def dockerRepoName = 'zooniverse/education-api'
           def dockerImageName = "${dockerRepoName}:${GIT_COMMIT}"
-          def buildArgs = "--build-arg REVISION='${GIT_COMMIT}'"
+          def buildArgs = "--build-arg REVISION='${GIT_COMMIT}' ."
           def newImage = docker.build(dockerImageName, buildArgs)
           newImage.push()
 
