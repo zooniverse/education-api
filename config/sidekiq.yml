@@ -8,10 +8,6 @@
 # we can specify longer but will need to increase the terminationGracePeriod
 # https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace
 :timeout: <%= ENV.fetch('SIDEKIQ_TIMEOUT', 25).to_i %>
-staging:
-  :concurrency: 5
-production:
-  :concurrency: 25
 :queues:
   - high
   - medium
