@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# For more information: https://github.com/puma/puma/blob/master/examples/config.rb
 app_path = File.expand_path(File.dirname(File.dirname(__FILE__)))
 
 pidfile "#{app_path}/tmp/pids/server.pid"
@@ -8,54 +11,12 @@ port = rails_env == dev_env ? 3000 : 80
 environment rails_env
 state_path "#{app_path}/tmp/pids/puma.state"
 
-if rails_env == 'development'
-  worker_timeout 3600
-end
-
 bind "tcp://0.0.0.0:#{port}"
 
-# Code to run before doing a restart. This code should
-# close log files, database connections, etc.
-#
-# This can be called multiple times to add code each time.
-#
-# on_restart do
-#   puts 'On restart...'
-# end
+threads_count = ENV.fetch('RAILS_MAX_THREADS', 2).to_i
 
-# === Cluster mode ===
-workers 2
-
-# Code to run when a worker boots to setup the process before booting
-# the app.
-#
-# This can be called multiple times to add hooks.
-#
-on_worker_boot do
-  ActiveRecord::Base.establish_connection
-end
-
-before_fork do
-  ActiveRecord::Base.connection_pool.disconnect!
-end
-
-preload_app!
+# === Non-Cluster mode (no worker / forking) ===
+threads 1, threads_count
 
 # Additional text to display in process listing
-#
 tag 'education_api'
-#
-# If you do not specify a tag, Puma will infer it. If you do not want Puma
-# to add a tag, use an empty string.
-
-# Verifies that all workers have checked in to the master process within
-# the given timeout. If not the worker process will be restarted. Default
-# value is 60 seconds.
-#
-# worker_timeout 60
-
-# Change the default worker timeout for booting
-#
-# If unspecified, this defaults to the value of worker_timeout.
-#
-# worker_boot_timeout 60
