@@ -24,6 +24,8 @@ spec:
               memory: "1000Mi"
               cpu: "1000m"
           env:
+            - name: RAILS_MAX_THREADS
+              value: '5'
             - name: RAILS_ENV
               value: production
             - name: DOTENV_FILE
