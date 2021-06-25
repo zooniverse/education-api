@@ -24,8 +24,8 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_interaction (3.6.2)
-      activemodel (>= 4, < 6)
+    active_interaction (4.0.3)
+      activemodel (>= 5, < 7)
     active_model_serializers (0.10.8)
       actionpack (>= 4.1, < 6)
       activemodel (>= 4.1, < 6)
@@ -73,7 +73,7 @@ GEM
     celluloid-supervision (0.20.6)
       timers (>= 4.1.1)
     coderay (1.1.2)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     connection_pool (2.2.2)
     crass (1.0.6)
     database_cleaner (1.7.0)
@@ -245,7 +245,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_interaction (~> 3.6)
+  active_interaction (~> 4.0)
   active_model_serializers (~> 0.10)
   byebug (~> 10.0)
   database_cleaner (~> 1.7)
