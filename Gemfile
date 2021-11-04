@@ -6,13 +6,13 @@ gem 'pg', "~> 0.20"
 gem 'responders', "~> 2.4"
 gem 'gelf'
 gem 'logstasher'
-gem 'honeybadger', "~> 4.8"
+gem 'honeybadger', "~> 4.9"
 gem 'sidekiq', "~> 5.2"
 gem 'sidetiq', "~> 0.7"
 
 gem 'sinatra', "~> 2.0", require: nil
 gem 'active_model_serializers', "~> 0.10"
-gem 'puma', "~> 5.3"
+gem 'puma', "~> 5.5"
 gem 'newrelic_rpm'
 gem 'active_interaction', "~> 3.6"
 gem 'faraday-panoptes', "~> 0.3"
