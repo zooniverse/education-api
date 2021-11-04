@@ -12,7 +12,7 @@ gem 'sidetiq', "~> 0.7"
 
 gem 'sinatra', "~> 2.0", require: nil
 gem 'active_model_serializers', "~> 0.10"
-gem 'puma', "~> 5.3"
+gem 'puma', "~> 5.5"
 gem 'newrelic_rpm'
 gem 'active_interaction', "~> 3.6"
 gem 'faraday-panoptes', "~> 0.3"
@@ -22,7 +22,7 @@ gem 'dotenv-rails', "~> 2.6"
 group :development, :test do
   gem 'byebug', "~> 10.0"
   gem 'pry-byebug', "~> 3.6"
-  gem 'rspec-rails', "~> 3.6"
+  gem 'rspec-rails', "~> 5.0"
   gem 'pry-rails', "~> 0.3"
   gem 'faraday-detailed_logger', "~> 2.1"
 end
