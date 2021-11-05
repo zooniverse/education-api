@@ -1,6 +1,6 @@
 {
   "name": "kinesis-to-http",
-  "description": "It forwards ZooStream to HTTP endpoints",
+  "description": "It forwards ZooStream to Education API HTTP endpoints",
   "region": "us-east-1",
   "handler": "function.lambda_handler",
   "role": "arn:aws:iam::927935712646:role/zooniverse-kinesis-lambda",
