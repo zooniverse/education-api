@@ -13,6 +13,7 @@ jobs:
     with:
       app_name: education-api
       environment: staging
+      commit_id: ${{ github.sha }}
     secrets:
       creds: ${{ secrets.AZURE_AKS }}
 
