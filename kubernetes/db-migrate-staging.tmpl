@@ -22,8 +22,8 @@ spec:
             subPath: "environment"
             readOnly: true
       volumes:
-      - name: education-api-production-environment
+      - name: education-api-staging-environment
         secret:
-          secretName: education-api-production-environment
+          secretName: education-api-staging-environment
       restartPolicy: Never
   backoffLimit: 1
