@@ -21,5 +21,9 @@ spec:
             mountPath: "/run/secrets/environment"
             subPath: "environment"
             readOnly: true
+      volumes:
+      - name: education-api-production-environment
+        secret:
+          secretName: education-api-production-environment
       restartPolicy: Never
   backoffLimit: 1
