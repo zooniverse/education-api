@@ -1,0 +1,33 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy_staging:
+    name: Deploy to Staging
+    uses: zooniverse/ci-cd/.github/workflows/deploy_app.yaml@main
+    with:
+      app_name: education-api
+      repo_name: education-api
+      commit_id: ${{ github.sha }}
+      environment: staging
+    secrets:
+      creds: ${{ secrets.AZURE_AKS }}
+
+  slack_notification:
+    name: Slack notification
+    uses: zooniverse/ci-cd/.github/workflows/slack_notification.yaml@main
+    needs: deploy_staging
+    if: always()
+    with:
+      commit_id: ${{ github.sha }}
+      job_name: Deploy to Staging / deploy_staging
+      status: ${{ needs.deploy_staging.result }}
+      title: "Education API Staging deploy complete"
+      title_link: "https://education-api-staging.zooniverse.org"
+    secrets:
+      slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
