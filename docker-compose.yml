@@ -33,6 +33,7 @@ services:
       - "POSTGRES_PASSWORD=education"
       - "SIDEKIQ_USERNAME=education"
       - "SIDEKIQ_PASSWORD=education"
+      - "DATABASE_URL_TEST=postgresql://education:education@postgres/education_test"
     links:
       - postgres:pg
       - redis:redis
