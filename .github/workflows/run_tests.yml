@@ -1,0 +1,13 @@
+name: Run Rspec
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  run_rspec:
+    name: Run Rspec Tests
+    uses: zooniverse/ci-cd/.github/workflows/run_rspec.yaml@main
+    with:
+      db_name: education_test
+      ruby_version: 2.6
