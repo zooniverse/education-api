@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: __JOB_NAME__
+spec:
+  template:
+    spec:
+      containers:
+      - name: education-api-db-migrate-production
+        image: ghcr.io/zooniverse/education-api:__IMAGE_TAG__
+        command: ["bundle",  "exec", "rails", "db:migrate"]
+        env:
+        - name: RAILS_LOG_TO_STDOUT
+          value: "true"
+        - name: RAILS_ENV
+          value: production
+        - name: DOTENV_FILE
+          value: "/run/secrets/environment"
+        volumeMounts:
+          - name: education-api-production-environment
+            mountPath: "/run/secrets/environment"
+            subPath: "environment"
+            readOnly: true
+      volumes:
+      - name: education-api-production-environment
+        secret:
+          secretName: education-api-production-environment
+      restartPolicy: Never
+  backoffLimit: 1
