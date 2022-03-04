@@ -9,8 +9,6 @@ RUN apt-get update && \
     && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ARG REVISION=''
-ENV REVISION=$REVISION
 ARG RAILS_ENV=production
 ENV RAILS_ENV=$RAILS_ENV
 
