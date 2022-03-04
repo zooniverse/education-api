@@ -19,7 +19,6 @@ services:
       dockerfile: Dockerfile
       args:
           RAILS_ENV: development
-          REVISION: 559c-fake-revision-string-f9fb
     volumes:
       - ./:/app
       - gem_cache:/usr/local/bundle
