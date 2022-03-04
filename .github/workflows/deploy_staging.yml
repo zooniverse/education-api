@@ -7,9 +7,29 @@ on:
   workflow_dispatch:
 
 jobs:
+  build_and_push_image:
+    name: Build and Push Image
+    uses: zooniverse/ci-cd/.github/workflows/build_and_push_image.yaml@main
+    with:
+      repo_name: education-api
+      commit_id: ${{ github.sha }}
+      latest: true
+
+  db_migration_staging:
+    name: Staging DB Migration
+    uses: zooniverse/ci-cd/.github/workflows/db_migration.yaml@main
+    needs: build_and_push_image
+    with:
+      app_name: education-api
+      environment: staging
+      commit_id: ${{ github.sha }}
+    secrets:
+      creds: ${{ secrets.AZURE_AKS }}
+
   deploy_staging:
     name: Deploy to Staging
     uses: zooniverse/ci-cd/.github/workflows/deploy_app.yaml@main
+    needs: [build_and_push_image, db_migration_staging]
     with:
       app_name: education-api
       repo_name: education-api
@@ -25,9 +45,9 @@ jobs:
     if: always()
     with:
       commit_id: ${{ github.sha }}
-      job_name: Deploy to Staging / deploy_staging
+      job_name: Deploy to Staging / deploy_app
       status: ${{ needs.deploy_staging.result }}
-      title: "Education API Staging deploy complete"
+      title: "Education API Staging deploy & migration complete"
       title_link: "https://education-api-staging.zooniverse.org"
     secrets:
       slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
