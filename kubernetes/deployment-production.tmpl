@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: education-api-production-app
-          image: zooniverse/education-api:__IMAGE_TAG__
+          image: ghcr.io/zooniverse/education-api:__IMAGE_TAG__
           resources:
             requests:
               memory: "300Mi"
@@ -36,7 +36,7 @@ spec:
               subPath: "environment"
               readOnly: true
         - name: education-api-production-sidekiq
-          image: zooniverse/education-api:__IMAGE_TAG__
+          image: ghcr.io/zooniverse/education-api:__IMAGE_TAG__
           resources:
             requests:
               memory: "300Mi"
