@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: education-api-staging-app
-          image: zooniverse/education-api:__IMAGE_TAG__
+          image: ghcr.io/zooniverse/education-api:__IMAGE_TAG__
           resources:
             requests:
               memory: "250Mi"
@@ -35,7 +35,7 @@ spec:
               subPath: "environment"
               readOnly: true
         - name: education-api-staging-sidekiq
-          image: zooniverse/education-api:__IMAGE_TAG__
+          image: ghcr.io/zooniverse/education-api:__IMAGE_TAG__
           resources:
             requests:
               memory: "250Mi"
