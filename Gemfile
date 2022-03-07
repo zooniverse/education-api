@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', "~> 5.2.6"
+gem 'rails', "~> 5.2"
 gem 'rack-cors', "~> 1.0"
 gem 'pg', "~> 0.20"
 gem 'responders', "~> 3.0"
