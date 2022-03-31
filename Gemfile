@@ -6,7 +6,7 @@ gem 'pg', "~> 0.20"
 gem 'responders', "~> 3.0"
 gem 'gelf'
 gem 'logstasher'
-gem 'honeybadger', "~> 4.8"
+gem 'honeybadger', "~> 4.12"
 gem 'sidekiq', "~> 5.2"
 gem 'sidetiq', "~> 0.7"
 
