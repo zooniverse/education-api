@@ -16,7 +16,7 @@ gem 'puma', "~> 5.6"
 gem 'newrelic_rpm'
 gem 'active_interaction', "~> 3.6"
 gem 'faraday-panoptes', "~> 0.3"
-gem 'panoptes-client', "~> 0.3"
+gem 'panoptes-client', "~> 1.1"
 gem 'dotenv-rails', "~> 2.6"
 
 group :development, :test do
