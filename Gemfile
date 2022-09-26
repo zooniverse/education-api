@@ -10,7 +10,7 @@ gem 'honeybadger', "~> 4.12"
 gem 'sidekiq', "~> 5.2"
 gem 'sidetiq', "~> 0.7"
 
-gem 'sinatra', "~> 2.2", require: nil
+gem 'sinatra', "~> 3.0", require: nil
 gem 'active_model_serializers', "~> 0.10"
 gem 'puma', "~> 5.6"
 gem 'newrelic_rpm'
