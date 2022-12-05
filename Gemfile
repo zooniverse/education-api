@@ -19,7 +19,7 @@ gem 'panoptes-client', "~> 0.3"
 gem 'dotenv-rails', "~> 2.6"
 
 group :development, :test do
-  gem 'byebug', "~> 10.0"
+  gem 'byebug', "~> 11.1"
   gem 'pry-byebug', "~> 3.6"
   gem 'rspec-rails', "~> 3.6"
   gem 'pry-rails', "~> 0.3"
