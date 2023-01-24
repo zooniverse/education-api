@@ -4,7 +4,7 @@ import requests
 
 ENDPOINT = "https://education-api.zooniverse.org/kinesis"
 HEADERS  = {"content-type": "application/json"}
-PROJECTS = ["593", "3525", "2308", "2545", "9908", "2789"]
+PROJECTS = ["593", "3525", "2308", "2545", "9908", "2789", "20344"]
 
 def lambda_handler(event, context):
   payloads = [json.loads(base64.b64decode(record["kinesis"]["data"])) for record in event["Records"]]
