@@ -13,7 +13,7 @@ gem 'sidetiq', "~> 0.7"
 gem 'active_model_serializers', "~> 0.10"
 gem 'puma', "~> 5.6"
 gem 'newrelic_rpm'
-gem 'active_interaction', "~> 3.6"
+gem 'active_interaction', "~> 5.3"
 gem 'faraday-panoptes', "~> 0.3"
 gem 'panoptes-client', "~> 0.3"
 gem 'dotenv-rails', "~> 2.6"
