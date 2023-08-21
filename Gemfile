@@ -11,7 +11,7 @@ gem 'sidekiq', "~> 5.2"
 gem 'sidetiq', "~> 0.7"
 
 gem 'active_model_serializers', "~> 0.10"
-gem 'puma', "~> 5.6"
+gem 'puma', "~> 6.3"
 gem 'newrelic_rpm'
 gem 'active_interaction', "~> 3.6"
 gem 'faraday-panoptes', "~> 0.3"
