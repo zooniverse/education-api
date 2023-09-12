@@ -7,7 +7,7 @@ gem 'responders', "~> 3.0"
 gem 'gelf'
 gem 'logstasher'
 gem 'honeybadger', "~> 4.12"
-gem 'sidekiq', "~> 5.2"
+gem 'sidekiq', "~> 7.1"
 gem 'sidetiq', "~> 0.7"
 
 gem 'active_model_serializers', "~> 0.10"
