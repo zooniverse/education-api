@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', "~> 5.2"
 gem 'rack-cors', "~> 1.0"
-gem 'pg', "~> 0.20"
+gem 'pg', "~> 1.5"
 gem 'responders', "~> 3.0"
 gem 'gelf'
 gem 'logstasher'
