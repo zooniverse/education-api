@@ -13,12 +13,13 @@ module VerifiedDoubleExtensions
     super.tap do |dbl|
       allow(klass).to receive(:===).and_call_original # do the normal thing by default
       allow(klass).to receive(:===).with(dbl).and_return true
+      allow(dbl).to receive(:class).and_return(klass)
     end
   end
 end
 
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

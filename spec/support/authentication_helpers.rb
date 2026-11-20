@@ -13,6 +13,7 @@ module AuthenticationHelpers
     }
 
     @application_client = double(Panoptes::Client, me: me_hash).tap do |client|
+      allow(client).to receive(:class).and_return(Panoptes::Client)
       allow(client).to receive(:is_a?).and_return(false)
       allow(client).to receive(:is_a?).with(Panoptes::Client).and_return(true)
     end
@@ -31,6 +32,7 @@ module AuthenticationHelpers
 
 
     @user_client = double(Panoptes::Client, me: me_hash).tap do |client|
+      allow(client).to receive(:class).and_return(Panoptes::Client)
       allow(client).to receive(:is_a?).and_return(false)
       allow(client).to receive(:is_a?).with(Panoptes::Client).and_return(true)
     end

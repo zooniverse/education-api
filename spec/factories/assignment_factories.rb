@@ -1,7 +1,7 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :assignment do
-    name "Foo"
-    workflow_id "1"
-    subject_set_id "1"
+    name { "Foo" }
+    workflow_id { "1" }
+    subject_set_id { "1" }
   end
 end
