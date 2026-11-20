@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171204160047) do
-
+ActiveRecord::Schema[8.1].define(version: 2017_12_04_160047) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "assignments", id: :serial, force: :cascade do |t|
     t.string "name", null: false
@@ -21,22 +20,22 @@ ActiveRecord::Schema.define(version: 20171204160047) do
     t.string "workflow_id", null: false
     t.string "subject_set_id"
     t.integer "classroom_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "deleted_at", precision: nil
   end
 
   create_table "classrooms", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "zooniverse_group_id"
     t.string "join_token"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "school"
     t.string "subject"
     t.text "description"
     t.integer "classifications_count", default: 0
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.bigint "program_id"
     t.index ["program_id"], name: "index_classrooms_on_program_id"
   end
@@ -45,8 +44,8 @@ ActiveRecord::Schema.define(version: 20171204160047) do
     t.string "name"
     t.integer "zooniverse_group_id"
     t.integer "classroom_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "programs", force: :cascade do |t|
@@ -85,8 +84,8 @@ ActiveRecord::Schema.define(version: 20171204160047) do
     t.string "zooniverse_id"
     t.string "access_token"
     t.string "refresh_token"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "zooniverse_login"
     t.string "zooniverse_display_name"
     t.jsonb "metadata"
