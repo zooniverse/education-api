@@ -1,8 +1,8 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :classroom do
-    name "Foo"
-    zooniverse_group_id "1"
-    join_token "asdf"
+    name { "Foo" }
+    zooniverse_group_id { "1" }
+    join_token { "asdf" }
     program
 
     trait :deleted do
